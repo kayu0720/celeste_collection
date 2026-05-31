@@ -1,0 +1,452 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #050505;
+  color: white;
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #b8905b;
+}
+
+
+/* TOP BAR */
+.top-bar {
+  width: 100%;
+  height: 40px;
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  color: #d2b48c;
+
+  font-size: 14px;
+}
+
+.top-bar a {
+  color: #d7b17d;         
+  transition: 0.3s; 
+}
+
+.top-bar a:hover {
+  color: white;
+}
+
+/* NAVBAR */
+.navbar {
+  width: 100%;
+  height: 90px;
+
+  padding: 0 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(0,0,0,0.95);
+
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo h1 {
+  letter-spacing: 8px;
+  font-size: 36px;
+
+  color: #d7b17d;
+
+  font-weight: 300;
+}
+
+.logo span {
+  font-size: 12px;
+  letter-spacing: 4px;
+
+  color: rgba(255,255,255,0.7);
+}
+
+nav { 
+  display: flex; 
+  gap: 40px; 
+} 
+
+nav a {
+  color: white;        
+  text-decoration: none; 
+  transition: 0.3s;     
+}
+
+nav a:hover { 
+  color: #d7b17d; 
+}
+
+.nav-icons { 
+  display: flex; 
+  align-items: center; 
+  gap: 24px; 
+  font-size: 20px; 
+}
+
+.icon-badge {
+  position: relative; 
+  color: inherit; 
+  text-decoration: none; 
+  display: inline-block; 
+  transition: 0.3s;
+}
+
+.icon-badge:hover { 
+  color: #d7b17d; 
+}
+
+.icon-badge a {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.icon-badge span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #d7b17d;
+  color: black;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold; 
+}
+/* 固定每個都有-到這裡 */
+
+.cart-section {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 80px 60px;
+}
+
+.cart-header {
+  margin-bottom: 40px;
+}
+
+.cart-header h2 {
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin-top: 8px;
+}
+
+/* 購物車雙欄主要容器 */
+.cart-container {
+  display: grid;
+  grid-template-columns: 1fr 400px; /* 左側商品清單寬，右側摘要定寬 */
+  gap: 50px;
+  align-items: flex-start;
+}
+
+/* ─── 左側：商品清單樣式 ─── */
+.cart-items-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 欄位表頭 */
+.cart-table-header {
+  display: grid;
+  grid-template-columns: 1fr 140px 140px;
+  padding: 0 10px 15px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* 單一商品項目列 */
+.cart-item {
+  display: grid;
+  grid-template-columns: 1fr 140px 140px;
+  align-items: center;
+  padding: 30px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.3s;
+}
+
+.cart-item:hover {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+/* 商品資訊（圖片與字） */
+.cart-item-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-item-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cart-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-item-detail h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.cart-artist {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.cart-price {
+  color: #d7b17d;
+  font-size: 15px;
+}
+
+/* 數量加減器 */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  width: 110px;
+  height: 40px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.qty-btn {
+  width: 35px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.qty-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d7b17d;
+}
+
+.qty-input {
+  width: 40px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  text-align: center;
+  font-size: 15px;
+}
+
+/* 清除內建網頁的數量箭頭 */
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* 小計與刪除垃圾桶 */
+.cart-item-subtotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10px;
+  font-size: 16px;
+  color: white;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 5px;
+}
+
+.delete-btn:hover {
+  color: #ea580c; /* 刪除懸停轉為優雅的警告橘紅 */
+  transform: scale(1.1);
+}
+
+/* 繼續購物連結 */
+.continue-shopping {
+  margin-top: 30px;
+  color: #d7b17d;
+  text-decoration: none;
+  font-size: 15px;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.3s;
+}
+
+.continue-shopping:hover {
+  gap: 14px; /* 箭頭往左推動效 */
+}
+
+/* ─── 右側：結帳摘要明細樣式 ─── */
+.cart-summary-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 35px;
+}
+
+.cart-summary-card h3 {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+.summary-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 20px 0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 16px;
+}
+
+.promo-row {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.discount-text {
+  color: #d7b17d; /* 折扣特意標示成品牌金 */
+}
+
+/* 總計列加粗加亮 */
+.total-row {
+  color: white;
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.final-price {
+  font-size: 24px;
+  color: #d7b17d;
+  font-weight: 500;
+}
+
+/* 前往結帳核心按鈕 */
+.checkout-btn {
+  width: 100%;
+  height: 60px;
+  background: #d7b17d;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+
+.checkout-btn:hover {
+  transform: translateY(-3px);
+  background: #c5a06c;
+}
+
+.summary-notice {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (購物車響應式斷點調整)
+   ========================================================================== */
+
+@media(max-width: 1100px) {
+  .cart-container {
+    grid-template-columns: 1fr; /* 在平板以下時改為直向單欄排列 */
+    gap: 40px;
+  }
+  .cart-summary-card {
+    position: static;
+    width: 100%;
+  }
+}
+
+@media(max-width: 760px) {
+  .cart-section {
+    padding: 40px 20px;
+  }
+  .cart-table-header {
+    display: none; /* 手機版隱藏表頭 */
+  }
+  .cart-item {
+    grid-template-columns: 1fr; /* 商品列在手機版轉為直向堆疊 */
+    gap: 15px;
+    padding: 20px 0;
+  }
+  .quantity-selector {
+    width: 100%; /* 加減器撐滿 */
+    justify-content: space-between;
+  }
+  .qty-btn {
+    flex: 1;
+  }
+  .qty-input {
+    flex: 2;
+  }
+  .cart-item-subtotal {
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
+  }
+}

@@ -1,0 +1,396 @@
+/* 固定每個都有 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #050505;
+  color: white;
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #b8905b;
+}
+
+
+/* TOP BAR */
+.top-bar {
+  width: 100%;
+  height: 40px;
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  color: #d2b48c;
+
+  font-size: 14px;
+}
+
+.top-bar a {
+  color: #d7b17d;         
+  transition: 0.3s; 
+}
+
+.top-bar a:hover {
+  color: white;
+}
+
+/* NAVBAR */
+.navbar {
+  width: 100%;
+  height: 90px;
+
+  padding: 0 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(0,0,0,0.95);
+
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo h1 {
+  letter-spacing: 8px;
+  font-size: 36px;
+
+  color: #d7b17d;
+
+  font-weight: 300;
+}
+
+.logo span {
+  font-size: 12px;
+  letter-spacing: 4px;
+
+  color: rgba(255,255,255,0.7);
+}
+
+nav { 
+  display: flex; 
+  gap: 40px; 
+} 
+
+nav a {
+  color: white;        
+  text-decoration: none; 
+  transition: 0.3s;     
+}
+
+nav a:hover { 
+  color: #d7b17d; 
+}
+
+.nav-icons { 
+  display: flex; 
+  align-items: center; 
+  gap: 24px; 
+  font-size: 20px; 
+}
+
+.icon-badge {
+  position: relative; 
+  color: inherit; 
+  text-decoration: none; 
+  display: inline-block; 
+  transition: 0.3s;
+}
+
+.icon-badge:hover { 
+  color: #d7b17d; 
+}
+
+.icon-badge a {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.icon-badge span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #d7b17d;
+  color: black;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold; 
+}
+/* 固定每個都有-到這裡 */
+
+
+.member-section {
+  /* 1. 打破所有可能遺留的 Grid 欄位設定 */
+  display: flex !important;
+  flex-direction: column !important;
+  
+  /* 2. 強制水平與垂直居中（最高權重 !important） */
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  
+  /* 3. 確保撐開全螢幕寬度與高度 */
+  width: 100% !important;
+  min-height: calc(100vh - 90px) !important;
+  
+  /* 4. 內距與外距修正 */
+  margin: 0 auto !important;
+  padding: 80px 20px !important;
+  background: #050505;
+}
+
+/* 2. 標題文字區：確保文字本身也是置中的 */
+.member-header {
+  display: block !important;
+  width: 100% !important;
+  max-width: 650px !important;
+  margin: 0 auto 35px auto !important;
+  text-align: center !important;
+}
+.member-header h2 {
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin: 10px 0;
+}
+
+.join-us-text {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   MEMBER CONTAINER & TABS (區塊外框與分頁按鈕)
+   ========================================================================== */
+
+/* 1. 會員中心主卡片方框 */
+.member-container {
+  display: block !important;
+  width: 100% !important;
+  max-width: 650px !important;
+  margin: 0 auto !important; /* 核心：用左右 auto 強制推到正中央 */
+  
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: left !important; /* 確保框框內的輸入表單維持高級感靠左排列 */
+}
+
+/* 2. 頁籤按鈕整列 */
+.member-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 3. 單個頁籤按鈕的基礎樣式 */
+.tab-btn {
+  flex: 1;
+  height: 55px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: inherit;
+}
+
+/* 滑鼠移過去：字體變金色、按鈕微亮 */
+.tab-btn:hover {
+  color: #d7b17d;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* 當前被選中的分頁（反白成大塊金底黑字，呼應原本 sidebar.active 風格） */
+.tab-btn.active {
+  background: #d7b17d;
+  color: black;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   CONTENT & FORM ELEMENTS (內容展示與表單樣式)
+   ========================================================================== */
+
+/* 1. 內容內距包裝 */
+.member-content-wrapper {
+  padding: 40px;
+}
+
+/* 2. 分頁內容控制（預設隱藏，有 .active 才出現） */
+.tab-content {
+  display: none; 
+}
+
+.tab-content.active {
+  display: block;
+  animation: memberTabFadeIn 0.4s ease; /* 切換時有柔和淡入動畫 */
+}
+
+.tab-content h3 {
+  font-size: 26px;
+  font-weight: 300;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.form-desc {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+/* 3. 登入表單輸入欄位 */
+.member-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.form-group input {
+  width: 100%;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 0 16px;
+  color: white;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+/* 輸入框被點擊聚焦時（轉為品牌金色邊框） */
+.form-group input:focus {
+  outline: none;
+  border-color: #d7b17d;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* 4. 登入提交大按鈕 */
+.submit-btn {
+  width: 100%;
+  height: 55px;
+  background: #d7b17d;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  background: #c5a06c; /* 懸停時顏色稍微深一點點點 */
+}
+
+/* 5. 表單底部提示（註冊帳號連結） */
+.form-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-footer a {
+  color: #d7b17d;
+  text-decoration: none;
+  margin-left: 6px;
+  transition: 0.3s;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   EMPTY STATE (收藏、評價空白狀態)
+   ========================================================================== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.empty-state i {
+  font-size: 48px;
+  color: rgba(255, 255, 255, 0.2);
+  margin-bottom: 16px;
+}
+
+.empty-state p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* 「去逛逛」連結與動態小箭頭 */
+.action-link {
+  color: #d7b17d;
+  text-decoration: none;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.3s;
+}
+
+.action-link:hover {
+  gap: 12px; /* 移上去小箭頭會往右推，比較有動態回饋感 */
+}
+
+/* ==========================================================================
+   ANIMATION & RESPONSIVE (動畫與手機板調整)
+   ========================================================================== */
+
+@keyframes memberTabFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .member-section { padding: 40px 20px; }
+  .member-content-wrapper { padding: 24px; }
+  .tab-btn { font-size: 13px; height: 50px; }
+}

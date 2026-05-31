@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celeste Collection</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <p>全館滿 NT$1,500 免運費</p>
+    <span>|</span>
+    <p>加入會員享 5% 回饋</p>
+  </div>
+
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+
+    <div class="logo">
+      <h1>Celeste</h1>
+      <span>COLLECTION</span>
+    </div>
+
+    <nav>
+      <a href="index.html">首頁</a>
+      <a href="new-arrival.html">新品上架</a>
+      <a href="category.html">唱片分類</a>
+      <a href="classic.html">經典推薦</a>
+      <a href="vinyl-knowledge.html">黑膠知識</a>
+      <a href="about-us.html">關於我們</a>
+    </nav>
+
+    <div class="nav-icons">
+      <a href="https://你的購物車網址.com" class="icon-badge">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      </a>
+      <a href="member.html" class="icon-badge">
+      <i class="fa-regular fa-user"></i>
+      </a>
+
+      <div class="icon-badge">
+        <a href="https://你的購物車網址.com">
+        <i class="fa-regular fa-heart"></i>
+        </a>
+      </div>
+
+      <div class="icon-badge">
+        <a href="cart.html">
+            <i class="fa-solid fa-bag-shopping"></i> 
+        </a>
+        <span id="cart-badge-count">0</span>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- PRODUCT DETAIL PAGE -->
+  <section class="detail-page">
+
+    <aside class="sidebar">
+
+      <h3>唱片分類</h3>
+
+      <ul>
+        <!-- 流行樂 (當前被選中狀態) -->
+        <li class="active">
+          <a href="category.html?genre=pop" target="_self">流行樂 POP</a>
+        </li>
+        <!-- 搖滾樂 -->
+        <li>
+          <a href="category.html?genre=rock" target="_self">搖滾樂 ROCK</a>
+        </li>
+        <!-- 獨立音樂 -->
+        <li>
+          <a href="category.html?genre=indie" target="_self">獨立音樂 INDIE</a>
+        </li>
+        <!-- 爵士樂 -->
+        <li>
+          <a href="category.html?genre=jazz" target="_self">爵士樂 JAZZ</a>
+        </li>
+        <!-- 嘻哈饒舌 -->
+        <li>
+          <a href="category.html?genre=hiphop" target="_self">嘻哈饒舌 HIP HOP</a>
+        </li>
+        <!-- 電子音樂 -->
+        <li>
+          <a href="category.html?genre=electronic" target="_self">電子音樂 ELECTRONIC</a>
+        </li>
+        <!-- 古典音樂 -->
+        <li>
+          <a href="category.html?genre=classical" target="_self">古典音樂 CLASSICAL</a>
+        </li>
+        <!-- R&B -->
+        <li>
+          <a href="category.html?genre=rnb" target="_self">R&B / 靈魂樂 SOUL</a>
+        </li>
+        <!-- 原聲帶 -->
+        <li>
+          <a href="category.html?genre=ost" target="_self">原聲帶 OST</a>
+        </li>
+      </ul>
+
+    </aside>
+
+
+    <div class="detail-content">
+
+      <div class="breadcrumb">
+        首頁 ＞ 流行樂 ＞ The 1975 ＞ Being Funny In A Foreign Language
+      </div>
+      <!-- 右側動態專輯列表區 -->
+<div class="product-grid" id="category-products-grid">
+  <!-- 這裡一開始是空的，JS 會自動依據曲風把專輯卡片塞進來 -->
+</div>
+
+      <div class="product-detail-grid">
+
+        <div class="detail-image-area">
+
+          <div class="main-image">
+            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop" />
+          </div>
+
+          <div class="thumbnail-row">
+            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop" />
+            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1000&auto=format&fit=crop" />
+            <img src="https://images.unsplash.com/photo-1499364615650-ec38552f4f34?q=80&w=1000&auto=format&fit=crop" />
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop" />
+          </div>
+
+        </div>
+
+
+        <div class="detail-info">
+
+          <h2>Being Funny In A Foreign Language</h2>
+
+          <p class="artist">The 1975</p>
+
+          <span class="tag">黑膠唱片 LP</span>
+
+          <div class="price">NT$1,280</div>
+
+
+          <button class="cart-btn" 
+              data-id="vinyl-001" 
+              data-title="Abbey Road (Remastered)" 
+              data-artist="The Beatles" 
+              data-price="1280" 
+              data-img="https://unsplash.com">
+              加入購物車
+          </button>
+
+            <button class="favorite-btn">
+              <i class="fa-regular fa-heart"></i>
+              加入收藏
+            </button>
+          </div>
+
+
+          <div class="product-meta">
+            <div>
+              <span>發行日期</span>
+              <p>2022 / 10 / 14</p>
+            </div>
+
+            <div>
+              <span>唱片廠牌</span>
+              <p>Dirty Hit</p>
+            </div>
+
+            <div>
+              <span>產品編號</span>
+              <p>DHO0753</p>
+            </div>
+
+            <div>
+              <span>格式</span>
+              <p>LP, Album, 黑膠唱片</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+<!-- TRACK LIST -->
+      <div class="track-section">
+
+        <div class="track-header">
+          <h3>收錄歌曲</h3>
+          <button>連接 Spotify</button>
+        </div>
+
+
+        <div class="track-list">
+
+          <div class="track-item">
+            <span>1</span>
+            <p>The 1975</p>
+            <small>4:10</small>
+          </div>
+
+          <div class="track-item">
+            <span>2</span>
+            <p>Happiness</p>
+            <small>5:03</small>
+          </div>
+
+          <div class="track-item">
+            <span>3</span>
+            <p>Looking For Somebody (To Love)</p>
+            <small>3:32</small>
+          </div>
+
+          <div class="track-item">
+            <span>4</span>
+            <p>Part Of The Band</p>
+            <small>3:03</small>
+          </div>
+
+          <div class="track-item">
+            <span>5</span>
+            <p>Oh Caroline</p>
+            <small>3:34</small>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cartBtn = document.querySelector('.cart-btn');
+    
+    if (cartBtn) {
+      cartBtn.addEventListener('click', function() {
+        // 1. 抓取按鈕上的商品資訊
+        const id = this.getAttribute('data-id');
+        const title = this.getAttribute('data-title');
+        const artist = this.getAttribute('data-artist');
+        const price = parseInt(this.getAttribute('data-price'));
+        const img = this.getAttribute('data-img');
+
+        // 2. 取出目前本地已有的購物車陣列
+        let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
+
+        // 3. 檢查是不是重複加入
+        const existingItem = cart.find(item => item.id === id);
+        if (existingItem) {
+          existingItem.qty += 1; // 重複加入則數量加 1
+        } else {
+          cart.push({ id, title, artist, price, img, qty: 1 }); // 新商品則塞入陣列
+        }
+
+        // 4. 存回 localStorage
+        localStorage.setItem('realCartItems', JSON.stringify(cart));
+        
+        // 5. 更新右上角導覽列泡泡總數
+        let totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+        localStorage.setItem('globalCartCount', totalCount);
+        
+        const badgeCount = document.getElementById('cart-badge-count');
+        if (badgeCount) {
+          badgeCount.textContent = totalCount;
+          badgeCount.style.display = 'flex';
+        }
+
+        alert(`已將《${title}》成功加入購物車！`);
+      });
+    }
+  });
+
+  const productDatabase = {
+  "vinyl-001": {
+    genre: "pop",
+    title: "Being Funny In A Foreign Language",
+    artist: "The 1975",
+    price: 1280,
+    img: "https://unsplash.com", // 您的主圖
+    thumbnails: [
+      "https://unsplash.com",
+      "https://unsplash.com",
+      "https://unsplash.com",
+      "https://unsplash.com"
+    ],
+    tag: "流行樂 POP",
+    tracks: ["The 1975", "Happiness", "Looking for Somebody (To Love)", "Part of the Band", "Oh Caroline"]
+  },
+  "vinyl-002": {
+    genre: "rock",
+    title: "Abbey Road",
+    artist: "The Beatles",
+    price: 1350,
+    img: "https://unsplash.com",
+    thumbnails: [],
+    tag: "搖滾樂 ROCK",
+    tracks: ["Come Together", "Something", "Maxwell's Silver Hammer"]
+  }
+  // 日後有新專輯，直接依照這個格式往下加即可！
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. 解析網址，看客人點了什麼曲風 (如果網址沒有帶參數，預設顯示流行樂 pop)
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentGenre = urlParams.get('genre') || 'pop';
+
+    // 2. 讓左側對應的曲風按鈕自動變成金色 (.active)
+    const links = document.querySelectorAll('.sidebar ul li a');
+    links.forEach(link => {
+      if (link.getAttribute('href').includes(`genre=${currentGenre}`)) {
+        link.parentElement.classList.add('active');
+      }
+    });
+
+    // 3. 撈出符合該曲fun的所有專輯，並動態生成卡片
+    const gridContainer = document.getElementById('category-products-grid');
+    if (gridContainer) {
+      let htmlContent = "";
+
+      // 巡檢資料庫
+      for (let id in productDatabase) {
+        if (productDatabase[id].genre === currentGenre) {
+          // 關鍵：卡片連結到 product-detail.html，並帶上該專輯的專屬 id 參數
+          htmlContent += `
+            <div class="product-card">
+              <a href="product-detail.html?id=${id}" target="_self" style="text-decoration:none; color:inherit;">
+                <div class="product-image">
+                  <img src="${productDatabase[id].img}" alt="${productDatabase[id].title}">
+                </div>
+                <div class="product-info">
+                  <h3>${productDatabase[id].title}</h3>
+                  <p>${productDatabase[id].artist}</p>
+                  <div class="product-bottom">
+                    <span>NT$ ${productDatabase[id].price.toLocaleString()}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          `;
+        }
+      }
+
+      // 如果該曲風目前沒有安排任何專輯
+      if (htmlContent === "") {
+        htmlContent = `<p style="color:rgba(255,255,255,0.4); grid-column: 1/-1; text-align:center; padding: 5px 0;">該音樂分類目前尚無現貨黑膠唱片進口</p>`;
+      }
+
+      gridContainer.innerHTML = htmlContent;
+    }
+  });
+
+</script>
+
+</body>
+</html>

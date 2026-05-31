@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celeste Collection</title>
+
+  <link rel="stylesheet" href="css/cart.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <p>全館滿 NT$1,500 免運費</p>
+    <span>|</span>
+    <p>加入會員享 5% 回饋</p>
+    <a href="member.html" class="member-link">立刻加入</a>
+  </div>
+
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+
+    <div class="logo">
+      <h1>Celeste</h1>
+      <span>COLLECTION</span>
+    </div>
+
+    <nav>
+      <a href="index.html">首頁</a>
+      <a href="new-arrival.html">新品上架</a>
+      <a href="category.html">唱片分類</a>
+      <a href="classic.html">經典推薦</a>
+      <a href="vinyl-knowledge.html">黑膠知識</a>
+      <a href="about-us.html">關於我們</a>
+    </nav>
+
+    <div class="nav-icons">
+      <a href="https://你的購物車網址.com" class="icon-badge">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      </a>
+      <a href="member.html" class="icon-badge">
+      <i class="fa-regular fa-user"></i>
+      </a>
+
+      <div class="icon-badge">
+        <a href="https://你的購物車網址.com">
+        <i class="fa-regular fa-heart"></i>
+        </a>
+      </div>
+
+      <div class="icon-badge">
+        <a href="cart.html">
+            <i class="fa-solid fa-bag-shopping"></i> 
+        </a>
+        <span id="cart-badge-count">0</span>
+      </div>
+
+    </div>
+  </header>
+
+  <section class="cart-section">
+  <!-- 頂部標題區 -->
+  <div class="cart-header">
+    <span class="sub-title">YOUR SELECTIONS</span>
+    <h2>SHOPPING CART</h2>
+  </div>
+
+  <!-- 購物車主要內容區（雙欄佈局） -->
+  <div class="cart-container">
+    
+    <div class="cart-items-wrapper">
+  <!-- 欄位表頭 -->
+  <div class="cart-table-header">
+    <span>商品項目</span>
+    <span>數量</span>
+    <span>小計</span>
+  </div>
+
+  <!-- 關鍵核心：這個容器一開始是全空的，有加入東西才會長出來 -->
+  <div id="cart-items-container"></div>
+
+      <!-- 底部返回按鈕 -->
+      <a href="category.html" class="continue-shopping">
+        <i class="fa-solid fa-arrow-left"></i> 繼續探索唱片
+      </a>
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <div class="cart-summary-card">
+    <h3>ORDER SUMMARY</h3>
+    <div class="summary-divider"></div>
+    
+    <div class="summary-row">
+        <span>商品總計</span>
+        <span>NT$ 4,180</span>
+    </div>
+    <div class="summary-row">
+        <span>運費總計</span>
+        <span>NT$ 80</span>
+    </div>
+
+    <!-- 新增：動態優惠折扣欄位 (預設先隱藏，啟用後才顯示) -->
+    <div class="summary-row promo-row" id="summary-discount-row" style="display: none;">
+        <span>折扣折抵 (<span id="discount-tag-name">優惠碼</span>)</span>
+        <span class="discount-text">- NT$ 0</span>
+    </div>
+    
+    <div class="summary-divider"></div>
+
+    <!-- 優惠券 -->
+    <div class="promo-code-section">
+    <!-- 選擇是否使用折價的勾選鍵 -->
+    <label class="promo-toggle-label">
+        <input type="checkbox" id="use-promo-toggle">
+        <span class="custom-checkbox"></span>
+        使用優惠折價券
+    </label>
+    
+    <!-- 新增：新會員專屬的動態折扣按鈕區 (預設隱藏，由 JS 偵測後顯示) -->
+    <div id="new-member-coupon-zone" style="display: none; margin-top: 5px;">
+        <p class="new-member-gift-text" style="color: #d7b17d; font-size: 13px; margin-bottom: 8px;">
+        <i class="fa-solid fa-gift"></i> 偵測到您是新會員！專屬首購禮已送達：
+        </p>
+        <button type="button" id="claim-new-member-btn" style="width: 100%; height: 40px; background: rgba(215, 177, 125, 0.1); border: 1px dashed #d7b17d; color: #d7b17d; border-radius: 4px; cursor: pointer; transition: 0.3s; font-size: 14px;">
+        套用新會員折價券 (折 NT$ 100)
+        </button>
+    </div>
+    
+    <!-- 優惠碼輸入框 (手動輸入其他代碼用) -->
+    <div class="promo-input-group" id="promo-input-container">
+        <input type="text" id="promo-code-input" placeholder="或輸入其他優惠代碼">
+        <button type="button" id="apply-promo-btn">套用</button>
+    </div>
+    <!-- 提示訊息 -->
+    <p id="promo-message" class="promo-msg"></p>
+    </div>
+
+    <div class="summary-divider"></div>
+    
+    <div class="summary-row total-row">
+        <span>應付總額</span>
+        <span class="final-price">NT$ 4,260</span>
+    </div>
+
+    <!-- 前往結帳大按鈕 -->
+    <button class="checkout-btn">
+        <span>前往結帳</span>
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    
+    <p class="summary-notice"><i class="fa-solid fa-shield-halved"></i> 您的交易已受安全加密保護</p>
+    </div>
+
+  </div>
+</section>
+
+
+<script>
+
+/* 頂部購物車泡泡*/
+const badgeCount = document.getElementById('cart-badge-count');
+    if (badgeCount) {
+      let totalItemsCount = 0;
+  
+      document.querySelectorAll('.qty-input').forEach(input => {
+        totalItemsCount += parseInt(input.value) || 0;
+      });
+      
+      badgeCount.textContent = totalItemsCount;
+     
+      if (totalItemsCount === 0) {
+        badgeCount.style.display = 'none';
+      } else {
+        badgeCount.style.display = 'flex';
+      }
+     
+      localStorage.setItem('globalCartCount', totalItemsCount);
+    }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const SHIPPING_FEE = 80;
+  let isPromoChecked = false; 
+  let discountAmount = 0;     
+  let activePromoName = "";   
+
+  // 檢查購物次數紀錄
+  if (localStorage.getItem('purchaseCount') === null) {
+    localStorage.setItem('purchaseCount', '0'); 
+  }
+  let purchaseCount = parseInt(localStorage.getItem('purchaseCount'));
+
+  // 1. 核心：啟動網頁時，先從本地儲存讀取「真正加入」的商品資料
+  renderDynamicCart();
+  initPromoEvents();
+  checkMemberStatus();
+
+  // 2. 動態渲染購物車畫面
+  function renderDynamicCart() {
+    const container = document.getElementById('cart-items-container');
+    if (!container) return;
+
+    // 讀取商品陣列資料
+    let cartItems = JSON.parse(localStorage.getItem('realCartItems')) || [];
+
+    // 如果裡面空的，直接進入空車狀態，不繼續往下跑
+    if (cartItems.length === 0) {
+      localStorage.setItem('globalCartCount', '0');
+      updateNavbarBadge(0);
+      renderEmptyCartState();
+      return;
+    }
+
+    // 開始動態拼接 HTML 結構
+    let htmlContent = "";
+    cartItems.forEach((item, index) => {
+      htmlContent += `
+        <div class="cart-item" data-index="${index}" data-id="${item.id}">
+          <div class="cart-item-info">
+            <div class="cart-item-img">
+              <img src="${item.img}" alt="${item.title}">
+            </div>
+            <div class="cart-item-detail">
+              <h3>${item.title}</h3>
+              <p class="cart-artist">${item.artist}</p>
+              <span class="cart-price">NT$ ${item.price.toLocaleString()}</span>
+            </div>
+          </div>
+          <div class="quantity-selector">
+            <button class="qty-btn btn-minus"><i class="fa-solid fa-minus"></i></button>
+            <input type="number" value="${item.qty}" min="1" class="qty-input">
+            <button class="qty-btn btn-plus"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div class="cart-item-subtotal">
+            <span>NT$ ${(item.price * item.qty).toLocaleString()}</span>
+            <button class="delete-btn" title="移除商品"><i class="fa-regular fa-trash-can"></i></button>
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = htmlContent;
+
+    // 重新綁定這些剛生出來的按鈕事件
+    bindDynamicEvents();
+    // 重新計算大總計
+    updateCartTotals();
+  }
+
+  // 3. 綁定新生成的按鈕點擊監聽 (加、減、手動輸入、刪除)
+  function bindDynamicEvents() {
+    let cartItems = JSON.parse(localStorage.getItem('realCartItems')) || [];
+    const itemRows = document.querySelectorAll('.cart-item');
+
+    itemRows.forEach(row => {
+      const idx = parseInt(row.getAttribute('data-index'));
+      const minusBtn = row.querySelector('.btn-minus');
+      const plusBtn = row.querySelector('.btn-plus');
+      const qtyInput = row.querySelector('.qty-input');
+      const deleteBtn = row.querySelector('.delete-btn');
+
+      // 減號
+      minusBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (cartItems[idx].qty > 1) {
+          cartItems[idx].qty -= 1;
+          saveAndRefresh(cartItems);
+        }
+      });
+
+      // 加號
+      plusBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        cartItems[idx].qty += 1;
+        saveAndRefresh(cartItems);
+      });
+
+      // 輸入框變更
+      qtyInput.addEventListener('change', () => {
+        let currentVal = parseInt(qtyInput.value);
+        if (isNaN(currentVal) || currentVal < 1) currentVal = 1;
+        cartItems[idx].qty = currentVal;
+        saveAndRefresh(cartItems);
+      });
+
+      // 垃圾桶刪除
+      deleteBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        row.style.transition = 'all 0.4s ease';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(-30px)';
+        
+        setTimeout(() => {
+          cartItems.splice(idx, 1); // 從陣列中把該筆索引資料拔除
+          saveAndRefresh(cartItems);
+        }, 400);
+      });
+    });
+  }
+
+  // 資料儲存並刷新畫面
+  function saveAndRefresh(newCartArray) {
+    localStorage.setItem('realCartItems', JSON.stringify(newCartArray));
+    renderDynamicCart(); // 重新渲染，維持資料單一來源
+  }
+
+  // 4. 右側金額連動計算與 Navbar 同步
+  function updateCartTotals() {
+    let cartItems = JSON.parse(localStorage.getItem('realCartItems')) || [];
+    
+    // 計算 Navbar 總商品數
+    let totalItemsCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+    updateNavbarBadge(totalItemsCount);
+    localStorage.setItem('globalCartCount', totalItemsCount);
+
+    if (cartItems.length === 0) {
+      renderEmptyCartState();
+      return;
+    }
+
+    // 計算商品原價總計
+    let itemsTotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    // 處理折價券
+    let finalDiscount = 0;
+    const discountRow = document.getElementById('summary-discount-row');
+    const tagNameSpan = document.getElementById('discount-tag-name');
+
+    if (isPromoChecked && discountAmount > 0) {
+      finalDiscount = itemsTotal >= discountAmount ? discountAmount : itemsTotal;
+      if (tagNameSpan) tagNameSpan.textContent = activePromoName;
+      if (discountRow) {
+        discountRow.style.display = 'flex';
+        discountRow.querySelector('.discount-text').textContent = `- NT$ ${finalDiscount.toLocaleString()}`;
+      }
+    } else {
+      if (discountRow) discountRow.style.display = 'none';
+    }
+
+    const finalTotal = itemsTotal + SHIPPING_FEE - finalDiscount;
+    const summaryCard = document.querySelector('.cart-summary-card');
+    
+    if (summaryCard) {
+      const rows = summaryCard.querySelectorAll('.summary-row');
+      if (rows.length >= 2) {
+        rows[0].querySelector('span:last-child').textContent = `NT$ ${itemsTotal.toLocaleString()}`;
+        rows[1].querySelector('span:last-child').textContent = `NT$ ${SHIPPING_FEE.toLocaleString()}`;
+      }
+      const finalPriceSpan = summaryCard.querySelector('.final-price');
+      if (finalPriceSpan) finalPriceSpan.textContent = `NT$ ${finalTotal.toLocaleString()}`;
+    }
+  }
+
+  function updateNavbarBadge(count) {
+    const badgeCount = document.getElementById('cart-badge-count');
+    if (badgeCount) {
+      badgeCount.textContent = count;
+      badgeCount.style.display = (count === 0) ? 'none' : 'flex';
+    }
+  }
+
+  // 偵測新會員狀態
+  function checkMemberStatus() {
+    const newMemberZone = document.getElementById('new-member-coupon-zone');
+    if (purchaseCount === 0) {
+      if (newMemberZone) newMemberZone.style.display = 'block';
+    } else {
+      if (newMemberZone) newMemberZone.style.display = 'none';
+    }
+  }
+
+  // 優惠券事件處理
+  function initPromoEvents() {
+    const toggleCheckbox = document.getElementById('use-promo-toggle');
+    const inputContainer = document.getElementById('promo-input-container');
+    const applyBtn = document.getElementById('apply-promo-btn');
+    const claimNewBtn = document.getElementById('claim-new-member-btn');
+    const promoInput = document.getElementById('promo-code-input');
+    const promoMsg = document.getElementById('promo-message');
+
+    if (toggleCheckbox) {
+      toggleCheckbox.addEventListener('change', function() {
+        isPromoChecked = this.checked;
+        if (isPromoChecked) {
+          inputContainer.classList.add('show');
+        } else {
+          inputContainer.classList.remove('show');
+          clearDiscount();
+        }
+      });
+    }
+
+    if (claimNewBtn) {
+      claimNewBtn.addEventListener('click', function() {
+        toggleCheckbox.checked = true;
+        isPromoChecked = true;
+        inputContainer.classList.add('show');
+        discountAmount = 100;
+        activePromoName = "新會員專屬首購禮";
+        promoMsg.textContent = "✓ 已成功套用新會員現折 NT$ 100 優惠！";
+        promoMsg.className = "promo-msg success";
+        updateCartTotals();
+      });
+    }
+
+    if (applyBtn) {
+      applyBtn.addEventListener('click', function() {
+        const code = promoInput.value.trim().toUpperCase();
+        if (code === "FIRST") {
+          discountAmount = 150;
+          activePromoName = "黑膠首購禮 FIRST";
+          promoMsg.textContent = "✓ 成功套用 NT$ 150 折扣！";
+          promoMsg.className = "promo-msg success";
+        } else if (code === "") {
+          promoMsg.textContent = "✕ 請輸入代碼";
+          promoMsg.className = "promo-msg error";
+        } else {
+          clearDiscount();
+          promoMsg.textContent = "✕ 代碼無效或已過期";
+          promoMsg.className = "promo-msg error";
+        }
+        updateCartTotals();
+      });
+    }
+
+    function clearDiscount() {
+      discountAmount = 0;
+      activePromoName = "";
+      if (promoMsg) promoMsg.className = "promo-msg";
+      updateCartTotals();
+    }
+
+    // 模擬點擊「前往結帳」
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', function() {
+        let cartItems = JSON.parse(localStorage.getItem('realCartItems')) || [];
+        if (cartItems.length > 0) {
+          localStorage.setItem('purchaseCount', '1');
+          localStorage.removeItem('realCartItems'); // 結帳完畢後自動清空真正加入的東西
+          localStorage.setItem('globalCartCount', '0');
+          alert('訂單成立！感謝購買。');
+          window.location.reload();
+        }
+      });
+    }
+  }
+
+  function renderEmptyCartState() {
+    const container = document.querySelector('.cart-container');
+    if (container) {
+      container.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1; padding: 100px 0; text-align: center; width: 100%;">
+          <i class="fa-solid fa-basket-shopping" style="font-size: 64px; color: rgba(255,255,255,0.1); margin-bottom: 24px; display: block;"></i>
+          <p style="font-size: 18px; color: rgba(255,255,255,0.5); margin-bottom: 30px;">您的購物車目前沒有任何唱片</p>
+          <a href="category.html" class="checkout-btn" style="max-width: 240px; margin: 0 auto; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <span>去逛逛最新黑膠</span> <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      `;
+    }
+  }
+});
+
+ // ─── 購物車內的「前往結帳」按鈕事件 ───
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', function() {
+        let cartItems = JSON.parse(localStorage.getItem('realCartItems')) || [];
+        
+        if (cartItems.length > 0) {
+          // 1. 讀取目前本來就有的消費次數 (若完全沒有則預設 0)
+          let currentCount = parseInt(localStorage.getItem('purchaseCount')) || 0;
+          
+          // 2. 結帳成功：在原有的次數上精準累加 +1 次！
+          localStorage.setItem('purchaseCount', (currentCount + 1).toString());
+          
+          // 3. 清空購物車真正加入的唱片，並將導覽列數量歸零
+          localStorage.removeItem('realCartItems'); 
+          localStorage.setItem('globalCartCount', '0');
+          
+          // 4. 彈出通知並重整網頁（重整後會自動切換為空的購物車狀態）
+          alert('🎉 訂單成立！感謝購買。消費紀錄已即時同步至您的會員中心。');
+          window.location.reload();
+        } else {
+          alert('您的購物車內目前沒有任何唱片，無法進行結帳。');
+        }
+      });
+    }
+
+</script>
+
+
+
+
+
+    
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celeste Collection</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <p>全館滿 NT$1,500 免運費</p>
+    <span>|</span>
+    <p>加入會員享 5% 回饋</p>
+    <a href="member.html" class="member-link">立刻加入</a>
+  </div>
+
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+
+    <div class="logo">
+      <h1>Celeste</h1>
+      <span>COLLECTION</span>
+    </div>
+
+    <nav>
+      <a href="index.html">首頁</a>
+      <a href="new-arrival.html">新品上架</a>
+      <a href="category.html">唱片分類</a>
+      <a href="classic.html">經典推薦</a>
+      <a href="vinyl-knowledge.html">黑膠知識</a>
+      <a href="about-us.html">關於我們</a>
+    </nav>
+
+    <div class="nav-icons">
+      <a href="https://你的購物車網址.com" class="icon-badge">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      </a>
+      <a href="member.html" class="icon-badge">
+      <i class="fa-regular fa-user"></i>
+      </a>
+
+      <div class="icon-badge">
+        <a href="https://你的購物車網址.com">
+        <i class="fa-regular fa-heart"></i>
+        </a>
+      </div>
+
+      <div class="icon-badge">
+        <a href="cart.html">
+            <i class="fa-solid fa-bag-shopping"></i> 
+        </a>
+        <span id="cart-badge-count">0</span>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- HERO -->
+  <section class="hero-section">
+
+    <div class="hero-text">
+      <p class="sub-title">聽見・收藏・感動</p>
+
+      <h2>
+        讓黑膠，<br />
+        成為你的日常。
+      </h2>
+
+      <p class="hero-desc">
+        每一張唱片，都是時光的記錄<br />
+        挑選喜歡的聲音，收藏你的人生配樂。
+      </p>
+
+      <button>
+        <a href="category.html">探索所有唱片
+        <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </button>
+    </div>
+
+
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1600&auto=format&fit=crop" alt="vinyl" />
+    </div>
+
+  </section>
+
+
+  <script>
+    /* 頂部購物車泡泡*/
+  const badgeCount = document.getElementById('cart-badge-count');
+      if (badgeCount) {
+        let totalItemsCount = 0;
+    
+        document.querySelectorAll('.qty-input').forEach(input => {
+          totalItemsCount += parseInt(input.value) || 0;
+        });
+        
+        badgeCount.textContent = totalItemsCount;
+      
+        if (totalItemsCount === 0) {
+          badgeCount.style.display = 'none';
+        } else {
+          badgeCount.style.display = 'flex';
+        }
+      
+        localStorage.setItem('globalCartCount', totalItemsCount);
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+  // 1. 從瀏覽器暫存中讀取在購物車存好的最新總商品數 (若從未加入過則預設為 '0')
+  const savedCount = localStorage.getItem('globalCartCount') || '0';
+  
+  // 2. 抓取導覽列 Navbar 上的金色泡泡元件
+  const badgeCount = document.getElementById('cart-badge-count');
+  
+  if (badgeCount) {
+    // 3. 將同步好的最新數量塞進泡泡內
+    badgeCount.textContent = savedCount;
+    
+    // 4. 視覺優化：如果購物車是空的 (數量為 0)，主動隱藏泡泡；大於 0 則正常顯示
+    if (parseInt(savedCount) === 0) {
+      badgeCount.style.display = 'none';
+    } else {
+      badgeCount.style.display = 'flex';
+    }
+  }
+});
+  </script>
+
+</body>
+</html>
