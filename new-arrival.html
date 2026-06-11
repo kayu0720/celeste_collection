@@ -19,7 +19,7 @@
   <div class="top-bar">
     <p>全館滿 NT$1,500 免運費</p>
     <span>|</span>
-    <p>加入會員享 5% 回饋</p>
+    <p>新加入會員享優惠</p>
     <a href="member.html" class="member-link">立刻加入</a>
   </div>
 
@@ -36,7 +36,6 @@
       <a href="index.html">首頁</a>
       <a href="new-arrival.html">新品上架</a>
       <a href="category.html">唱片分類</a>
-      <a href="classic.html">經典推薦</a>
       <a href="vinyl-knowledge.html">黑膠知識</a>
       <a href="about-us.html">關於我們</a>
     </nav>
@@ -56,9 +55,10 @@
       </div>
 
       <div class="icon-badge">
-        <a href="https://你的購物車網址.com">
-        <i class="fa-solid fa-cart-shopping"></i>
+        <a href="cart.html">
+            <i class="fa-solid fa-bag-shopping"></i> 
         </a>
+        <span id="cart-badge-count">0</span>
       </div>
 
     </div>
@@ -69,7 +69,7 @@
 
     <div class="section-title">
       <h2>新品上架</h2>
-      <a href="#">查看全部</a>
+      <a href="category.html">查看全部</a>
     </div>
 
 
@@ -163,9 +163,10 @@
 
   </section>
 
-   <!-- SERVICE -->
-  <section class="service-section">
+  <!-- FOOTER -->
+<footer class="main-footer">
 
+  <div class="footer-service-bar">
     <div class="service-card">
       <i class="fa-solid fa-truck"></i>
       <div>
@@ -173,7 +174,6 @@
         <p>台灣本島限定</p>
       </div>
     </div>
-
     <div class="service-card">
       <i class="fa-solid fa-shield"></i>
       <div>
@@ -181,7 +181,6 @@
         <p>專業黑膠包裝</p>
       </div>
     </div>
-
     <div class="service-card">
       <i class="fa-solid fa-rotate-left"></i>
       <div>
@@ -189,7 +188,6 @@
         <p>非拆膜不拆封可退換</p>
       </div>
     </div>
-
     <div class="service-card">
       <i class="fa-solid fa-headset"></i>
       <div>
@@ -197,9 +195,91 @@
         <p>週一至週五 10:00 - 18:00</p>
       </div>
     </div>
+  </div>
 
-  </section>
+  <div class="footer-links-container">
 
+    <div class="footer-column brand-column">
+      <div class="logo">
+        <h1>CELESTE</h1>
+        <span>COLLECTION</span>
+      </div>
+      <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
+      <div class="footer-socials">
+        <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+      </div>
+    </div>
 
+    <div class="footer-column links-column">
+      <h3>探索站點</h3>
+      <ul>
+        <li><a href="index.html" target="_self">官方首頁 Home</a></li>
+        <li><a href="category.html?genre=pop" target="_self">探索唱片 Explore</a></li>
+        <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
+        <li><a href="member.html" target="_self">會員專區 Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column links-column">
+      <h3>客戶服務</h3>
+      <ul>
+        <li><a href="#" target="_self">購物與付款須知</a></li>
+        <li><a href="#" target="_self">退換貨政策條款</a></li>
+        <li><a href="#" target="_self">隱私權保護政策</a></li>
+        <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-copyright">
+    <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
+  </div>
+
+</footer>
+
+<script>
+    /* 頂部購物車泡泡*/
+      const badgeCount = document.getElementById('cart-badge-count');
+          if (badgeCount) {
+            let totalItemsCount = 0;
+        
+            document.querySelectorAll('.qty-input').forEach(input => {
+              totalItemsCount += parseInt(input.value) || 0;
+            });
+            
+            badgeCount.textContent = totalItemsCount;
+          
+            if (totalItemsCount === 0) {
+              badgeCount.style.display = 'none';
+            } else {
+              badgeCount.style.display = 'flex';
+            }
+          
+            localStorage.setItem('globalCartCount', totalItemsCount);
+          }
+
+          document.addEventListener('DOMContentLoaded', function() {
+      // 1. 最新總商品數 (預設為0)
+      const savedCount = localStorage.getItem('globalCartCount') || '0';
+      
+      // 2. 抓取導覽列 Navbar 上的金色泡泡元件
+      const badgeCount = document.getElementById('cart-badge-count');
+      
+      if (badgeCount) {
+        // 3. 同步最新數量
+        badgeCount.textContent = savedCount;
+        
+        // 4. 視覺優化
+        if (parseInt(savedCount) === 0) {
+          badgeCount.style.display = 'none';
+        } else {
+          badgeCount.style.display = 'flex';
+        }
+      }
+    });
+  </script>
 </body>
 </html>

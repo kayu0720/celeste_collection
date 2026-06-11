@@ -16,7 +16,7 @@
   <div class="top-bar">
     <p>全館滿 NT$1,500 免運費</p>
     <span>|</span>
-    <p>加入會員享 5% 回饋</p>
+    <p>新加入會員享優惠</p>
     <a href="member.html" class="member-link">立刻加入</a>
   </div>
 
@@ -33,23 +33,27 @@
       <a href="index.html">首頁</a>
       <a href="new-arrival.html">新品上架</a>
       <a href="category.html">唱片分類</a>
-      <a href="classic.html">經典推薦</a>
       <a href="vinyl-knowledge.html">黑膠知識</a>
       <a href="about-us.html">關於我們</a>
     </nav>
 
     <div class="nav-icons">
-      <a href="https://你的購物車網址.com" class="icon-badge">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      </a>
+      <div class="search-wrapper">
+        <input type="text" id="global-search-input" placeholder="搜尋專輯、歌手...">
+        <button id="global-search-btn" title="開始搜尋">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+
       <a href="member.html" class="icon-badge">
       <i class="fa-regular fa-user"></i>
       </a>
 
       <div class="icon-badge">
-        <a href="https://你的購物車網址.com">
-        <i class="fa-regular fa-heart"></i>
+        <a href="member.html" target="_self" title="我的收藏">
+          <i class="fa-regular fa-heart"></i>
         </a>
+        <span id="fav-badge-count" style="display: none;">0</span>
       </div>
 
       <div class="icon-badge">
@@ -86,54 +90,168 @@
       </button>
     </div>
 
-
+    <!-- 封面黑膠 -->
     <div class="hero-image">
-      <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1600&auto=format&fit=crop" alt="vinyl" />
+  
+      <!-- 關鍵修正：用超連結包裹整組黑膠，target="_self" 確保在原分頁直接跳轉 -->
+      <a href="category.html" target="_self" class="vinyl-click-link" style="text-decoration: none; display: block;">
+        
+        <div class="vinyl-player-container">
+          <!-- 1. 後方的黑膠唱片本體（使用您的本地 PNG，會動態旋轉） -->
+          <div class="vinyl-disc">
+            <img src="img/vinyl.png" alt="Vinyl Disc">
+          </div>
+          <!-- 2. 前方的黑膠紙質外封套（使用您的本地 PNG，靜態） -->
+          <div class="vinyl-cover">
+            <img src="img/vinylcover.png" alt="Album Cover">
+          </div>
+        </div>
+        
+      </a>
+
     </div>
 
   </section>
 
+  <!-- FOOTER -->
+<footer class="main-footer">
+
+  <div class="footer-service-bar">
+    <div class="service-card">
+      <i class="fa-solid fa-truck"></i>
+      <div>
+        <h4>全館滿 NT$1,500 免運</h4>
+        <p>台灣本島限定</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-shield"></i>
+      <div>
+        <h4>安心包裝出貨</h4>
+        <p>專業黑膠包裝</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-rotate-left"></i>
+      <div>
+        <h4>14 天鑑賞期</h4>
+        <p>非拆膜不拆封可退換</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-headset"></i>
+      <div>
+        <h4>客服支援</h4>
+        <p>週一至週五 10:00 - 18:00</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-links-container">
+
+    <div class="footer-column brand-column">
+      <div class="logo">
+        <h1>CELESTE</h1>
+        <span>COLLECTION</span>
+      </div>
+      <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
+      <div class="footer-socials">
+        <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-column links-column">
+      <h3>探索站點</h3>
+      <ul>
+        <li><a href="index.html" target="_self">官方首頁 Home</a></li>
+        <li><a href="category.html?genre=pop" target="_self">探索唱片 Explore</a></li>
+        <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
+        <li><a href="member.html" target="_self">會員專區 Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column links-column">
+      <h3>客戶服務</h3>
+      <ul>
+        <li><a href="#" target="_self">購物與付款須知</a></li>
+        <li><a href="#" target="_self">退換貨政策條款</a></li>
+        <li><a href="#" target="_self">隱私權保護政策</a></li>
+        <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-copyright">
+    <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
+  </div>
+
+</footer>
+
+
 
   <script>
-    /* 頂部購物車泡泡*/
-  const badgeCount = document.getElementById('cart-badge-count');
-      if (badgeCount) {
-        let totalItemsCount = 0;
-    
-        document.querySelectorAll('.qty-input').forEach(input => {
-          totalItemsCount += parseInt(input.value) || 0;
-        });
+  // ==========================================//
+  //            購物車 & 收藏                   //
+  // ==========================================//
+      const favBadge = document.getElementById('fav-badge-count');
+      if (favBadge) {
+        // 1. 商品數
+        let favoritesArray = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
+        let totalFavsCount = favoritesArray.length;
         
-        badgeCount.textContent = totalItemsCount;
-      
-        if (totalItemsCount === 0) {
-          badgeCount.style.display = 'none';
+        // 2. 即時更新數字
+        favBadge.textContent = totalFavsCount;
+        
+        // 3. 視覺優化
+        if (totalFavsCount === 0) {
+          favBadge.style.display = 'none';
         } else {
-          badgeCount.style.display = 'flex';
+          favBadge.style.display = 'flex';
         }
-      
-        localStorage.setItem('globalCartCount', totalItemsCount);
+        
+        // 4. 【資管跨頁同步】把最新總數安全存入 localStorage
+        localStorage.setItem('globalFavsCount', totalFavsCount);
       }
 
       document.addEventListener('DOMContentLoaded', function() {
-  // 1. 從瀏覽器暫存中讀取在購物車存好的最新總商品數 (若從未加入過則預設為 '0')
-  const savedCount = localStorage.getItem('globalCartCount') || '0';
   
-  // 2. 抓取導覽列 Navbar 上的金色泡泡元件
-  const badgeCount = document.getElementById('cart-badge-count');
-  
-  if (badgeCount) {
-    // 3. 將同步好的最新數量塞進泡泡內
-    badgeCount.textContent = savedCount;
-    
-    // 4. 視覺優化：如果購物車是空的 (數量為 0)，主動隱藏泡泡；大於 0 則正常顯示
-    if (parseInt(savedCount) === 0) {
-      badgeCount.style.display = 'none';
-    } else {
-      badgeCount.style.display = 'flex';
-    }
-  }
-});
+
+        const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+        const cartBadge = document.getElementById('cart-badge-count');
+        
+        if (cartBadge) {
+          cartBadge.textContent = savedCartCount;
+          
+          if (parseInt(savedCartCount) === 0) {
+            cartBadge.style.display = 'none';
+          } else {
+            cartBadge.style.display = 'flex';
+          }
+        }
+
+        // 最新總收藏數
+        const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+        const favBadge = document.getElementById('fav-badge-count');
+        
+        if (favBadge) {
+          // 3. 同步最新數量
+          favBadge.textContent = savedFavCount;
+          
+          // 4. 視覺優化：如果完全沒收藏東西，自動隱藏不顯示
+          if (parseInt(savedFavCount) === 0) {
+            favBadge.style.display = 'none';
+          } else {
+            favBadge.style.display = 'flex';
+          }
+        }
+
+      });
+  // ==========================================//
+  //                到這裡                     //
+  // ==========================================//    
   </script>
 
 </body>

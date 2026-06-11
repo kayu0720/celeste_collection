@@ -19,7 +19,8 @@
   <div class="top-bar">
     <p>全館滿 NT$1,500 免運費</p>
     <span>|</span>
-    <p>加入會員享 5% 回饋</p>
+    <p>新加入會員享優惠</p>
+    <a href="member.html" class="member-link">立刻加入</a>
   </div>
 
 
@@ -35,7 +36,6 @@
       <a href="index.html">首頁</a>
       <a href="new-arrival.html">新品上架</a>
       <a href="category.html">唱片分類</a>
-      <a href="classic.html">經典推薦</a>
       <a href="vinyl-knowledge.html">黑膠知識</a>
       <a href="about-us.html">關於我們</a>
     </nav>
@@ -113,257 +113,530 @@
     </aside>
 
 
-    <div class="detail-content">
-
-      <div class="breadcrumb">
+    <div class="main-content-area">
+  
+      <!-- 1. 麵包屑導覽列 -->
+      <div class="breadcrumb" id="global-breadcrumb">
         首頁 ＞ 流行樂 ＞ The 1975 ＞ Being Funny In A Foreign Language
       </div>
-      <!-- 右側動態專輯列表區 -->
-<div class="product-grid" id="category-products-grid">
-  <!-- 這裡一開始是空的，JS 會自動依據曲風把專輯卡片塞進來 -->
-</div>
 
-      <div class="product-detail-grid">
-
-        <div class="detail-image-area">
-
-          <div class="main-image">
-            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop" />
-          </div>
-
-          <div class="thumbnail-row">
-            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop" />
-            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1000&auto=format&fit=crop" />
-            <img src="https://images.unsplash.com/photo-1499364615650-ec38552f4f34?q=80&w=1000&auto=format&fit=crop" />
-            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop" />
-          </div>
-
+      <!-- 【區塊 A】各曲風專輯列表頁 (一開始顯示，點擊左側分類時會出現) -->
+      <div id="view-list" class="content-view" style="display: none;">
+        <div class="product-grid" id="category-products-grid">
+          <!-- 專輯卡片由 JS 自動生成 -->
         </div>
-
-
-        <div class="detail-info">
-
-          <h2>Being Funny In A Foreign Language</h2>
-
-          <p class="artist">The 1975</p>
-
-          <span class="tag">黑膠唱片 LP</span>
-
-          <div class="price">NT$1,280</div>
-
-
-          <button class="cart-btn" 
-              data-id="vinyl-001" 
-              data-title="Abbey Road (Remastered)" 
-              data-artist="The Beatles" 
-              data-price="1280" 
-              data-img="https://unsplash.com">
-              加入購物車
-          </button>
-
-            <button class="favorite-btn">
-              <i class="fa-regular fa-heart"></i>
-              加入收藏
-            </button>
-          </div>
-
-
-          <div class="product-meta">
-            <div>
-              <span>發行日期</span>
-              <p>2022 / 10 / 14</p>
-            </div>
-
-            <div>
-              <span>唱片廠牌</span>
-              <p>Dirty Hit</p>
-            </div>
-
-            <div>
-              <span>產品編號</span>
-              <p>DHO0753</p>
-            </div>
-
-            <div>
-              <span>格式</span>
-              <p>LP, Album, 黑膠唱片</p>
-            </div>
-          </div>
-
-        </div>
-
       </div>
 
-<!-- TRACK LIST -->
-      <div class="track-section">
-
-        <div class="track-header">
-          <h3>收錄歌曲</h3>
-          <button>連接 Spotify</button>
-        </div>
-
-
-        <div class="track-list">
-
-          <div class="track-item">
-            <span>1</span>
-            <p>The 1975</p>
-            <small>4:10</small>
+      <!-- 【區塊 B】商品詳細頁 (預設顯示您目前的 The 1975 畫面) -->
+      <div id="view-detail" class="content-view">
+        <div class="product-detail-grid" style="display: grid; grid-template-columns: 500px 1fr; gap: 50px;">
+          
+          <!-- 左側媒體：大圖與四張小圖 -->
+          <div class="detail-media-box">
+            <div class="main-image" style="width: 100%; height: 500px; overflow: hidden;">
+              <!-- 加上 id="detail-main-img" 方便 JS 切換大圖 -->
+              <img id="detail-main-img" src="https://unsplash.com" alt="Main Album Cover" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <!-- 下方四張縮圖容器，加上 class="thumbnail-row" -->
+            <div class="thumbnail-row" style="display: flex; gap: 14px; margin-top: 20px;">
+              <!-- 四張縮圖會由 JS 動態塞入，並自動綁定點擊即時切換大圖功能 -->
+            </div>
           </div>
 
-          <div class="track-item">
-            <span>2</span>
-            <p>Happiness</p>
-            <small>5:03</small>
-          </div>
-
-          <div class="track-item">
-            <span>3</span>
-            <p>Looking For Somebody (To Love)</p>
-            <small>3:32</small>
-          </div>
-
-          <div class="track-item">
-            <span>4</span>
-            <p>Part Of The Band</p>
-            <small>3:03</small>
-          </div>
-
-          <div class="track-item">
-            <span>5</span>
-            <p>Oh Caroline</p>
-            <small>3:34</small>
+          <!-- 右側文字與購買按鈕 -->
+          <div class="detail-info">
+            <h2 id="detail-title" style="font-size: 42px; font-weight: 300; line-height: 1.4;">Being Funny In A Foreign Language</h2>
+            <p class="artist" id="detail-artist" style="margin-top: 12px; color: rgba(255,255,255,0.6); font-size: 20px;">The 1975</p>
+            <span class="tag" id="detail-tag" style="display: inline-block; margin-top: 20px; padding: 10px 16px; background: rgba(255,255,255,0.08); border-radius: 4px;">流行樂 POP</span>
+            <div class="price" id="detail-price" style="margin-top: 30px; font-size: 42px; color: #d7b17d;">NT$ 1,280</div>
+            
+            <div class="button-group" style="display: flex; gap: 20px; margin-top: 30px;">
+              <!-- 加入收藏大按鈕，加上 class="favorite-btn" -->
+              <button class="favorite-btn" style="height: 60px; padding: 0 30px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; cursor: pointer; font-size: 16px; transition: 0.3s;">
+                <i class="fa-regular fa-heart"></i> 加入收藏
+              </button>
+            </div>
           </div>
 
         </div>
-
+        
+        <!-- 返回列表按鈕 (當從列表點進來時，可以返回) -->
+        <button class="back-to-list-btn" id="btn-back-list" onclick="backToList()" style="margin-top: 40px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 12px 24px; cursor: pointer; transition: 0.3s; display: none;">
+          <i class="fa-solid fa-arrow-left"></i> 返回專輯列表
+        </button>
       </div>
 
     </div>
 
   </section>
 
+  <!-- FOOTER -->
+<footer class="main-footer">
+
+  <div class="footer-service-bar">
+    <div class="service-card">
+      <i class="fa-solid fa-truck"></i>
+      <div>
+        <h4>全館滿 NT$1,500 免運</h4>
+        <p>台灣本島限定</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-shield"></i>
+      <div>
+        <h4>安心包裝出貨</h4>
+        <p>專業黑膠包裝</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-rotate-left"></i>
+      <div>
+        <h4>14 天鑑賞期</h4>
+        <p>非拆膜不拆封可退換</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-headset"></i>
+      <div>
+        <h4>客服支援</h4>
+        <p>週一至週五 10:00 - 18:00</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-links-container">
+
+    <div class="footer-column brand-column">
+      <div class="logo">
+        <h1>CELESTE</h1>
+        <span>COLLECTION</span>
+      </div>
+      <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
+      <div class="footer-socials">
+        <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-column links-column">
+      <h3>探索站點</h3>
+      <ul>
+        <li><a href="index.html" target="_self">官方首頁 Home</a></li>
+        <li><a href="category.html?genre=pop" target="_self">探索唱片 Explore</a></li>
+        <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
+        <li><a href="member.html" target="_self">會員專區 Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column links-column">
+      <h3>客戶服務</h3>
+      <ul>
+        <li><a href="#" target="_self">購物與付款須知</a></li>
+        <li><a href="#" target="_self">退換貨政策條款</a></li>
+        <li><a href="#" target="_self">隱私權保護政策</a></li>
+        <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-copyright">
+    <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
+  </div>
+
+</footer>
+
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const cartBtn = document.querySelector('.cart-btn');
-    
-    if (cartBtn) {
-      cartBtn.addEventListener('click', function() {
-        // 1. 抓取按鈕上的商品資訊
-        const id = this.getAttribute('data-id');
-        const title = this.getAttribute('data-title');
-        const artist = this.getAttribute('data-artist');
-        const price = parseInt(this.getAttribute('data-price'));
-        const img = this.getAttribute('data-img');
-
-        // 2. 取出目前本地已有的購物車陣列
-        let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
-
-        // 3. 檢查是不是重複加入
-        const existingItem = cart.find(item => item.id === id);
-        if (existingItem) {
-          existingItem.qty += 1; // 重複加入則數量加 1
-        } else {
-          cart.push({ id, title, artist, price, img, qty: 1 }); // 新商品則塞入陣列
-        }
-
-        // 4. 存回 localStorage
-        localStorage.setItem('realCartItems', JSON.stringify(cart));
-        
-        // 5. 更新右上角導覽列泡泡總數
-        let totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-        localStorage.setItem('globalCartCount', totalCount);
-        
-        const badgeCount = document.getElementById('cart-badge-count');
-        if (badgeCount) {
-          badgeCount.textContent = totalCount;
-          badgeCount.style.display = 'flex';
-        }
-
-        alert(`已將《${title}》成功加入購物車！`);
-      });
-    }
-  });
-
-  const productDatabase = {
-  "vinyl-001": {
-    genre: "pop",
-    title: "Being Funny In A Foreign Language",
-    artist: "The 1975",
-    price: 1280,
-    img: "https://unsplash.com", // 您的主圖
-    thumbnails: [
-      "https://unsplash.com",
-      "https://unsplash.com",
-      "https://unsplash.com",
-      "https://unsplash.com"
-    ],
-    tag: "流行樂 POP",
-    tracks: ["The 1975", "Happiness", "Looking for Somebody (To Love)", "Part of the Band", "Oh Caroline"]
-  },
-  "vinyl-002": {
-    genre: "rock",
-    title: "Abbey Road",
-    artist: "The Beatles",
-    price: 1350,
-    img: "https://unsplash.com",
-    thumbnails: [],
-    tag: "搖滾樂 ROCK",
-    tracks: ["Come Together", "Something", "Maxwell's Silver Hammer"]
-  }
-  // 日後有新專輯，直接依照這個格式往下加即可！
-  };
-
-  document.addEventListener('DOMContentLoaded', function() {
-    // 1. 解析網址，看客人點了什麼曲風 (如果網址沒有帶參數，預設顯示流行樂 pop)
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentGenre = urlParams.get('genre') || 'pop';
-
-    // 2. 讓左側對應的曲風按鈕自動變成金色 (.active)
-    const links = document.querySelectorAll('.sidebar ul li a');
-    links.forEach(link => {
-      if (link.getAttribute('href').includes(`genre=${currentGenre}`)) {
-        link.parentElement.classList.add('active');
+  // ==========================================//
+  //                 商品資料                   //
+  // ==========================================//
+    const productDatabase = {
+      "vinyl-001": {
+        genre: "pop",
+        title: "Being Funny In A Foreign Language",
+        artist: "The 1975",
+        price: 1280,
+        img: "https://unsplash.com",
+        thumbnails: [
+          "https://unsplash.com",
+          "https://unsplash.com",
+          "https://unsplash.com",
+          "https://unsplash.com"
+        ],
+        tag: "流行樂 POP"
+      },
+      "vinyl-002": {
+        genre: "rock",
+        title: "Abbey Road",
+        artist: "The Beatles",
+        price: 1350,
+        img: "https://unsplash.com",
+        thumbnails: [
+          "https://unsplash.com",
+          "https://unsplash.com"
+        ],
+        tag: "搖滾樂 ROCK"
       }
+    };
+
+    let activeProductId = "vinyl-001"; // 預設當前為 The 1975
+    let currentGenre = "pop";
+
+    document.addEventListener('DOMContentLoaded', function() {
+      syncNavbarBadges();
+
+      const sidebarItems = document.querySelectorAll('.sidebar ul li');
+      sidebarItems.forEach(li => {
+        li.addEventListener('click', function() {
+          sidebarItems.forEach(i => i.classList.remove('active'));
+          this.classList.add('active');
+  
+          const text = this.innerText;
+          let targetGenre = 'pop';
+          if (text.includes('ROCK')) targetGenre = 'rock';
+          if (text.includes('INDIE')) targetGenre = 'indie';
+          if (text.includes('JAZZ')) targetGenre = 'jazz';
+          if (text.includes('HIP HOP')) targetGenre = 'hiphop';
+          if (text.includes('ELECTRONIC')) targetGenre = 'electronic';
+          if (text.includes('CLASSICAL')) targetGenre = 'classical';
+          if (text.includes('SOUL')) targetGenre = 'rnb';
+          if (text.includes('OST')) targetGenre = 'ost';
+
+          // 執行列表切換
+          loadAlbumList(targetGenre);
+        });
+      });
+
+      // C. 初始加載：載入預設商品 (The 1975) 的四張小縮圖點擊事件
+      refreshThumbnails("vinyl-001");
+      // D. 綁定加入收藏點擊
+      initFavoriteEvent();
     });
 
-    // 3. 撈出符合該曲fun的所有專輯，並動態生成卡片
-    const gridContainer = document.getElementById('category-products-grid');
-    if (gridContainer) {
-      let htmlContent = "";
+    // 功能一：切換顯示特定曲風的專輯卡片清單
+    function loadAlbumList(genre) {
+      currentGenre = genre;
+      activeProductId = null;
 
-      // 巡檢資料庫
+      // 切換視圖：隱藏詳情、打開列表
+      document.getElementById('view-list').style.display = 'block';
+      document.getElementById('view-detail').style.display = 'none';
+
+      // 找出曲風名稱更新麵包屑
+      let genreName = "唱片分類";
+      const activeLi = document.querySelector('.sidebar ul li.active');
+      if (activeLi) genreName = activeLi.innerText;
+      document.getElementById('global-breadcrumb').innerHTML = `首頁 ＞ ${genreName}`;
+
+      // 動態渲染專輯卡片
+      const gridContainer = document.getElementById('category-products-grid');
+      if (!gridContainer) return;
+      
+      let htmlContent = "";
       for (let id in productDatabase) {
-        if (productDatabase[id].genre === currentGenre) {
-          // 關鍵：卡片連結到 product-detail.html，並帶上該專輯的專屬 id 參數
+        if (productDatabase[id].genre === genre) {
           htmlContent += `
-            <div class="product-card">
-              <a href="product-detail.html?id=${id}" target="_self" style="text-decoration:none; color:inherit;">
-                <div class="product-image">
-                  <img src="${productDatabase[id].img}" alt="${productDatabase[id].title}">
-                </div>
-                <div class="product-info">
-                  <h3>${productDatabase[id].title}</h3>
-                  <p>${productDatabase[id].artist}</p>
-                  <div class="product-bottom">
-                    <span>NT$ ${productDatabase[id].price.toLocaleString()}</span>
-                  </div>
-                </div>
-              </a>
+            <div class="product-card" onclick="goToProductDetail('${id}')" style="cursor:pointer; border: 1px solid rgba(255,255,255,0.05); padding:15px; background:rgba(255,255,255,0.01);">
+              <div class="product-image" style="height:240px; overflow:hidden;"><img src="${productDatabase[id].img}" style="width:100%; height:100%; object-fit:cover;"></div>
+              <div class="product-info" style="margin-top:15px;">
+                <h3 style="font-size:18px; font-weight:400; color:white;">${productDatabase[id].title}</h3>
+                <p style="color:rgba(255,255,255,0.5); font-size:14px; margin-top:4px;">${productDatabase[id].artist}</p>
+                <div class="product-bottom" style="margin-top:10px; color:#d7b17d;"><span>NT$ ${productDatabase[id].price.toLocaleString()}</span></div>
+              </div>
             </div>
           `;
         }
       }
 
-      // 如果該曲風目前沒有安排任何專輯
       if (htmlContent === "") {
-        htmlContent = `<p style="color:rgba(255,255,255,0.4); grid-column: 1/-1; text-align:center; padding: 5px 0;">該音樂分類目前尚無現貨黑膠唱片進口</p>`;
+        htmlContent = `<p style="color:rgba(255,255,255,0.4); grid-column: 1/-1; text-align:center; padding: 60px 0;">該分類目前尚無現貨黑膠商品進口</p>`;
       }
-
       gridContainer.innerHTML = htmlContent;
     }
-  });
 
+    // 功能二：在列表點擊某張專輯後，更換資料並切換進詳細頁
+    function goToProductDetail(id) {
+      activeProductId = id;
+      const product = productDatabase[id];
+      if (!product) return;
+
+      // 1. 更換文字資料
+      document.getElementById('detail-main-img').src = product.img;
+      document.getElementById('detail-title').textContent = product.title;
+      document.getElementById('detail-artist').textContent = product.artist;
+      document.getElementById('detail-tag').textContent = product.tag;
+      document.getElementById('detail-price').textContent = `NT$ ${product.price.toLocaleString()}`;
+
+      // 2. 重新更新四張縮圖
+      refreshThumbnails(id);
+
+      // 3. 更新麵包屑與顯示返回按鈕
+      document.getElementById('global-breadcrumb').innerHTML = `首頁 ＞ ${product.tag} ＞ ${product.artist} ＞ ${product.title}`;
+      document.getElementById('btn-back-list').style.display = 'inline-block';
+
+      // 4. 切換顯示狀態
+      document.getElementById('view-list').style.display = 'none';
+      document.getElementById('view-detail').style.display = 'block';
+    }
+
+    // 刷新四張縮圖，並自動綁定「點擊後即時更換上方大圖」的按鈕功能
+    function refreshThumbnails(id) {
+      const product = productDatabase[id];
+      const thumbRow = document.querySelector('.thumbnail-row');
+      if (!thumbRow || !product.thumbnails) return;
+
+      let thumbHtml = "";
+      product.thumbnails.forEach(src => {
+        // 綁定 onclick，點擊縮圖時，直接修改大圖的 src 屬性
+        thumbHtml += `<img src="${src}" alt="thumb" style="width: 90px; height: 90px; object-fit: cover; cursor: pointer; opacity: 0.7; transition: 0.3s;" onclick="document.getElementById('detail-main-img').src='${src}'; this.style.opacity=1;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">`;
+      });
+      thumbRow.innerHTML = thumbHtml;
+    }
+
+    function backToList() {
+      loadAlbumList(currentGenre);
+      document.getElementById('btn-back-list').style.display = 'none';
+    }
+
+    // 功能三：加入我的收藏（完全整合您要求的實時變更數量與隱藏功能）
+    function initFavoriteEvent() {
+      const favoriteBtn = document.querySelector('.favorite-btn');
+      if (!favoriteBtn) return;
+
+      favoriteBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!activeProductId) return;
+        const product = productDatabase[activeProductId];
+
+        // 登入權限攔截
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        if (!isLoggedIn) {
+          alert('✕ 權限不足：請先至會員中心登入帳號，才能啟用我的收藏功能！');
+          window.location.href = 'member.html';
+          return;
+        }
+
+        let favorites = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
+        
+        if (favorites.includes(activeProductId)) {
+          alert(`提示：您先前已經將《${product.title}》加入過收藏清單囉！`);
+        } else {
+          favorites.push(activeProductId);
+          localStorage.setItem('myFavoriteItems', JSON.stringify(favorites));
+
+          // 即時連動計算更新右上角的愛心數量泡泡
+          const favBadge = document.getElementById('fav-badge-count');
+          if (favBadge) {
+            let totalCount = favorites.length;
+            favBadge.textContent = totalCount;
+            favBadge.style.display = (totalCount === 0) ? 'none' : 'flex'; // 沒有就不顯示
+            localStorage.setItem('globalFavsCount', totalCount); // 跨頁同步存檔
+          }
+
+          alert(`❤️ 收藏成功！已將《${product.title}》同步至您的會員中心。`);
+        }
+      });
+    }
+
+    // 跨頁導覽列更新
+    function syncNavbarBadges() {
+      const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+      const cartBadge = document.getElementById('cart-badge-count');
+      if (cartBadge) {
+        cartBadge.textContent = savedCartCount;
+        cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex';
+      }
+
+      const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+      const favBadge = document.getElementById('fav-badge-count');
+      if (favBadge) {
+        favBadge.textContent = savedFavCount;
+        favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex';
+      }
+    }
+
+  // ==========================================//
+  //                到這裡                     //
+  // ==========================================//
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const cartBtn = document.querySelector('.cart-btn');
+      
+      if (cartBtn) {
+        cartBtn.addEventListener('click', function() {
+          // 1. 抓取按鈕上的商品資訊
+          const id = this.getAttribute('data-id');
+          const title = this.getAttribute('data-title');
+          const artist = this.getAttribute('data-artist');
+          const price = parseInt(this.getAttribute('data-price'));
+          const img = this.getAttribute('data-img');
+
+          // 2. 取出目前本地已有的購物車陣列
+          let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
+
+          // 3. 檢查是不是重複加入
+          const existingItem = cart.find(item => item.id === id);
+          if (existingItem) {
+            existingItem.qty += 1; // 重複加入則數量加 1
+          } else {
+            cart.push({ id, title, artist, price, img, qty: 1 }); // 新商品則塞入陣列
+          }
+
+          // 4. 存回 localStorage
+          localStorage.setItem('realCartItems', JSON.stringify(cart));
+          
+          // 5. 更新右上角導覽列泡泡總數
+          let totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+          localStorage.setItem('globalCartCount', totalCount);
+          
+          const badgeCount = document.getElementById('cart-badge-count');
+          if (badgeCount) {
+            badgeCount.textContent = totalCount;
+            badgeCount.style.display = 'flex';
+          }
+
+          alert(`已將《${title}》成功加入購物車！`);
+        });
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. 解析網址，看客人點了什麼曲風 (如果網址沒有帶參數，預設顯示流行樂 pop)
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentGenre = urlParams.get('genre') || 'pop';
+
+      // 2. 讓左側對應的曲風按鈕自動變成金色 (.active)
+      const links = document.querySelectorAll('.sidebar ul li a');
+      links.forEach(link => {
+        if (link.getAttribute('href').includes(`genre=${currentGenre}`)) {
+          link.parentElement.classList.add('active');
+        }
+      });
+
+      // 3. 撈出符合該曲fun的所有專輯，並動態生成卡片
+      const gridContainer = document.getElementById('category-products-grid');
+      if (gridContainer) {
+        let htmlContent = "";
+
+        // 巡檢資料庫
+        for (let id in productDatabase) {
+          if (productDatabase[id].genre === currentGenre) {
+            // 關鍵：卡片連結到 product-detail.html，並帶上該專輯的專屬 id 參數
+            htmlContent += `
+              <div class="product-card">
+                <a href="product-detail.html?id=${id}" target="_self" style="text-decoration:none; color:inherit;">
+                  <div class="product-image">
+                    <img src="${productDatabase[id].img}" alt="${productDatabase[id].title}">
+                  </div>
+                  <div class="product-info">
+                    <h3>${productDatabase[id].title}</h3>
+                    <p>${productDatabase[id].artist}</p>
+                    <div class="product-bottom">
+                      <span>NT$ ${productDatabase[id].price.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            `;
+          }
+        }
+
+        // 如果該曲風目前沒有安排任何專輯
+        if (htmlContent === "") {
+          htmlContent = `<p style="color:rgba(255,255,255,0.4); grid-column: 1/-1; text-align:center; padding: 5px 0;">該音樂分類目前尚無現貨黑膠唱片進口</p>`;
+        }
+
+        gridContainer.innerHTML = htmlContent;
+      }
+    });
+
+  // ==========================================//
+  //            購物車 & 收藏                   //
+  // ==========================================//
+      const favBadge = document.getElementById('fav-badge-count');
+      if (favBadge) {
+        // 1. 撈出目前的收藏陣列，陣列的長度 (length) 就是總收藏商品數
+        let favoritesArray = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
+        let totalFavsCount = favoritesArray.length;
+        
+        // 2. 即時更新 Navbar 愛心泡泡數字
+        favBadge.textContent = totalFavsCount;
+        
+        // 3. 視覺優化：沒有東西就隱藏，有東西就變強制的 flex 顯示
+        if (totalFavsCount === 0) {
+          favBadge.style.display = 'none';
+        } else {
+          favBadge.style.display = 'flex';
+        }
+        
+        // 4. 【資管跨頁同步】把最新總數安全存入 localStorage
+        localStorage.setItem('globalFavsCount', totalFavsCount);
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+  
+
+        const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+        const cartBadge = document.getElementById('cart-badge-count');
+        
+        if (cartBadge) {
+          cartBadge.textContent = savedCartCount;
+          
+          if (parseInt(savedCartCount) === 0) {
+            cartBadge.style.display = 'none';
+          } else {
+            cartBadge.style.display = 'flex';
+          }
+        }
+
+        // 最新總收藏數
+        const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+        const favBadge = document.getElementById('fav-badge-count');
+        
+        if (favBadge) {
+          // 3. 同步最新數量
+          favBadge.textContent = savedFavCount;
+          
+          // 4. 視覺優化：如果完全沒收藏東西，自動隱藏不顯示
+          if (parseInt(savedFavCount) === 0) {
+            favBadge.style.display = 'none';
+          } else {
+            favBadge.style.display = 'flex';
+          }
+        }
+
+      });
+  // ==========================================//
+  //                到這裡                     //
+  // ==========================================//
+  
+      document.addEventListener('DOMContentLoaded', function() {
+        // ─── 關鍵加入 A：一開網頁同時同步「購物車」與「收藏」的粗體金色泡泡 ───
+        const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+        const cartBadge = document.getElementById('cart-badge-count');
+        if (cartBadge) {
+          cartBadge.textContent = savedCartCount;
+          cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex';
+        }
+
+        const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+        const favBadge = document.getElementById('fav-badge-count');
+        if (favBadge) {
+          favBadge.textContent = savedFavCount;
+          favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex';
+        }
+        // ────────────────────────────────────────────────────────────
+
+        // 解析網址看預設要進哪一個曲風 (原本您程式碼中就有的部分...)
+        const urlParams = new URLSearchParams(window.location.search);
+        currentGenre = urlParams.get('genre') || 'pop';
+        
+        // (以下不變，照舊執行 loadAlbumList 與 initProductActionEvents)
+        loadAlbumList(currentGenre);
+        initProductActionEvents();
+      });
 </script>
 
 </body>
