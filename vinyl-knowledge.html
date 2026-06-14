@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Celeste Collection</title>
+  <title>唱片知識</title>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -12,6 +12,53 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   />
+
+  <style>
+
+        .container {
+            color: #ffffff;
+            font-family: 'Noto Sans TC', sans-serif;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-title {
+            color: #d2b48c;
+            border-bottom: 2px solid #d2b48c;
+            padding-bottom: 10px;
+            font-size: 2em;
+        }
+
+        h2 {
+            color: #d2b48c;
+            margin-top: 30px;
+            border-left: 4px solid #b8905b;
+            padding-left: 10px;
+            font-size: 1.5em;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #d2b48c;
+        }
+
+        ul, ol {
+            padding: 20px 20px 20px 40px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        strong {
+            color: #d2b48c;
+        }
+    </style>
 </head>
 <body>
 
@@ -35,7 +82,7 @@
     <nav>
       <a href="index.html">首頁</a>
       <a href="new-arrival.html">新品上架</a>
-      <a href="category.html">唱片分類</a>
+      <a href="category.html">熱賣唱片</a>
       <a href="vinyl-knowledge.html">黑膠知識</a>
       <a href="about-us.html">關於我們</a>
     </nav>
@@ -65,63 +112,128 @@
   </header>
 
 
-  <!-- HERO -->
-  <section class="hero-section">
+    <!-- HERO -->
+    <main class="container">
+        <header class="header">
+            <h1 class="page-title">黑膠唱片 <span>Vinyl LP</span></h1>
+            <p class="intro">
+                <span class="highlight">黑膠唱片是一種利用物理溝槽記錄聲音的「全類比」音樂載體</span>。相較於將聲音數位化為 0 與 1 的串流音樂或 CD，黑膠唱片是將聲波的真實波形直接刻印在膠片上，透過唱針摩擦溝槽產生的振動來還原音樂。這種獨特的發聲方式，讓它流傳至今仍被視為音響世界的極致工藝。
+            </p>
+        </header>
 
-    <div class="hero-text">
-      <p class="sub-title">聽見・收藏・感動</p>
+        <section class="card-section">
+            <h2>核心特色</h2>
+            <ul class="feature-list">
+                <li><strong>全類比音質</strong>：保留了最完整的聲音細節，具溫暖、飽滿且富有層次感的獨特音色。</li>
+                <li><strong>獨特儀式感</strong>：從挑選唱片、抽出內套、放置唱盤到放下唱針，聆聽過程充滿實體互動的溫度。</li>
+                <li><strong>視覺藝術性</strong>：大尺寸的專輯封面與精美的裝幀設計，使其兼具音樂欣賞與實體收藏、裝飾的價值。</li>
+            </ul>
+        </section>
 
-      <h2>
-        讓黑膠，<br />
-        成為你的日常。
-      </h2>
+        <section class="card-section">
+            <h2>常見規格與轉速</h2>
+            <p class="section-desc">不同的唱片尺寸與轉速（每分鐘旋轉圈數，RPM），決定了音樂的容納長度：</p>
+            <ul class="spec-list">
+                <li><strong>12 吋（33 1/3 轉）</strong>：俗稱「大碟」或 LP（Long Play），單面約可錄製 20 多分鐘，是標準專輯最常見的格式。</li>
+                <li><strong>7 吋（45 轉或 78 轉）</strong>：俗稱「細碟」或 EP（Extended Play），通常用於收錄單曲或少量曲目。</li>
+            </ul>
+        </section>
 
-      <p class="hero-desc">
-        每一張唱片，都是時光的記錄<br />
-        挑選喜歡的聲音，收藏你的人生配樂。
-      </p>
+        <section class="card-section">
+            <h2>聆聽與發聲原理</h2>
+            <p>黑膠唱片的聲音完全依賴機械構造的連動。當唱盤穩定轉動時，唱頭上的唱針會走在微小的溝槽中，震動訊號隨後通過訊號線傳送至微弱訊號放大器（唱頭放大器），最後經由擴音機與喇叭播放出來。</p>
+            <div class="warning-box">
+                <strong>注意：</strong>因為發聲極其依賴物理接觸，<span class="danger">「震動」與「灰塵」是黑膠最大的天敵</span>，需要放置在水平穩固的平面上聆聽。
+            </div>
+        </section>
 
-    </div>
+        <section class="card-section">
+            <h2>日常保養須知</h2>
+            <ol class="care-list">
+                <li><strong>靜電與防塵</strong>：塑膠材質極易產生靜電並吸附灰塵，播放前後應使用碳纖維刷清理坑紋，以減少俗稱的「炒豆聲」雜音。</li>
+                <li><strong>垂直存放</strong>：唱片必須垂直並排站立擺放，絕對不可平疊堆放，否則長期受壓會導致唱片變形而無法播放。</li>
+                <li><strong>溫濕度控制</strong>：環境潮濕需注意防潮，以避免唱片發霉，進而影響音質與唱針壽命。</li>
+            </ol>
+        </section>
+    </main>
 
-  </section>
 
+  <!-- FOOTER -->
+  <footer class="main-footer">
 
-  <!-- SERVICE -->
-  <section class="service-section">
-
-    <div class="service-card">
-      <i class="fa-solid fa-truck"></i>
-      <div>
-        <h4>全館滿 NT$1,500 免運</h4>
-        <p>台灣本島限定</p>
+    <div class="footer-service-bar">
+      <div class="service-card">
+        <i class="fa-solid fa-truck"></i>
+        <div>
+          <h4>全館滿 NT$1,500 免運</h4>
+          <p>台灣本島限定</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-shield"></i>
+        <div>
+          <h4>安心包裝出貨</h4>
+          <p>專業黑膠包裝</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-rotate-left"></i>
+        <div>
+          <h4>14 天鑑賞期</h4>
+          <p>非拆膜不拆封可退換</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-headset"></i>
+        <div>
+          <h4>客服支援</h4>
+          <p>週一至週五 10:00 - 18:00</p>
+        </div>
       </div>
     </div>
 
-    <div class="service-card">
-      <i class="fa-solid fa-shield"></i>
-      <div>
-        <h4>安心包裝出貨</h4>
-        <p>專業黑膠包裝</p>
+    <div class="footer-links-container">
+
+      <div class="footer-column brand-column">
+        <div class="logo">
+          <h1>CELESTE</h1>
+          <span>COLLECTION</span>
+        </div>
+        <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
+        <div class="footer-socials">
+          <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+        </div>
       </div>
+
+      <div class="footer-column links-column">
+        <h3>探索站點</h3>
+        <ul>
+          <li><a href="index.html" target="_self">官方首頁 Home</a></li>
+          <li><a href="category.html?genre=pop" target="_self">探索唱片 Explore</a></li>
+          <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
+          <li><a href="member.html" target="_self">會員專區 Profile</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column links-column">
+        <h3>客戶服務</h3>
+        <ul>
+          <li><a href="#" target="_self">購物與付款須知</a></li>
+          <li><a href="#" target="_self">退換貨政策條款</a></li>
+          <li><a href="#" target="_self">隱私權保護政策</a></li>
+          <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+        </ul>
+      </div>
+
     </div>
 
-    <div class="service-card">
-      <i class="fa-solid fa-rotate-left"></i>
-      <div>
-        <h4>14 天鑑賞期</h4>
-        <p>非拆膜不拆封可退換</p>
-      </div>
+    <div class="footer-copyright">
+      <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
     </div>
 
-    <div class="service-card">
-      <i class="fa-solid fa-headset"></i>
-      <div>
-        <h4>客服支援</h4>
-        <p>週一至週五 10:00 - 18:00</p>
-      </div>
-    </div>
-
-  </section>
+  </footer>
 
 </body>
 </html>

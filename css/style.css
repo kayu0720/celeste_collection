@@ -840,6 +840,157 @@ nav a:hover {
 }
 
 /* ==========================================================================
+   ABOUT US 的CSS
+   ========================================================================== */
+   .about-container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 80px 60px;
+}
+
+/* 1. 上半部：介紹文案區 */
+.about-intro-section {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 100px auto; /* 與下方卡片拉開舒適的間距 */
+}
+
+.about-container .sub-title {
+  color: #d7b17d;
+  font-size: 12px;
+  letter-spacing: 4px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.about-intro-section h2 {
+  font-size: 42px;
+  font-weight: 300;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.intro-bar {
+  width: 50px;
+  height: 2px;
+  background: #d7b17d;
+  margin: 20px auto 30px auto;
+}
+
+.intro-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 1px;
+}
+
+/* 2. 下半部：核心團隊標題 */
+.team-cards-section {
+  text-align: center;
+}
+
+.team-cards-section h3 {
+  font-size: 28px;
+  font-weight: 400;
+  color: white;
+  margin-bottom: 50px;
+  letter-spacing: 1px;
+}
+
+/* 3. 核心格柵：強制 3 欄橫向並排網格 */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 完美平分三欄 */
+  gap: 35px;                             /* 卡片之間的橫向間距 */
+}
+
+/* 4. 精緻成員卡片基礎樣式 */
+.member-card {
+  background: rgba(255, 255, 255, 0.01); /* 低調高質感透黑 */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* 讓滑動過程極其滑順 */
+}
+
+/* 頭像外框：強制正圓形，並加上細金邊 */
+.member-avatar {
+  width: 130px;
+  height: 130px;
+  margin: 0 auto 25px auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid #544632;
+  background: #0d0d0d;
+  transition: transform 0.4s ease;
+}
+
+.member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 文字細節樣式 */
+.member-info h4 {
+  font-size: 20px;
+  font-weight: 400;
+  color: white;
+  margin: 0 0 8px 0;
+}
+
+.member-role {
+  color: #d7b17d;
+  font-size: 13px;
+  display: block;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.member-desc {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ==========================================================================
+   HOVER EFFECTS (滑鼠移入卡片時的高級互動回饋)
+   ========================================================================= */
+
+.member-card:hover {
+  transform: translateY(-8px); /* 卡片整體向上優雅飄移 8px */
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(215, 177, 125, 0.4); /* 邊框自動亮起品牌金色 */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* 當卡片被 hover 時，頭像稍微放大微調 */
+.member-card:hover .member-avatar {
+  transform: scale(1.05);
+  border-color: #d7b17d;
+}
+
+/* ==========================================================================
+   RESPONSIVE (手機版響應式安全防禦，自動轉為單欄堆疊)
+   ========================================================================== */
+@media (max-width: 990px) {
+  .team-grid {
+    grid-template-columns: 1fr; /* 平板與手機版自動轉為直向單欄瀑布流 */
+    gap: 25px;
+  }
+  .about-container {
+    padding: 60px 20px;
+  }
+  .about-intro-section {
+    margin-bottom: 60px;
+  }
+}
+
+
+/* ==========================================================================
    MAIN FOOTER DESIGN (升級版黑金大尾頁)
    ========================================================================== */
 

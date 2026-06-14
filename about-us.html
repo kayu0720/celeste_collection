@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Celeste Collection</title>
+  <title>關於我們</title>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -35,7 +35,7 @@
     <nav>
       <a href="index.html">首頁</a>
       <a href="new-arrival.html">新品上架</a>
-      <a href="category.html">唱片分類</a>
+      <a href="category.html">熱賣唱片</a>
       <a href="vinyl-knowledge.html">黑膠知識</a>
       <a href="about-us.html">關於我們</a>
     </nav>
@@ -64,327 +64,145 @@
     </div>
   </header>
 
-
-  <!-- HERO -->
-  <section class="hero-section">
-
-    <div class="hero-text">
-      <p class="sub-title">聽見・收藏・感動</p>
-
-      <h2>
-        讓黑膠，<br />
-        成為你的日常。
-      </h2>
-
-      <p class="hero-desc">
-        每一張唱片，都是時光的記錄<br />
-        挑選喜歡的聲音，收藏你的人生配樂。
+  <main class="about-container">
+  
+    <!-- 上半部：團隊介紹文案區段 -->
+    <section class="about-intro-section">
+      <span class="sub-title">OUR STORY</span>
+      <h2>關於Celeste Collection</h2>
+      <div class="intro-bar"></div>
+      <p class="intro-text">
+        隨著黑膠唱片與實體音樂收藏文化逐漸受到重視，我們希望打造一個提供唱片搜尋、購買、收藏與評論功能的平台，讓音樂愛好者能夠更方便地找到自己喜愛的專輯，同時推廣唱片收藏文化，提升使用者的購物與收藏體驗。
       </p>
+    </section>
 
-      <button>
-        探索所有唱片
-        <i class="fa-solid fa-arrow-right"></i>
-      </button>
-    </div>
-
-
-    <div class="hero-image">
-      <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1600&auto=format&fit=crop" alt="vinyl" />
-    </div>
-
-  </section>
-
-
-  <!-- SERVICE -->
-  <section class="service-section">
-
-    <div class="service-card">
-      <i class="fa-solid fa-truck"></i>
-      <div>
-        <h4>全館滿 NT$1,500 免運</h4>
-        <p>台灣本島限定</p>
-      </div>
-    </div>
-
-    <div class="service-card">
-      <i class="fa-solid fa-shield"></i>
-      <div>
-        <h4>安心包裝出貨</h4>
-        <p>專業黑膠包裝</p>
-      </div>
-    </div>
-
-    <div class="service-card">
-      <i class="fa-solid fa-rotate-left"></i>
-      <div>
-        <h4>14 天鑑賞期</h4>
-        <p>非拆膜不拆封可退換</p>
-      </div>
-    </div>
-
-    <div class="service-card">
-      <i class="fa-solid fa-headset"></i>
-      <div>
-        <h4>客服支援</h4>
-        <p>週一至週五 10:00 - 18:00</p>
-      </div>
-    </div>
-
-  </section>
-
-
-  <!-- NEW ARRIVAL -->
-  <section class="new-arrival">
-
-    <div class="section-title">
-      <h2>新品上架</h2>
-      <a href="#">查看全部</a>
-    </div>
-
-
-    <div class="product-grid">
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1000&auto=format&fit=crop" />
-        </div>
-
-        <div class="product-info">
-          <h3>Dawn FM</h3>
-          <p>The Weeknd</p>
-
-          <div class="product-bottom">
-            <span>NT$1,280</span>
-            <i class="fa-regular fa-heart"></i>
+    <!-- 下半部：成員 3 卡片並排區段 -->
+    <section class="team-cards-section">
+      <span class="sub-title">MEET OUR TEAM</span>
+      <h3>核心團隊成員</h3>
+      
+      <!-- 橫向格柵網格容器 -->
+      <div class="team-grid">
+        
+        <!-- 組員 1 -->
+        <div class="member-card">
+          <div class="member-avatar">
+            <!-- 請更換成您自己的成員頭像照片路徑，或保留這個復古黑膠預設圖 -->
+            <img src="img/member/mk.jpg" alt="Member 1 Avatar">
+          </div>
+          <div class="member-info">
+            <h4>郭曉螢</h4>
+            <span class="member-role">網站程式內容設計與修改</span>
+            <p class="member-desc">負責全球珍稀黑膠唱片的海外渠道採購與品牌精神定調。深陷於 70 年代經典搖滾與現代爵士樂的溫潤魅力中。</p>
           </div>
         </div>
-      </div>
 
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop" />
-        </div>
-
-        <div class="product-info">
-          <h3>Harry's House</h3>
-          <p>Harry Styles</p>
-
-          <div class="product-bottom">
-            <span>NT$1,180</span>
-            <i class="fa-regular fa-heart"></i>
+        <!-- 組員 2 -->
+        <div class="member-card">
+          <div class="member-avatar">
+            <img src="img/vinyl.png" alt="Member 2 Avatar">
+          </div>
+          <div class="member-info">
+            <h4>成員二姓名</h4>
+            <span class="member-role">網站程式內容設計與修改</span>
+            <p class="member-desc">主理全站核心跨頁 LocalStorage 資料庫的架構與權限防禦控制。致力於打造前台、後台數據完美無縫大同步的流暢體驗。</p>
           </div>
         </div>
-      </div>
 
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop" />
-        </div>
-
-        <div class="product-info">
-          <h3>SOS</h3>
-          <p>SZA</p>
-
-          <div class="product-bottom">
-            <span>NT$1,280</span>
-            <i class="fa-regular fa-heart"></i>
+        <!-- 組員 3 -->
+        <div class="member-card">
+          <div class="member-avatar">
+            <img src="img/vinyl.png" alt="Member 3 Avatar">
+          </div>
+          <div class="member-info">
+            <h4>成員三姓名</h4>
+            <span class="member-role">網站架構草稿與商品內容搜集統整</span>
+            <p class="member-desc">雕琢全站極簡復古黑金風格、隱藏下底線搜尋欄與懸停飄浮回饋特效。堅持讓客人在挑選唱片的每一秒都能感受奢華視覺。</p>
           </div>
         </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+
+    <div class="footer-service-bar">
+      <div class="service-card">
+        <i class="fa-solid fa-truck"></i>
+        <div>
+          <h4>全館滿 NT$1,500 免運</h4>
+          <p>台灣本島限定</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-shield"></i>
+        <div>
+          <h4>安心包裝出貨</h4>
+          <p>專業黑膠包裝</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-rotate-left"></i>
+        <div>
+          <h4>14 天鑑賞期</h4>
+          <p>非拆膜不拆封可退換</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-headset"></i>
+        <div>
+          <h4>客服支援</h4>
+          <p>週一至週五 10:00 - 18:00</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-links-container">
+
+      <div class="footer-column brand-column">
+        <div class="logo">
+          <h1>CELESTE</h1>
+          <span>COLLECTION</span>
+        </div>
+        <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
+        <div class="footer-socials">
+          <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+        </div>
       </div>
 
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1499364615650-ec38552f4f34?q=80&w=1000&auto=format&fit=crop" />
-        </div>
-
-        <div class="product-info">
-          <h3>Midnights</h3>
-          <p>Taylor Swift</p>
-
-          <div class="product-bottom">
-            <span>NT$1,180</span>
-            <i class="fa-regular fa-heart"></i>
-          </div>
-        </div>
+      <div class="footer-column links-column">
+        <h3>探索站點</h3>
+        <ul>
+          <li><a href="index.html" target="_self">官方首頁 Home</a></li>
+          <li><a href="category.html?genre=pop" target="_self">探索唱片 Explore</a></li>
+          <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
+          <li><a href="member.html" target="_self">會員專區 Profile</a></li>
+        </ul>
       </div>
 
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1516280030429-27679b3dc9cf?q=80&w=1000&auto=format&fit=crop" />
-        </div>
-
-        <div class="product-info">
-          <h3>1989 (Taylor's Version)</h3>
-          <p>Taylor Swift</p>
-
-          <div class="product-bottom">
-            <span>NT$1,180</span>
-            <i class="fa-regular fa-heart"></i>
-          </div>
-        </div>
+      <div class="footer-column links-column">
+        <h3>客戶服務</h3>
+        <ul>
+          <li><a href="#" target="_self">購物與付款須知</a></li>
+          <li><a href="#" target="_self">退換貨政策條款</a></li>
+          <li><a href="#" target="_self">隱私權保護政策</a></li>
+          <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+        </ul>
       </div>
 
     </div>
 
-  </section>
-
-
-  <!-- PRODUCT DETAIL PAGE -->
-  <section class="detail-page">
-
-    <aside class="sidebar">
-
-      <h3>唱片分類</h3>
-
-      <ul>
-        <li class="active">流行樂 POP</li>
-        <li>搖滾樂 ROCK</li>
-        <li>獨立音樂 INDIE</li>
-        <li>爵士樂 JAZZ</li>
-        <li>嘻哈饒舌 HIP HOP</li>
-        <li>電子音樂 ELECTRONIC</li>
-        <li>古典音樂 CLASSICAL</li>
-        <li>R&B / 靈魂樂</li>
-        <li>原聲帶 OST</li>
-      </ul>
-
-      <div class="sidebar-banner">
-        <h4>黑膠收藏系列</h4>
-        <p>讓收藏，成為生活的一部分</p>
-        <button>立即選購</button>
-      </div>
-
-    </aside>
-
-
-    <div class="detail-content">
-
-      <div class="breadcrumb">
-        首頁 ＞ 流行樂 ＞ The 1975 ＞ Being Funny In A Foreign Language
-      </div>
-
-
-      <div class="product-detail-grid">
-
-        <div class="detail-image-area">
-
-          <div class="main-image">
-            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop" />
-          </div>
-
-          <div class="thumbnail-row">
-            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop" />
-            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1000&auto=format&fit=crop" />
-            <img src="https://images.unsplash.com/photo-1499364615650-ec38552f4f34?q=80&w=1000&auto=format&fit=crop" />
-            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop" />
-          </div>
-
-        </div>
-
-
-        <div class="detail-info">
-
-          <h2>Being Funny In A Foreign Language</h2>
-
-          <p class="artist">The 1975</p>
-
-          <span class="tag">黑膠唱片 LP</span>
-
-          <div class="price">NT$1,280</div>
-
-
-          <div class="button-group">
-            <button class="cart-btn">
-              <i class="fa-solid fa-cart-shopping"></i>
-              加入購物車
-            </button>
-
-            <button class="favorite-btn">
-              <i class="fa-regular fa-heart"></i>
-              加入收藏
-            </button>
-          </div>
-
-
-          <div class="product-meta">
-            <div>
-              <span>發行日期</span>
-              <p>2022 / 10 / 14</p>
-            </div>
-
-            <div>
-              <span>唱片廠牌</span>
-              <p>Dirty Hit</p>
-            </div>
-
-            <div>
-              <span>產品編號</span>
-              <p>DHO0753</p>
-            </div>
-
-            <div>
-              <span>格式</span>
-              <p>LP, Album, 黑膠唱片</p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- TRACK LIST -->
-      <div class="track-section">
-
-        <div class="track-header">
-          <h3>收錄歌曲</h3>
-          <button>連接 Spotify</button>
-        </div>
-
-
-        <div class="track-list">
-
-          <div class="track-item">
-            <span>1</span>
-            <p>The 1975</p>
-            <small>4:10</small>
-          </div>
-
-          <div class="track-item">
-            <span>2</span>
-            <p>Happiness</p>
-            <small>5:03</small>
-          </div>
-
-          <div class="track-item">
-            <span>3</span>
-            <p>Looking For Somebody (To Love)</p>
-            <small>3:32</small>
-          </div>
-
-          <div class="track-item">
-            <span>4</span>
-            <p>Part Of The Band</p>
-            <small>3:03</small>
-          </div>
-
-          <div class="track-item">
-            <span>5</span>
-            <p>Oh Caroline</p>
-            <small>3:34</small>
-          </div>
-
-        </div>
-
-      </div>
-
+    <div class="footer-copyright">
+      <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
     </div>
 
-  </section>
+  </footer>
 
 </body>
 </html>

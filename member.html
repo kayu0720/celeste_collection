@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Celeste Collection</title>
+  <title>會員中心</title>
 
   <link rel="stylesheet" href="css/member.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -32,8 +32,7 @@
     <nav>
       <a href="index.html">首頁</a>
       <a href="new-arrival.html">新品上架</a>
-      <a href="category.html">唱片分類</a>
-      <a href="classic.html">經典推薦</a>
+      <a href="category.html">熱賣唱片</a>
       <a href="vinyl-knowledge.html">黑膠知識</a>
       <a href="about-us.html">關於我們</a>
     </nav>
@@ -109,278 +108,512 @@
 
 <script>
 
-/* 頂部購物車泡泡*/
-const badgeCount = document.getElementById('cart-badge-count');
-    if (badgeCount) {
-      let totalItemsCount = 0;
-  
-      document.querySelectorAll('.qty-input').forEach(input => {
-        totalItemsCount += parseInt(input.value) || 0;
-      });
+  // ==========================================//
+  //                 購物車泡泡                 //
+  // ==========================================//
+    const badgeCount = document.getElementById('cart-badge-count');
+        if (badgeCount) {
+          let totalItemsCount = 0;
       
-      badgeCount.textContent = totalItemsCount;
-     
-      if (totalItemsCount === 0) {
-        badgeCount.style.display = 'none';
-      } else {
-        badgeCount.style.display = 'flex';
-      }
-     
-      localStorage.setItem('globalCartCount', totalItemsCount);
-    }
-document.addEventListener('DOMContentLoaded', function() {
-  // 1. 初始化檢查：登入狀態 (預設未登入 'false')
-  if (localStorage.getItem('isLoggedIn') === null) {
-    localStorage.setItem('isLoggedIn', 'false');
-  }
-
-  // 【本地註冊會員資料庫】
-  // 如果本地還沒有註冊資料清單，初始化一個空陣列
-  if (localStorage.getItem('registeredUsers') === null) {
-    localStorage.setItem('registeredUsers', JSON.stringify([]));
-  }
-  
-  // 目前正處於哪個子功能？ 'login' 代表登入中，'register' 代表註冊中
-  let currentFormMode = 'login'; 
-
-  // 2. 執行狀態渲染
-  renderMemberPage();
-
-  // 核心：依據登入狀態，動態渲染會員中心網頁
-  function renderMemberPage() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const loginTab = document.getElementById('tab-login');
-    const favContent = document.getElementById('favorites-secure-content');
-    const revContent = document.getElementById('reviews-secure-content');
-    const favTabBtn = document.getElementById('btn-tab-favorites');
-    const revTabBtn = document.getElementById('btn-tab-reviews');
-
-    if (isLoggedIn) {
-      // ==========================================================================
-      // 【狀態 A：已成功登入會員】 -> 全部解鎖
-      // ==========================================================================
-      if (favTabBtn) favTabBtn.innerHTML = "我的收藏";
-      if (revTabBtn) revTabBtn.innerHTML = "我的評價";
-      
-      // 取得當前成功登入者的帳號名稱
-      const currentUserEmail = localStorage.getItem('currentUserEmail') || 'member@celeste.com';
-
-      loginTab.innerHTML = `
-        <h3>Welcome Back, Premium Member</h3>
-        <p class="form-desc" style="color: #d7b17d;">✨ 您已成功連接您的黑膠音樂帳戶</p>
+          document.querySelectorAll('.qty-input').forEach(input => {
+            totalItemsCount += parseInt(input.value) || 0;
+          });
+          
+          badgeCount.textContent = totalItemsCount;
         
-        <div class="member-profile-info" style="margin: 20px 0; color: rgba(255,255,255,0.7); line-height: 2;">
-          <p><strong>會員帳號：</strong> ${currentUserEmail}</p>
-          <p><strong>會員級別：</strong> Gold Vinyl VIP</p>
-          <p><strong>累積消費次數：</strong> ${localStorage.getItem('purchaseCount') || '0'} 次</p>
-        </div>
-        
-        <button id="logout-btn" class="submit-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 20px;">安全登出帳號</button>
-      `;
-
-      favContent.innerHTML = `
-        <h3>我的收藏</h3>
-        <div class="empty-state">
-          <i class="fa-regular fa-heart"></i>
-          <p>您目前尚未添加任何收藏黑膠</p>
-          <a href="all_products.html" class="action-link">去逛逛最新唱片 <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-      `;
-
-      revContent.innerHTML = `
-        <h3>我的評價紀錄</h3>
-        <div class="empty-state">
-          <i class="fa-regular fa-comment"></i>
-          <p>目前尚無任何評價紀錄</p>
-        </div>
-      `;
-
-      // 登出按鈕事件
-      document.getElementById('logout-btn').addEventListener('click', function() {
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('currentUserEmail');
-        alert('您已安全登出。');
-        window.location.reload(); 
-      });
-
-    } else {
-      // ==========================================================================
-      // 【狀態 B：尚未登入 / 訪客狀態】 -> 上鎖攔截與純註冊表單驗證
-      // ==========================================================================
-      
-      favContent.innerHTML = `
-        <div class="empty-state" style="padding: 20px 0;">
-          <i class="fa-solid fa-shield-halved" style="color: #ea580c; font-size: 40px; margin-bottom: 20px;"></i>
-          <h3 style="font-size: 20px; font-weight: 300; color: white; margin-bottom: 10px;">該頁面僅限正式會員查看</h3>
-          <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px;">登入會員後，即可解鎖並追蹤您喜愛的經典黑膠唱片。</p>
-          <button class="submit-btn" style="max-width: 180px; height: 45px; font-size: 14px;" onclick="redirectToLoginTab()">立即前往登入</button>
-        </div>
-      `;
-
-      revContent.innerHTML = `
-        <div class="empty-state" style="padding: 20px 0;">
-          <i class="fa-solid fa-shield-halved" style="color: #ea580c; font-size: 40px; margin-bottom: 20px;"></i>
-          <h3 style="font-size: 20px; font-weight: 300; color: white; margin-bottom: 10px;">該頁面僅限正式會員查看</h3>
-          <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px;">登入會員後，即可開始建立與檢視您的歷史音樂評價。</p>
-          <button class="submit-btn" style="max-width: 180px; height: 45px; font-size: 14px;" onclick="redirectToLoginTab()">立即前往登入</button>
-        </div>
-      `;
-
-      // 依據模式切換渲染「登入表單」或「註冊表單」
-      if (currentFormMode === 'login') {
-        // ─── 渲染登入畫面 ───
-        loginTab.innerHTML = `
-          <h3>Welcome Back</h3>
-          <p class="form-desc">請輸入您的電子郵件與密碼登入會員</p>
-          
-          <!-- 錯誤訊息提示區 -->
-          <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold;">✕ 帳號或密碼錯誤，請重新輸入！</div>
-
-          <form class="member-form" id="auth-submit-form">
-            <div class="form-group">
-              <label>電子郵件 *</label>
-              <input type="email" id="auth-email" placeholder="請輸入註冊的信箱" required>
-            </div>
-            <div class="form-group">
-              <label>密碼 *</label>
-              <input type="password" id="auth-password" placeholder="請輸入密碼" required>
-            </div>
-            <button type="submit" class="submit-btn">登入</button>
-          </form>
-          
-          <div class="form-footer">
-            <span>還沒有帳號嗎？</span> <a href="#" id="link-to-register">註冊新帳號</a>
-          </div>
-        `;
-      } else {
-        // ─── 渲染註冊畫面 ───
-        loginTab.innerHTML = `
-          <h3>Create Account</h3>
-          <p class="form-desc">歡迎加入 Celeste COLLECTION，請填寫下方資料完成註冊</p>
-          
-          <!-- 錯誤訊息提示區 -->
-          <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold;"></div>
-
-          <form class="member-form" id="auth-submit-form">
-            <div class="form-group">
-              <label>設定電子郵件 *</label>
-              <input type="email" id="auth-email" placeholder="請輸入您的 Email 帳號" required>
-            </div>
-            <div class="form-group">
-              <label>設定密碼 *</label>
-              <input type="password" id="auth-password" placeholder="請設定您的登入密碼" required>
-            </div>
-            <button type="submit" class="submit-btn" style="background: white; border: 1px solid #d7b17d; color: #d7b17d;">確認註冊</button>
-          </form>
-          
-          <div class="form-footer">
-            <span>已經有帳號了？</span> <a href="#" id="link-to-login">返回登入畫面</a>
-          </div>
-        `;
-      }
-
-      // 綁定表單切換點擊事件
-      const toRegisterLink = document.getElementById('link-to-register');
-      const toLoginLink = document.getElementById('link-to-login');
-
-      if (toRegisterLink) {
-        toRegisterLink.addEventListener('click', function(e) {
-          e.preventDefault();
-          currentFormMode = 'register';
-          renderMemberPage(); // 切換成註冊介面
-        });
-      }
-      if (toLoginLink) {
-        toLoginLink.addEventListener('click', function(e) {
-          e.preventDefault();
-          currentFormMode = 'login';
-          renderMemberPage(); // 切換成登入介面
-        });
-      }
-
-      // 綁定送出表單（核心驗證與寫入邏輯）
-      document.getElementById('auth-submit-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const emailInput = document.getElementById('auth-email').value.trim();
-        const passwordInput = document.getElementById('auth-password').value.trim();
-        const errorEl = document.getElementById('auth-error-msg');
-
-        // 撈出本地註冊過的會員清單
-        let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-
-        if (currentFormMode === 'login') {
-          // ==========================================================================
-          // 【純註冊制：登入比對機制】 -> 已移除所有官方內建測試帳密
-          // ==========================================================================
-          const isUserValid = users.some(u => u.email === emailInput && u.password === passwordInput);
-
-          if (isUserValid) {
-            // 完全匹配成功，放行
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('currentUserEmail', emailInput);
-            alert('會員驗證成功！歡迎登入 Celeste COLLECTION。');
-            window.location.reload();
+          if (totalItemsCount === 0) {
+            badgeCount.style.display = 'none';
           } else {
-            // 查無此人或密碼不對，攔截
-            errorEl.textContent = "✕ 帳號不存在或密碼輸入錯誤，請重新檢查！";
-            errorEl.style.display = 'block';
+            badgeCount.style.display = 'flex';
           }
+        
+          localStorage.setItem('globalCartCount', totalItemsCount);
+        }
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. 初始化檢查：登入狀態 (預設未登入 'false')
+      if (localStorage.getItem('isLoggedIn') === null) {
+        localStorage.setItem('isLoggedIn', 'false');
+      }
+
+
+      // ==========================================//
+      //                 註冊會員                  //
+      // ==========================================//
+
+      if (localStorage.getItem('registeredUsers') === null) {
+        localStorage.setItem('registeredUsers', JSON.stringify([]));
+      }
+      
+      // 'login' 代表登入中，'register' 代表註冊中
+      let currentFormMode = 'login'; 
+
+      // 執行狀態渲染
+      renderMemberPage();
+
+      // 核心：依據登入狀態，動態渲染會員中心網頁
+      function renderMemberPage() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const loginTab = document.getElementById('tab-login');
+        const favContent = document.getElementById('favorites-secure-content');
+        const revContent = document.getElementById('reviews-secure-content');
+        const favTabBtn = document.getElementById('btn-tab-favorites');
+        const revTabBtn = document.getElementById('btn-tab-reviews');
+
+        if (isLoggedIn) {
+          // ==========================================================================
+          // 【狀態 A：已成功登入會員】 -> 全部解鎖
+          // ==========================================================================
+          if (favTabBtn) favTabBtn.innerHTML = "我的收藏";
+          if (revTabBtn) revTabBtn.innerHTML = "我的評價";
+          
+          // 取得當前成功登入者的帳號名稱
+          const currentUserEmail = localStorage.getItem('currentUserEmail') || 'member@celeste.com';
+
+          loginTab.innerHTML = `
+            <h3>Welcome Back, Premium Member</h3>
+            <p class="form-desc" style="color: #d7b17d;">✨ 您已成功連接您的黑膠音樂帳戶</p>
+            
+            <div class="member-profile-info" style="margin: 20px 0; color: rgba(255,255,255,0.7); line-height: 2;">
+              <p><strong>會員帳號：</strong> ${currentUserEmail}</p>
+              <p><strong>會員級別：</strong> Gold Vinyl VIP</p>
+              <p><strong>累積消費次數：</strong> ${localStorage.getItem('purchaseCount') || '0'} 次</p>
+            </div>
+            
+            <button id="logout-btn" class="submit-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 20px;">安全登出帳號</button>
+          `;
+
+          favContent.innerHTML = `
+            <h3>我的收藏</h3>
+            <div class="empty-state">
+              <i class="fa-regular fa-heart"></i>
+              <p>您目前尚未添加任何收藏黑膠</p>
+              <a href="category.html" class="action-link">去逛逛最新唱片 <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          `;
+
+          revContent.innerHTML = `
+            <h3>我的評價紀錄</h3>
+            <div class="empty-state">
+              <i class="fa-regular fa-comment"></i>
+              <p>目前尚無任何評價紀錄</p>
+            </div>
+          `;
+
+          // 登出按鈕事件
+          document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('currentUserEmail');
+            alert('您已安全登出。');
+            window.location.reload(); 
+          });
 
         } else {
           // ==========================================================================
-          // 【純註冊制：註冊寫入機制】
+          // 【狀態 B：尚未登入 / 訪客狀態】 -> 上鎖攔截與純註冊表單驗證
           // ==========================================================================
-          const isExist = users.some(u => u.email === emailInput);
+          
+          favContent.innerHTML = `
+            <div class="empty-state" style="padding: 20px 0;">
+              <i class="fa-solid fa-shield-halved" style="color: #ea580c; font-size: 40px; margin-bottom: 20px;"></i>
+              <h3 style="font-size: 20px; font-weight: 300; color: white; margin-bottom: 10px;">該頁面僅限正式會員查看</h3>
+              <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px;">登入會員後，即可解鎖並追蹤您喜愛的經典黑膠唱片。</p>
+              <button class="submit-btn" style="max-width: 180px; height: 45px; font-size: 14px;" onclick="redirectToLoginTab()">立即前往登入</button>
+            </div>
+          `;
 
-          if (isExist) {
-            errorEl.textContent = "✕ 此電子郵件已被註冊，請更換其他信箱！";
-            errorEl.style.display = 'block';
+          revContent.innerHTML = `
+            <div class="empty-state" style="padding: 20px 0;">
+              <i class="fa-solid fa-shield-halved" style="color: #ea580c; font-size: 40px; margin-bottom: 20px;"></i>
+              <h3 style="font-size: 20px; font-weight: 300; color: white; margin-bottom: 10px;">該頁面僅限正式會員查看</h3>
+              <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px;">登入會員後，即可開始建立與檢視您的歷史音樂評價。</p>
+              <button class="submit-btn" style="max-width: 180px; height: 45px; font-size: 14px;" onclick="redirectToLoginTab()">立即前往登入</button>
+            </div>
+          `;
+
+          // 依據模式切換渲染「登入表單」或「註冊表單」
+          if (currentFormMode === 'login') {
+            // ─── 渲染登入畫面 ───
+            loginTab.innerHTML = `
+              <h3>Welcome Back</h3>
+              <p class="form-desc">請輸入您的電子郵件與密碼登入會員</p>
+              
+              <!-- 錯誤訊息提示區 -->
+              <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold;">✕ 帳號或密碼錯誤，請重新輸入！</div>
+
+              <form class="member-form" id="auth-submit-form">
+                <div class="form-group">
+                  <label>電子郵件 *</label>
+                  <input type="email" id="auth-email" placeholder="請輸入註冊的信箱" required>
+                </div>
+                <div class="form-group">
+                  <label>密碼 *</label>
+                  <input type="password" id="auth-password" placeholder="請輸入密碼" required>
+                </div>
+                <button type="submit" class="submit-btn">登入</button>
+              </form>
+              
+              <div class="form-footer">
+                <span>還沒有帳號嗎？</span> <a href="#" id="link-to-register">註冊新帳號</a>
+              </div>
+            `;
           } else {
-            // 將全新帳密物件推進資料庫陣列
-            users.push({ email: emailInput, password: passwordInput });
-            localStorage.setItem('registeredUsers', JSON.stringify(users));
-            
-            alert('🎉 帳號註冊成功！資料已安全寫入本地資料庫，正在前往登入頁面...');
-            currentFormMode = 'login'; // 自動切回登入狀態
-            renderMemberPage();
+            // ─── 渲染註冊畫面 ───
+            loginTab.innerHTML = `
+              <h3>Create Account</h3>
+              <p class="form-desc">歡迎加入 Celeste COLLECTION，請填寫下方資料完成註冊</p>
+              
+              <!-- 錯誤訊息提示區 -->
+              <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold;"></div>
+
+              <form class="member-form" id="auth-submit-form">
+                <div class="form-group">
+                  <label>設定電子郵件 *</label>
+                  <input type="email" id="auth-email" placeholder="請輸入您的 Email 帳號" required>
+                </div>
+                <div class="form-group">
+                  <label>設定密碼 *</label>
+                  <input type="password" id="auth-password" placeholder="請設定您的登入密碼" required>
+                </div>
+                <button type="submit" class="submit-btn" style="background: white; border: 1px solid #d7b17d; color: #d7b17d;">確認註冊</button>
+              </form>
+              
+              <div class="form-footer">
+                <span>已經有帳號了？</span> <a href="#" id="link-to-login">返回登入畫面</a>
+              </div>
+            `;
           }
+
+          // 綁定表單切換點擊事件
+          const toRegisterLink = document.getElementById('link-to-register');
+          const toLoginLink = document.getElementById('link-to-login');
+
+          if (toRegisterLink) {
+            toRegisterLink.addEventListener('click', function(e) {
+              e.preventDefault();
+              currentFormMode = 'register';
+              renderMemberPage(); // 切換成註冊介面
+            });
+          }
+          if (toLoginLink) {
+            toLoginLink.addEventListener('click', function(e) {
+              e.preventDefault();
+              currentFormMode = 'login';
+              renderMemberPage(); // 切換成登入介面
+            });
+          }
+
+          // 綁定送出表單（核心驗證與寫入邏輯）
+          document.getElementById('auth-submit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('auth-email').value.trim();
+            const passwordInput = document.getElementById('auth-password').value.trim();
+            const errorEl = document.getElementById('auth-error-msg');
+
+            // 撈出本地註冊過的會員清單
+            let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+            if (currentFormMode === 'login') {
+              // ==========================================================================
+              // 【純註冊制：登入比對機制】 -> 已移除所有官方內建測試帳密
+              // ==========================================================================
+              const isUserValid = users.some(u => u.email === emailInput && u.password === passwordInput);
+
+              if (isUserValid) {
+                // 完全匹配成功，放行
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('currentUserEmail', emailInput);
+                alert('會員驗證成功！歡迎登入 Celeste COLLECTION。');
+                window.location.reload();
+              } else {
+                // 查無此人或密碼不對，攔截
+                errorEl.textContent = "✕ 帳號不存在或密碼輸入錯誤，請重新檢查！";
+                errorEl.style.display = 'block';
+              }
+
+            } else {
+              // ==========================================================================
+              // 【純註冊制：註冊寫入機制】
+              // ==========================================================================
+              const isExist = users.some(u => u.email === emailInput);
+
+              if (isExist) {
+                errorEl.textContent = "✕ 此電子郵件已被註冊，請更換其他信箱！";
+                errorEl.style.display = 'block';
+              } else {
+                // 將全新帳密物件推進資料庫陣列
+                users.push({ email: emailInput, password: passwordInput });
+                localStorage.setItem('registeredUsers', JSON.stringify(users));
+                
+                alert('🎉 帳號註冊成功！資料已安全寫入本地資料庫，正在前往登入頁面...');
+                currentFormMode = 'login'; // 自動切回登入狀態
+                renderMemberPage();
+              }
+            }
+          });
         }
-      });
+      }
+    });
+
+  // ==========================================//
+  //                管理員後台                  //
+  // ==========================================//
+    const initialDatabase = {
+      "vinyl-001": {
+        genre: "pop",
+        subgenre: "pop-jp",
+        title: "The Book For (Overwatch Edition)",
+        artist: "YOASOBI",
+        price: 1680,
+        img: "img/japanese/yoasobi/the_book_for1.jpg",
+        tag: "流行樂 POP ＞ 日語",
+        barcode: "0820200662170",       
+        releaseDate: "2026 - 06 - 26",
+        stock: 3 
+      },
+      "vinyl-002": {
+        genre: "rock",
+        subgenre: "none",
+        title: "Abbey Road",
+        artist: "The Beatles",
+        price: 1350,
+        img: "https://unsplash.com",
+        tag: "搖滾樂 ROCK",
+        barcode: "0602577922456",
+        releaseDate: "1969-09-26",
+        stock: 12
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. 初始化資料庫快取
+      if (localStorage.getItem('localProductDB') === null) {
+        localStorage.setItem('localProductDB', JSON.stringify(initialDatabase));
+      }
+
+      if (localStorage.getItem('isLoggedIn') === null) {
+        localStorage.setItem('isLoggedIn', 'false');
+      }
+      if (localStorage.getItem('registeredUsers') === null) {
+        localStorage.setItem('registeredUsers', JSON.stringify([]));
+      }
+      
+      let currentFormMode = 'login'; 
+      renderMemberPage();
+
+      function renderMemberPage() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const loginTab = document.getElementById('tab-login');
+        const favContent = document.getElementById('favorites-secure-content');
+        const revContent = document.getElementById('reviews-secure-content');
+
+        if (isLoggedIn) {
+          const currentUserEmail = localStorage.getItem('currentUserEmail') || 'member@celeste.com';
+          
+          // ==========================================================================
+          // 【管理員憑證更新】判定當前登入者是否為您指定的 admin@gmail.com
+          // ==========================================================================
+          if (currentUserEmail === 'admin@gmail.com') {
+            
+            // ─── 管理員登入 ➔ 渲染庫存管理後台 ───
+            let adminHtml = `
+              <h3>Admin Control Center</h3>
+              <p class="form-desc" style="color: #d7b17d;">⚙️ 官方最高權限管理員後台 (即時庫存調校系統)</p>
+              
+              <div class="admin-info-box" style="margin-bottom: 20px; font-size:14px; color:rgba(255,255,255,0.6);">
+                <p><strong>目前身分：</strong> System Root Admin</p>
+              </div>
+              
+              <div class="stock-manager-list" style="display:flex; flex-direction:column; gap:15px; background:rgba(255,255,255,0.02); padding:20px; border:1px solid rgba(255,255,255,0.08); border-radius:6px;">
+            `;
+
+            let currentDB = JSON.parse(localStorage.getItem('localProductDB'));
+
+            for (let id in currentDB) {
+              adminHtml += `
+                <div class="admin-stock-row" data-id="${id}" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                  <div style="max-width:60%;">
+                    <h4 style="font-size:15px; font-weight:400; color:white; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${currentDB[id].title}</h4>
+                    <p style="font-size:12px; color:rgba(255,255,255,0.4);">${currentDB[id].artist}</p>
+                  </div>
+                  <div class="admin-qty-ctrl" style="display:flex; align-items:center; gap:10px;">
+                    <button class="admin-stock-btn btn-down" style="width:30px; height:30px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; cursor:pointer;"><i class="fa-solid fa-minus"></i></button>
+                    <span class="admin-stock-display" style="font-size:16px; font-weight:bold; color:#d7b17d; min-width:25px; text-align:center;">${currentDB[id].stock}</span>
+                    <button class="admin-stock-btn btn-up" style="width:30px; height:30px; background:#d7b17d; border:none; color:black; cursor:pointer;"><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              `;
+            }
+
+            adminHtml += `
+              </div>
+              <button id="logout-btn" class="submit-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 25px;">安全登出管理員</button>
+            `;
+
+            loginTab.innerHTML = adminHtml;
+            bindAdminStockControls();
+
+          } else {
+            // ─── 情況 B：普通註冊會員登入 ───
+            loginTab.innerHTML = `
+              <h3>Welcome Back, Premium Member</h3>
+              <p class="form-desc" style="color: #d7b17d;">✨ 您已成功連接您的黑膠音樂帳戶</p>
+              <div class="member-profile-info" style="margin: 20px 0; color: rgba(255,255,255,0.7); line-height: 2;">
+                <p><strong>會員帳號：</strong> ${currentUserEmail}</p>
+                <p><strong>會員級別：</strong> Gold Vinyl VIP</p>
+                <p><strong>累積消費次數：</strong> ${localStorage.getItem('purchaseCount') || '0'} 次</p>
+              </div>
+              <button id="logout-btn" class="submit-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 20px;">安全登出帳號</button>
+            `;
+          }
+
+          document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('currentUserEmail');
+            alert('您已安全登出。');
+            window.location.reload(); 
+          });
+
+        } else {
+          // ─── 情況 C：訪客狀態 (未登入) ───
+          if (currentFormMode === 'login') {
+            loginTab.innerHTML = `
+              <h3>Welcome Back</h3>
+              <p class="form-desc">請輸入您的電子郵件與密碼登入會員</p>
+              <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold;">✕ 帳號或密碼錯誤！</div>
+              <form class="member-form" id="auth-submit-form">
+                <div class="form-group">
+                  <label>電子郵件 *</label>
+                  <input type="email" id="auth-email" placeholder="請輸入 Email" required>
+                </div>
+                <div class="form-group">
+                  <label>密碼 *</label>
+                  <input type="password" id="auth-password" placeholder="請輸入密碼" required>
+                </div>
+                <button type="submit" class="submit-btn">登入</button>
+              </form>
+              <div class="form-footer"><span>還沒有帳號嗎？</span> <a href="#" id="link-to-register">註冊新帳號</a></div>
+            `;
+          } else {
+            loginTab.innerHTML = `
+              <h3>Create Account</h3>
+              <p class="form-desc">歡迎加入 Celeste COLLECTION，請填寫下方資料完成註冊</p>
+              <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold;"></div>
+              <form class="member-form" id="auth-submit-form">
+                <div class="form-group">
+                  <label>設定電子郵件 *</label>
+                  <input type="email" id="auth-email" placeholder="請輸入您的 Email 帳號" required>
+                </div>
+                <div class="form-group">
+                  <label>設定密碼 *</label>
+                  <input type="password" id="auth-password" placeholder="請設定您的登入密碼" required>
+                </div>
+                <button type="submit" class="submit-btn" style="background: white; border: 1px solid #d7b17d; color: #d7b17d;">確認註冊</button>
+              </form>
+              <div class="form-footer"><span>已經有帳號了？</span> <a href="#" id="link-to-login">返回登入畫面</a></div>
+            `;
+          }
+
+          const toRegisterLink = document.getElementById('link-to-register');
+          const toLoginLink = document.getElementById('link-to-login');
+
+          if (toRegisterLink) {
+            toRegisterLink.addEventListener('click', function(e) {
+              e.preventDefault();
+              currentFormMode = 'register';
+              renderMemberPage();
+            });
+          }
+          if (toLoginLink) {
+            toLoginLink.addEventListener('click', function(e) {
+              e.preventDefault();
+              currentFormMode = 'login';
+              renderMemberPage();
+            });
+          }
+          
+          // 核心比對驗證邏輯
+          document.getElementById('auth-submit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('auth-email').value.trim();
+            const passwordInput = document.getElementById('auth-password').value.trim();
+            const errorEl = document.getElementById('auth-error-msg');
+            let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+            // ─── 完美對齊您指定的新管理員帳密 ───
+            const isAdminValid = (emailInput === 'admin@gmail.com' && passwordInput === 'admin123');
+            const isUserValid = users.some(u => u.email === emailInput && u.password === passwordInput);
+
+            if (isAdminValid || isUserValid) {
+              localStorage.setItem('isLoggedIn', 'true');
+              localStorage.setItem('currentUserEmail', emailInput);
+              alert(isAdminValid ? '⚙️ 管理員最高權限驗證成功！已進入主控台。' : '會員登入成功！歡迎回來。');
+              window.location.reload();
+            } else {
+              errorEl.textContent = "✕ 帳號不存在或密碼錯誤，請重新檢查！";
+              errorEl.style.display = 'block';
+            }
+          });
+        }
+      }
+
+      function bindAdminStockControls() {
+        let currentDB = JSON.parse(localStorage.getItem('localProductDB'));
+        const rows = document.querySelectorAll('.admin-stock-row');
+
+        rows.forEach(row => {
+          const id = row.getAttribute('data-id');
+          const minusBtn = row.querySelector('.btn-down');
+          const plusBtn = row.querySelector('.btn-up');
+          const displaySpan = row.querySelector('.admin-stock-display');
+
+          minusBtn.addEventListener('click', function() {
+            if (currentDB[id].stock > 0) {
+              currentDB[id].stock -= 1;
+              displaySpan.textContent = currentDB[id].stock;
+              localStorage.setItem('localProductDB', JSON.stringify(currentDB));
+            }
+          });
+
+          plusBtn.addEventListener('click', function() {
+            currentDB[id].stock += 1;
+            displaySpan.textContent = currentDB[id].stock;
+            localStorage.setItem('localProductDB', JSON.stringify(currentDB));
+          });
+        });
+      }
+    });
+
+    // 網頁分頁切換基礎語法
+    function switchTab(evt, tabId) {
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.remove('active'));
+
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
     }
-  }
-});
 
-// 網頁分頁切換基礎語法
-function switchTab(evt, tabId) {
-  const contents = document.querySelectorAll('.tab-content');
-  contents.forEach(content => content.classList.remove('active'));
-
-  const buttons = document.querySelectorAll('.tab-btn');
-  buttons.forEach(btn => btn.classList.remove('active'));
-
-  document.getElementById(tabId).classList.add('active');
-  evt.currentTarget.classList.add('active');
-}
-
-function redirectToLoginTab() {
-  const loginBtn = document.getElementById('btn-tab-login');
-  if (loginBtn) loginBtn.click();
-}
-  
-loginTab.innerHTML = `
-        <h3>Welcome Back, Premium Member</h3>
-        <p class="form-desc" style="color: #d7b17d;">✨ 您已成功連接您的黑膠音樂帳戶</p>
-        
-        <div class="member-profile-info" style="margin: 20px 0; color: rgba(255,255,255,0.7); line-height: 2;">
-          <p><strong>會員帳號：</strong> ${currentUserEmail}</p>
-          <p><strong>會員級別：</strong> Gold Vinyl VIP</p>
-          <!-- 關鍵同步：即時從 localStorage 讀取最新消費次數，若為 null 則顯示 0 -->
-          <p><strong>累積消費次數：</strong> ${localStorage.getItem('purchaseCount') || '0'} 次</p>
-        </div>
-        
-        <button id="logout-btn" class="submit-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 20px;">安全登出帳號</button>
-      `;
+    function redirectToLoginTab() {
+      const loginBtn = document.getElementById('btn-tab-login');
+      if (loginBtn) loginBtn.click();
+    }
+      
+    loginTab.innerHTML = `
+            <h3>Welcome Back, Premium Member</h3>
+            <p class="form-desc" style="color: #d7b17d;">✨ 您已成功連接您的黑膠音樂帳戶</p>
+            
+            <div class="member-profile-info" style="margin: 20px 0; color: rgba(255,255,255,0.7); line-height: 2;">
+              <p><strong>會員帳號：</strong> ${currentUserEmail}</p>
+              <p><strong>會員級別：</strong> Gold Vinyl VIP</p>
+              <!-- 關鍵同步：即時從 localStorage 讀取最新消費次數，若為 null 則顯示 0 -->
+              <p><strong>累積消費次數：</strong> ${localStorage.getItem('purchaseCount') || '0'} 次</p>
+            </div>
+            
+            <button id="logout-btn" class="submit-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 20px;">安全登出帳號</button>
+          `;
 
 
 </script>
