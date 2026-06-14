@@ -49,12 +49,6 @@
       </a>
 
       <div class="icon-badge">
-        <a href="https://你的購物車網址.com">
-        <i class="fa-regular fa-heart"></i>
-        </a>
-      </div>
-
-      <div class="icon-badge">
         <a href="cart.html">
             <i class="fa-solid fa-bag-shopping"></i> 
         </a>
@@ -67,219 +61,223 @@
   <!-- NEW ARRIVAL -->
   <section class="new-arrival">
 
-    <div class="section-title">
-      <h2>新品上架</h2>
-      <a href="category.html">查看全部</a>
-    </div>
-
-
-    <div class="product-grid">
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="img/yoasobi/the_book_for.jpg" />
-        </div>
-
-        <div class="product-info">
-          <h3>The Book For (Overwatch Edition)</h3>
-          <p>YOASOBI</p>
-
-          <div class="product-bottom">
-            <span>NT$1,680</span>
-            <i class="fa-regular fa-heart"></i>
-          </div>
-        </div>
+    <div class="carousel-page-wrapper" style="width: 100%; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; overflow: hidden; position: relative;">
+  
+      <!-- 頂部麵包屑 -->
+      <div class="breadcrumb" style="position: absolute; top: 40px; left: 60px; color: rgba(255,255,255,0.4); font-size: 14px; letter-spacing: 1px;">
+        首頁 ＞ NEW ARRIVAL 新品引進
       </div>
 
+      <!-- 核心 3D 輪播大容器 -->
+      <div class="warrior-carousel-container">
+        
+        <!-- 【修正：左側經典箭頭】 -->
+        <button class="classic-carousel-arrow arrow-left" onclick="moveCarousel(-1)">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
 
-      <div class="product-card">
-        <div class="product-image">
-          <img src="img/Taylor_swift/Elizabeth_Taylor_RSD_2026.jpg" />
+        <!-- 中間唱片滾動滑軌舞台 -->
+        <div class="carousel-stage" id="new-arrival-carousel-stage">
+          <!-- 10張黑膠小卡將由 JS 自動依日期排序並以 3D 階梯形式動態灌入 -->
         </div>
 
-        <div class="product-info">
-          <h3>Elizabeth Taylor RSD 2026</h3>
-          <p>Taylor Swift</p>
-
-          <div class="product-bottom">
-            <span>NT$980</span>
-            <i class="fa-regular fa-heart"></i>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop" />
-        </div>
-
-        <div class="product-info">
-          <h3>SOS</h3>
-          <p>SZA</p>
-
-          <div class="product-bottom">
-            <span>NT$1,280</span>
-            <i class="fa-regular fa-heart"></i>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1499364615650-ec38552f4f34?q=80&w=1000&auto=format&fit=crop" />
-        </div>
-
-        <div class="product-info">
-          <h3>Midnights</h3>
-          <p>Taylor Swift</p>
-
-          <div class="product-bottom">
-            <span>NT$1,180</span>
-            <i class="fa-regular fa-heart"></i>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="product-card">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1516280030429-27679b3dc9cf?q=80&w=1000&auto=format&fit=crop" />
-        </div>
-
-        <div class="product-info">
-          <h3>1989 (Taylor's Version)</h3>
-          <p>Taylor Swift</p>
-
-          <div class="product-bottom">
-            <span>NT$1,180</span>
-            <i class="fa-regular fa-heart"></i>
-          </div>
-        </div>
+        <!-- 【修正：右側經典箭頭】 -->
+        <button class="classic-carousel-arrow arrow-right" onclick="moveCarousel(1)">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        
       </div>
 
     </div>
-
   </section>
 
   <!-- FOOTER -->
-<footer class="main-footer">
+  <footer class="main-footer">
 
-  <div class="footer-service-bar">
-    <div class="service-card">
-      <i class="fa-solid fa-truck"></i>
-      <div>
-        <h4>全館滿 NT$1,500 免運</h4>
-        <p>台灣本島限定</p>
+    <div class="footer-service-bar">
+      <div class="service-card">
+        <i class="fa-solid fa-truck"></i>
+        <div>
+          <h4>全館滿 NT$1,500 免運</h4>
+          <p>台灣本島限定</p>
+        </div>
       </div>
-    </div>
-    <div class="service-card">
-      <i class="fa-solid fa-shield"></i>
-      <div>
-        <h4>安心包裝出貨</h4>
-        <p>專業黑膠包裝</p>
+      <div class="service-card">
+        <i class="fa-solid fa-shield"></i>
+        <div>
+          <h4>安心包裝出貨</h4>
+          <p>專業黑膠包裝</p>
+        </div>
       </div>
-    </div>
-    <div class="service-card">
-      <i class="fa-solid fa-rotate-left"></i>
-      <div>
-        <h4>14 天鑑賞期</h4>
-        <p>非拆膜不拆封可退換</p>
+      <div class="service-card">
+        <i class="fa-solid fa-rotate-left"></i>
+        <div>
+          <h4>14 天鑑賞期</h4>
+          <p>非拆膜不拆封可退換</p>
+        </div>
       </div>
-    </div>
-    <div class="service-card">
-      <i class="fa-solid fa-headset"></i>
-      <div>
-        <h4>客服支援</h4>
-        <p>週一至週五 10:00 - 18:00</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-links-container">
-
-    <div class="footer-column brand-column">
-      <div class="logo">
-        <h1>CELESTE</h1>
-        <span>COLLECTION</span>
-      </div>
-      <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
-      <div class="footer-socials">
-        <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
-        <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+      <div class="service-card">
+        <i class="fa-solid fa-headset"></i>
+        <div>
+          <h4>客服支援</h4>
+          <p>週一至週五 10:00 - 18:00</p>
+        </div>
       </div>
     </div>
 
-    <div class="footer-column links-column">
-      <h3>探索站點</h3>
-      <ul>
-        <li><a href="index.html" target="_self">官方首頁 Home</a></li>
-        <li><a href="category.html?genre=pop" target="_self">探索唱片 Explore</a></li>
-        <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
-        <li><a href="member.html" target="_self">會員專區 Profile</a></li>
-      </ul>
+    <div class="footer-links-container">
+
+      <div class="footer-column brand-column">
+        <div class="logo">
+          <h1>CELESTE</h1>
+          <span>COLLECTION</span>
+        </div>
+        <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
+        <div class="footer-socials">
+          <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-column links-column">
+        <h3>探索站點</h3>
+        <ul>
+          <li><a href="index.html" target="_self">官方首頁 Home</a></li>
+          <li><a href="category.html?genre=pop" target="_self">探索唱片 Explore</a></li>
+          <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
+          <li><a href="member.html" target="_self">會員專區 Profile</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column links-column">
+        <h3>客戶服務</h3>
+        <ul>
+          <li><a href="#" target="_self">購物與付款須知</a></li>
+          <li><a href="#" target="_self">退換貨政策條款</a></li>
+          <li><a href="#" target="_self">隱私權保護政策</a></li>
+          <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+        </ul>
+      </div>
+
     </div>
 
-    <div class="footer-column links-column">
-      <h3>客戶服務</h3>
-      <ul>
-        <li><a href="#" target="_self">購物與付款須知</a></li>
-        <li><a href="#" target="_self">退換貨政策條款</a></li>
-        <li><a href="#" target="_self">隱私權保護政策</a></li>
-        <li><a href="#" target="_self">聯絡我們 Contact</a></li>
-      </ul>
+    <div class="footer-copyright">
+      <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
     </div>
 
-  </div>
+  </footer>
 
-  <div class="footer-copyright">
-    <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
-  </div>
+  <script>
+    // ─── 核心修正 1：完全拿掉原本多宣告的 initialDatabaseFallback 商品資料，徹底拔除衝突源頭 ───
+    let currentIndex = 0; 
+    let carouselArray = [];
 
-</footer>
+    // 核心修正 2：強迫瀏覽器「被動讀取」與 category.html 完全共享的 localProductDB 快取大庫
+    function getLatestProductDB() {
+      // 防呆降級機制：萬一瀏覽器快取完全被手動清空時，預設塞一筆資料避免程式崩潰
+      const baseFallback = {
+        "vinyl-001": { genre: "pop-jp", title: "The Book For (Overwatch Edition)", artist: "YOASOBI", price: 1680, img: "img/japanese/yoasobi/the_book_for1.jpg", releaseDate: "2026-06-26", stock: 3 }
+      };
+      return JSON.parse(localStorage.getItem('localProductDB')) || baseFallback;
+    }
 
-<script>
-    /* 頂部購物車泡泡*/
-      const badgeCount = document.getElementById('cart-badge-count');
-          if (badgeCount) {
-            let totalItemsCount = 0;
-        
-            document.querySelectorAll('.qty-input').forEach(input => {
-              totalItemsCount += parseInt(input.value) || 0;
-            });
-            
-            badgeCount.textContent = totalItemsCount;
-          
-            if (totalItemsCount === 0) {
-              badgeCount.style.display = 'none';
-            } else {
-              badgeCount.style.display = 'flex';
-            }
-          
-            localStorage.setItem('globalCartCount', totalItemsCount);
-          }
-
-          document.addEventListener('DOMContentLoaded', function() {
-      // 1. 最新總商品數 (預設為0)
-      const savedCount = localStorage.getItem('globalCartCount') || '0';
+    // ─── 網頁一載入：初始化 ───
+    document.addEventListener('DOMContentLoaded', function() { 
+      // 同步右上角粗體金色數量泡泡
+      syncNavbarBadges();
       
-      // 2. 抓取導覽列 Navbar 上的金色泡泡元件
-      const badgeCount = document.getElementById('cart-badge-count');
-      
-      if (badgeCount) {
-        // 3. 同步最新數量
-        badgeCount.textContent = savedCount;
-        
-        // 4. 視覺優化
-        if (parseInt(savedCount) === 0) {
-          badgeCount.style.display = 'none';
-        } else {
-          badgeCount.style.display = 'flex';
-        }
-      }
+      // 啟動資料庫撈取與 5 欄立體卡片生成
+      build3DWarriorCarousel();
     });
-  </script>
+
+    function build3DWarriorCarousel() {
+      const stage = document.getElementById('new-arrival-carousel-stage');
+      if (!stage) return;
+
+      const db = getLatestProductDB();
+      
+      // 將分類頁傳過來的資料庫物件轉為陣列形式，以便依據加入日期進行降序排序
+      let sortedItems = Object.keys(db).map(key => ({ id: key, ...db[key] }));
+      
+      // 核心：依據 releaseDate (YYYY-MM-DD) 從最新到最舊進行降序排序
+      sortedItems.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+
+      // 核心切片：精準、唯獨切出最新加入的前 5 首唱片
+      carouselArray = sortedItems.slice(0, 5);
+
+      let htmlContent = "";
+      carouselArray.forEach((item, index) => {
+        htmlContent += `
+          <div class="carousel-item-3d" id="item-3d-${index}" onclick="handleCardClick(${index}, '${item.id}')">
+            <div class="album-cover-box">
+              <img src="${item.img}" alt="Cover">
+            </div>
+            <h3>${item.title}</h3>
+            <p>${item.artist}</p>
+          </div>
+        `;
+      });
+
+      stage.innerHTML = htmlContent;
+      
+      // 執行第一次 3D 階梯滑軌排列
+      update3DPositions();
+    }
+
+    function update3DPositions() {
+      const total = carouselArray.length;
+      if (total === 0) return;
+
+      for (let i = 0; i < total; i++) {
+        const el = document.getElementById(`item-3d-${i}`);
+        if (!el) continue;
+
+        el.className = "carousel-item-3d";
+
+        let positionClassIndex = (i - currentIndex) % total;
+        if (positionClassIndex < 0) {
+          positionClassIndex += total;
+        }
+        el.classList.add(`pos-${positionClassIndex}`);
+      }
+    }
+
+    function moveCarousel(direction) {
+      const total = carouselArray.length;
+      if (total === 0) return;
+
+      currentIndex += direction;
+
+      if (currentIndex < 0) currentIndex = total - 1;
+      if (currentIndex >= total) currentIndex = 0;
+
+      update3DPositions();
+    }
+
+    function handleCardClick(clickedIndex, prodId) {
+      const el = document.getElementById(`item-3d-${clickedIndex}`);
+      if (!el) return;
+
+      if (el.classList.contains('pos-0')) {
+        // 100% 破空直達：如果在正中央被點擊，直接原視窗跳轉 category.html 詳細頁！
+        window.location.href = `category.html?id=${prodId}`;
+      } else {
+        // 如果點擊的是兩邊縮小的卡片，則自動把它扭轉拉到正中間聚焦
+        currentIndex = clickedIndex;
+        update3DPositions();
+      }
+    }
+
+    function syncNavbarBadges() {
+      const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+      const cartBadge = document.getElementById('cart-badge-count');
+      if (cartBadge) { cartBadge.textContent = savedCartCount; cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex'; }
+      const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+      const favBadge = document.getElementById('fav-badge-count');
+      if (favBadge) { favBadge.textContent = savedFavCount; favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex'; }
+    }
+    </script>
+
 </body>
 </html>

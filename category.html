@@ -549,28 +549,46 @@
     return JSON.parse(localStorage.getItem('localProductDB')) || initialDatabaseFallback; 
   } 
 
-  document.addEventListener('DOMContentLoaded', function() { 
-    // ─── 核心修正：刪除原本的 if 判定，一開網頁強行用程式碼內的 5 張新商品覆蓋舊快取 ───
-    localStorage.setItem('localProductDB', JSON.stringify(initialDatabaseFallback)); 
+  // ==========================================================================
+  // 【全網頁載入初始化中控台】
+  // ==========================================================================
+  document.addEventListener('DOMContentLoaded', function() {
+  
+  // 1. 最高優先權：強行覆蓋寫入，更新 Admin 的最新一級商品狀態
+  localStorage.setItem('localProductDB', JSON.stringify(initialDatabaseFallback)); 
 
+  // 2. 刷新並同步全站導覽列通知數量泡泡
     if (typeof syncNavbarBadges === 'function') { 
       syncNavbarBadges(); 
     } 
 
+    // 3. 解析網址上的跨頁參數
     const urlParams = new URLSearchParams(window.location.search); 
-    const urlProdId = urlParams.get('id'); 
-    const urlSearch = urlParams.get('search'); 
-    const urlGenre = urlParams.get('genre'); 
+    const urlProdId = urlParams.get('id');       
+    const urlSearch = urlParams.get('search');   
+    const urlGenre = urlParams.get('genre');     
 
-    if (urlProdId && getLatestProductDB()[urlProdId]) { 
-      goToProductDetail(urlProdId); 
-    } else if (urlSearch) { 
-      executeSearchFilter(urlSearch); 
-    } else if (urlGenre) { 
+    // 4. ─── 核心分流判定：改用唯讀初始庫 fallback 進行最高安全層級驗證 ───
+    if (urlProdId && initialDatabaseFallback[urlProdId]) { 
+      // 🔥 100% 絕對放行：直接繞過 localStorage 的讀寫延遲，一開網頁強行鎖死在詳細頁，絕不回彈！
+      if (typeof window.goToProductDetail === 'function') {
+        window.goToProductDetail(urlProdId); 
+      }
+    } 
+    else if (urlSearch) { 
+      // 情況 B：搜尋過濾模式
+      if (typeof window.executeSearchFilter === 'function') {
+        window.executeSearchFilter(urlSearch); 
+      }
+    } 
+    else if (urlGenre) { 
+      // 情況 C：一級曲風跨頁跳轉高亮
       if (typeof window.activateSidebarByGenre === 'function') { 
         window.activateSidebarByGenre(urlGenre); 
       } 
-    } else { 
+    } 
+    else { 
+      // 情況 D：訪客預設無參數路由，左側分類不亮，右側直接依日期排序展示全部商品小卡
       if (typeof window.clearAllSidebarHighlights === 'function') { 
         window.clearAllSidebarHighlights(); 
       } 
@@ -579,11 +597,20 @@
       } 
     } 
 
+    // 5. 啟動一級扁平化選單的點擊行為監聽
     if (typeof window.initSidebarClickEvents === 'function') { 
       window.initSidebarClickEvents(); 
     } 
-  }); 
+    
+    // 6. 啟動放大鏡搜尋欄監聽
+    if (typeof window.initGlobalSearch === 'function') {
+      window.initGlobalSearch();
+    }
+  });
 
+  // ==========================================================================
+  // 【全部音樂：依據日期最新到最舊排序加載】
+  // ==========================================================================
   window.loadAllProductsSorted = function() { 
     currentGenre = "all"; 
     document.getElementById('view-list').style.display = 'block'; 
@@ -595,6 +622,93 @@
     let sortedItems = Object.keys(db).map(key => ({ id: key, ...db[key] })); 
     sortedItems.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)); 
     renderCustomCards(sortedItems); 
+  };
+
+  // ==========================================================================
+  // 【跨頁搜尋功能核心：同時支援「專輯名稱」與「歌手名稱」模糊檢索】
+  // ==========================================================================
+  window.initGlobalSearch = function() {
+    const searchInput = document.getElementById('global-search-input');
+    const searchBtn = document.getElementById('global-search-btn');
+
+    function performSearch() {
+      const keyword = searchInput.value.trim();
+      if (keyword !== "") {
+        executeSearchFilter(keyword);
+      }
+    }
+
+    if (searchBtn && searchInput) {
+      searchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (searchInput.value.trim() === "") {
+          searchInput.focus();
+        } else {
+          performSearch();
+        }
+      });
+
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          performSearch();
+        }
+      });
+    }
+  };
+
+  window.executeSearchFilter = function(keyword) {
+    document.getElementById('view-list').style.display = 'block';
+    document.getElementById('view-detail').style.display = 'none';
+    
+    clearAllSidebarHighlights();
+    const upperKeyword = keyword.toUpperCase();
+    document.getElementById('global-breadcrumb').innerHTML = `首頁 ＞ 搜尋結果 ＞ 「${keyword}」`;
+
+    const gridContainer = document.getElementById('category-products-grid');
+    if (!gridContainer) return;
+
+    let htmlContent = "";
+    const dynamicDB = getLatestProductDB();
+
+    for (let id in dynamicDB) {
+      const album = dynamicDB[id];
+      const matchTitle = album.title && album.title.toUpperCase().includes(upperKeyword);
+      const matchArtist = album.artist && album.artist.toUpperCase().includes(upperKeyword);
+
+      if (matchTitle || matchArtist) {
+        htmlContent += `
+          <div class="product-card" style="position:relative; border: 1px solid rgba(255,255,255,0.05); padding:15px; background:rgba(255,255,255,0.01); border-radius:6px;">
+            <div onclick="goToProductDetail('${id}')" style="cursor:pointer;">
+              <div class="product-image" style="height:240px; overflow:hidden; border-radius:4px;">
+                <img src="${album.img}" style="width:100%; height:100%; object-fit:cover;">
+              </div>
+              <div class="product-info" style="margin-top:15px; text-align: left;">
+                <h3 style="font-size:17px; font-weight:400; color:white; margin:0;">${album.title}</h3>
+                <p style="color:rgba(255,255,255,0.5); font-size:13px; margin: 5px 0 0 0;">${album.artist}</p>
+                <div style="margin-top:10px; color:#d7b17d; font-size:16px;">NT$ ${album.price.toLocaleString()}</div>
+              </div>
+            </div>
+            <div class="quick-actions" style="display:flex; gap:10px; margin-top:15px; border-top:1px solid rgba(255,255,255,0.05); padding-top:12px;">
+              <button onclick="quickAddCart('${id}'); event.stopPropagation();" style="flex:1; height:35px; background:#d7b17d; color:black; border:none; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;">
+                <i class="fa-solid fa-basket-shopping"></i> 快購
+              </button>
+              <button onclick="quickAddFav('${id}'); event.stopPropagation();" style="width:40px; height:35px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; border-radius:4px; cursor:pointer;">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+            </div>
+          </div>`;
+      }
+    }
+
+    if (htmlContent === "") {
+      htmlContent = `
+        <div style="grid-column: 1/-1; text-align:center; padding: 60px 0; color: rgba(255,255,255,0.4);">
+          <i class="fa-solid fa-magnifying-glass-blur" style="font-size: 40px; margin-bottom: 16px; display:block; opacity:0.3;"></i>
+          <p>✕ 抱歉，找不到與「${keyword}」相關的商品</p>
+        </div>`;
+    }
+    gridContainer.innerHTML = htmlContent;
   };
 
       window.initSidebarClickEvents = function() {
@@ -843,20 +957,20 @@
         }
       };
 
-      window.quickAddCart = function(id) {
-        let db = getLatestProductDB();
-        if (!db[id]) return;
-        let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
-        const existing = cart.find(item => item.id === id);
-        if (existing) { existing.qty += 1; } else {
-          cart.push({ id: id, title: db[id].title, artist: db[id].artist, price: db[id].price, img: db[id].img, qty: 1 });
-        }
-        localStorage.setItem('realCartItems', JSON.stringify(cart));
-        let count = cart.reduce((sum, item) => sum + item.qty, 0);
-        localStorage.setItem('globalCartCount', count);
-        syncNavbarBadges();
-        alert(`✨ 已成功加購《${db[id].title}》至您的購物車！`);
-      };
+  window.quickAddCart = function(id) {
+    let db = getLatestProductDB();
+    if (!db[id]) return;
+    let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
+    const existing = cart.find(item => item.id === id);
+    if (existing) { existing.qty += 1; } else {
+      cart.push({ id: id, title: db[id].title, artist: db[id].artist, price: db[id].price, img: db[id].img, qty: 1 });
+    }
+    localStorage.setItem('realCartItems', JSON.stringify(cart));
+    let count = cart.reduce((sum, item) => sum + item.qty, 0);
+    localStorage.setItem('globalCartCount', count);
+    syncNavbarBadges();
+    alert(`✨ 已成功加購《${db[id].title}》至您的購物車！`);
+  };
 
       // 1. 還原正確的「加入我的收藏」函式（完美對齊小卡的行內點擊屬性）
   window.quickAddFav = function(id) {
