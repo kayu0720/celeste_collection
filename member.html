@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>會員中心</title>
+  <title>會員中心 | Celeste COLLECTION</title>
 
   <link rel="stylesheet" href="css/member.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -16,7 +16,7 @@
   <div class="top-bar">
     <p>全館滿 NT$1,500 免運費</p>
     <span>|</span>
-    <p>加入會員享 5% 回饋</p>
+    <p>新加入會員享優惠</p>
     <a href="member.html" class="member-link">立刻加入</a>
   </div>
 
@@ -38,12 +38,23 @@
     </nav>
 
     <div class="nav-icons">
-      <a href="https://你的購物車網址.com" class="icon-badge">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      </a>
+      <div class="search-wrapper">
+        <input type="text" id="global-search-input" placeholder="搜尋專輯、歌手...">
+        <button id="global-search-btn" title="開始搜尋">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+
       <a href="member.html" class="icon-badge">
       <i class="fa-regular fa-user"></i>
       </a>
+
+      <div class="icon-badge">
+        <a href="member.html" target="_self" title="我的收藏">
+          <i class="fa-regular fa-heart"></i>
+        </a>
+        <span id="fav-badge-count" style="display: none; font-weight: bold;">0</span>
+      </div>
 
       <div class="icon-badge">
         <a href="cart.html">
@@ -51,8 +62,6 @@
         </a>
         <span id="cart-badge-count">0</span>
       </div>
-
-    </div>
   </header>
 
     <section class="member-section">
@@ -98,41 +107,188 @@
   </div>
 </section>
 
+<!-- FOOTER -->
+<footer class="main-footer">
+
+  <div class="footer-service-bar">
+    <div class="service-card">
+      <i class="fa-solid fa-truck"></i>
+      <div>
+        <h4>全館滿 NT$1,500 免運</h4>
+        <p>台灣本島限定</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-shield"></i>
+      <div>
+        <h4>安心包裝出貨</h4>
+        <p>專業黑膠包裝</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-rotate-left"></i>
+      <div>
+        <h4>7 天鑑賞期</h4>
+        <p>非拆膜不拆封可退換</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-headset"></i>
+      <div>
+        <h4>客服支援</h4>
+        <p>週一至週五 10:00 - 18:00</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-links-container">
+
+    <div class="footer-column brand-column">
+        <div class="logo">
+          <h1>CELESTE</h1>
+          <span>COLLECTION</span>
+        </div>
+        <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
+        <div class="footer-socials">
+          <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-column links-column">
+        <h3>探索站點</h3>
+        <ul>
+          <li><a href="index.html" target="_self">官方首頁 Home</a></li>
+          <li><a href="category.html" target="_self">探索唱片 Explore</a></li>
+          <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
+          <li><a href="member.html" target="_self">會員專區 Profile</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column links-column">
+        <h3>客戶服務</h3>
+        <ul>
+          <li><a href="shopping-info.html" target="_self">購物與付款須知</a></li>
+          <li><a href="return-policy.html" target="_self">退換貨政策條款</a></li>
+          <li><a href="privacy-policy.html" target="_self">隱私權保護政策</a></li>
+          <li><a href="contact.html" target="_self">聯絡我們 Contact</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-copyright">
+      <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
+    </div>
+
+  </footer>
+
 
 
 <script>
 
-  // ==========================================//
-  //                 購物車泡泡                 //
-  // ==========================================//
-    const badgeCount = document.getElementById('cart-badge-count');
-        if (badgeCount) {
-          let totalItemsCount = 0;
-      
-          document.querySelectorAll('.qty-input').forEach(input => {
-            totalItemsCount += parseInt(input.value) || 0;
-          });
-          
-          badgeCount.textContent = totalItemsCount;
-        
-          if (totalItemsCount === 0) {
-            badgeCount.style.display = 'none';
-          } else {
-            badgeCount.style.display = 'flex';
-          }
-        
-          localStorage.setItem('globalCartCount', totalItemsCount);
+  // =========================================================================
+  // 搜尋功能
+  // =========================================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. 同步全站導覽列愛心與購物車金色通知泡泡
+    if (typeof syncNavbarBadges === 'function') {
+      syncNavbarBadges();
+    }
+
+    // 2. 串通首頁放大鏡搜尋核心
+    const searchInput = document.getElementById('global-search-input');
+    const searchBtn = document.getElementById('global-search-btn');
+
+    if (searchInput && searchBtn) {
+      // 執行跨頁參數發送跳轉
+      function handleHomeSearchAction() {
+        const keyword = searchInput.value.trim();
+        if (keyword !== "") {
+          window.location.href = `category.html?search=${encodeURIComponent(keyword)}`;
         }
-    document.addEventListener('DOMContentLoaded', function() {
-      // 1. 初始化檢查：登入狀態 (預設未登入 'false')
-      if (localStorage.getItem('isLoggedIn') === null) {
-        localStorage.setItem('isLoggedIn', 'false');
       }
 
+      // 監聽點擊放大鏡圖示
+      searchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (searchInput.value.trim() === "") {
+          searchInput.focus(); 
+        } else {
+          handleHomeSearchAction();
+        }
+      });
 
-      // ==========================================//
-      //                 註冊會員                  //
-      // ==========================================//
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleHomeSearchAction();
+        }
+      });
+    }
+  });
+
+  function syncNavbarBadges() {
+    const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+    const cartBadge = document.getElementById('cart-badge-count');
+    if (cartBadge) { 
+      cartBadge.textContent = savedCartCount; 
+      cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex'; 
+    }
+    const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+    const favBadge = document.getElementById('fav-badge-count');
+    if (favBadge) { 
+      favBadge.textContent = savedFavCount; 
+      favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex'; 
+    }
+  }
+
+  // =========================================================================
+  // 購物車泡泡
+  // =========================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+  
+    // 1. 初始化防禦檢查：檢查是否有登入狀態，預設未登入狀態鎖定為 'false'
+    if (localStorage.getItem('isLoggedIn') === null) {
+      localStorage.setItem('isLoggedIn', 'false');
+    }
+    
+    // 2. 跨頁購物車數量泡泡校正機制：
+    // 依據資管標準，member.html 必須直接被動向全站快取讀取真實數量，絕對不能去算不存在的輸入框！
+    const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+    const cartBadge = document.getElementById('cart-badge-count');
+    if (cartBadge) {
+      cartBadge.textContent = savedCartCount;
+      // 如果數量為 0，聽話遵循美學規範自動隱藏泡泡
+      cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex';
+    }
+
+    // 3. 同步校正右上角最新愛心收藏數量
+    const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+    const favBadge = document.getElementById('fav-badge-count');
+    if (favBadge) {
+      favBadge.textContent = savedFavCount;
+      favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex';
+    }
+
+    // 4. 【核心路由自動分流】：網頁一打開，立刻自動判定客人目前是登入還是未登入
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      // 情況 A：如果已經是登入狀態，強制隱藏註冊表單，直接把「會員後台大面板」開給他看
+      if (typeof showLoggedInDashboard === 'function') {
+        showLoggedInDashboard();
+      }
+    } else {
+      // 情況 B：如果未登入，強制把「登入/註冊表單」打開
+      if (typeof showAuthForms === 'function') {
+        showAuthForms();
+      }
+    }
+
+
+  // =========================================================================
+  // 會員註冊
+  // =========================================================================
 
       if (localStorage.getItem('registeredUsers') === null) {
         localStorage.setItem('registeredUsers', JSON.stringify([]));
@@ -155,7 +311,7 @@
 
         if (isLoggedIn) {
           // ==========================================================================
-          // 【狀態 A：已成功登入會員】 -> 全部解鎖
+          // 【已成功登入會員】 -> 全部解鎖
           // ==========================================================================
           if (favTabBtn) favTabBtn.innerHTML = "我的收藏";
           if (revTabBtn) revTabBtn.innerHTML = "我的評價";
@@ -608,6 +764,32 @@
             
             <button id="logout-btn" class="submit-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 20px;">安全登出帳號</button>
           `;
+  // ==========================================================================
+  // 【顧客評論完全體：強制會員驗證、全站資料庫與會員中心雙向即時大連動】
+  // ==========================================================================
+  document.addEventListener('DOMContentLoaded', function() {
+  if (localStorage.getItem('isLoggedIn') === 'true') {
+    const loggedEmail = localStorage.getItem('currentUserEmail');
+    const myHistoryContainer = document.getElementById('member-reviews-history-list'); // 確保會員中心有這個容器
+    
+    if (myHistoryContainer) {
+      // 動態讀取當前登入者專屬的愛心與評論歷史紀錄夾
+      let myReviews = JSON.parse(localStorage.getItem('reviews_' + loggedEmail)) || [];
+      
+      let html = "";
+      myReviews.forEach(log => {
+        html += `
+          <div class="member-history-item" style="background:rgba(255,255,255,0.02); padding:15px; border-radius:6px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.05); text-align:left;">
+            <p style="margin:0 0 5px 0; color:#d7b17d; font-size:14px;"><strong>專輯：</strong>《${log.albumTitle}》 - ${log.albumArtist}</p>
+            <p style="margin:0 0 5px 0; color:white; font-size:14px;"><strong>我的心得：</strong>${log.myComment}</p>
+            <small style="color:rgba(255,255,255,0.3); font-size:11px; display:block;">發布日期：${log.timestamp}</small>
+          </div>`;
+      });
+      
+      myHistoryContainer.innerHTML = html || `<p style="color:rgba(255,255,255,0.3); font-size:13px;">目前帳戶內尚無發表過任何黑膠聆聽心得。</p>`;
+    }
+  }
+});
 
 
 </script>

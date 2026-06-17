@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>唱片知識</title>
+  <title>唱片知識 | Celeste COLLECTION</title>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -88,12 +88,23 @@
     </nav>
 
     <div class="nav-icons">
-      <a href="https://你的購物車網址.com" class="icon-badge">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      </a>
+      <div class="search-wrapper">
+        <input type="text" id="global-search-input" placeholder="搜尋專輯、歌手...">
+        <button id="global-search-btn" title="開始搜尋">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+
       <a href="member.html" class="icon-badge">
       <i class="fa-regular fa-user"></i>
       </a>
+
+      <div class="icon-badge">
+        <a href="member.html" target="_self" title="我的收藏">
+          <i class="fa-regular fa-heart"></i>
+        </a>
+        <span id="fav-badge-count" style="display: none; font-weight: bold;">0</span>
+      </div>
 
       <div class="icon-badge">
         <a href="cart.html">
@@ -101,8 +112,6 @@
         </a>
         <span id="cart-badge-count">0</span>
       </div>
-
-    </div>
   </header>
 
 
@@ -173,7 +182,7 @@
       <div class="service-card">
         <i class="fa-solid fa-rotate-left"></i>
         <div>
-          <h4>14 天鑑賞期</h4>
+          <h4>7 天鑑賞期</h4>
           <p>非拆膜不拆封可退換</p>
         </div>
       </div>
@@ -214,10 +223,10 @@
       <div class="footer-column links-column">
         <h3>客戶服務</h3>
         <ul>
-          <li><a href="#" target="_self">購物與付款須知</a></li>
-          <li><a href="#" target="_self">退換貨政策條款</a></li>
-          <li><a href="#" target="_self">隱私權保護政策</a></li>
-          <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+          <li><a href="shopping-info.html" target="_self">購物與付款須知</a></li>
+          <li><a href="return-policy.html" target="_self">退換貨政策條款</a></li>
+          <li><a href="privacy-policy.html" target="_self">隱私權保護政策</a></li>
+          <li><a href="contact.html" target="_self">聯絡我們 Contact</a></li>
         </ul>
       </div>
 
@@ -228,6 +237,64 @@
     </div>
 
   </footer>
+
+  <script>
+    // =========================================================================
+    // 搜尋功能
+    // =========================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. 同步全站導覽列愛心與購物車金色通知泡泡
+      if (typeof syncNavbarBadges === 'function') {
+        syncNavbarBadges();
+      }
+
+      // 2. 串通首頁放大鏡搜尋核心
+      const searchInput = document.getElementById('global-search-input');
+      const searchBtn = document.getElementById('global-search-btn');
+
+      if (searchInput && searchBtn) {
+        // 執行跨頁參數發送跳轉
+        function handleHomeSearchAction() {
+          const keyword = searchInput.value.trim();
+          if (keyword !== "") {
+            window.location.href = `category.html?search=${encodeURIComponent(keyword)}`;
+          }
+        }
+
+        // 監聽點擊放大鏡圖示
+        searchBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (searchInput.value.trim() === "") {
+            searchInput.focus(); 
+          } else {
+            handleHomeSearchAction();
+          }
+        });
+
+        searchInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleHomeSearchAction();
+          }
+        });
+      }
+    });
+
+    function syncNavbarBadges() {
+      const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+      const cartBadge = document.getElementById('cart-badge-count');
+      if (cartBadge) { 
+        cartBadge.textContent = savedCartCount; 
+        cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex'; 
+      }
+      const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+      const favBadge = document.getElementById('fav-badge-count');
+      if (favBadge) { 
+        favBadge.textContent = savedFavCount; 
+        favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex'; 
+      }
+    }
+  </script>
 
 </body>
 </html>

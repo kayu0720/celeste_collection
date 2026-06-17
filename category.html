@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>熱賣唱片</title>
+  <title>熱賣唱片 | Celeste COLLECTION</title>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -17,7 +17,7 @@
 <body>
 
   <!-- ==========================================================================
-     1. TOP BAR & NAVBAR (導覽列完全體)
+     每頁固定 : 頂部通知列 + 導覽列
      ========================================================================== -->
   <div class="top-bar">
     <p>全館滿 NT$1,500 免運費</p>
@@ -41,39 +41,41 @@
     </nav>
     
     <div class="nav-icons">
-      <!-- 搜尋組件：平時無框，Hover 滑出下底線 -->
       <div class="search-wrapper">
         <input type="text" id="global-search-input" placeholder="搜尋專輯、歌手...">
-        <button id="global-search-btn" type="button">
+        <button id="global-search-btn" title="開始搜尋">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </div>
 
-      <!-- 會員中心 -->
-      <a href="member.html" class="member-link icon-badge">
-        <i class="fa-regular fa-user"></i>
+      <a href="member.html" class="icon-badge">
+      <i class="fa-regular fa-user"></i>
       </a>
 
-      <!-- 購物車提袋：獨立數量泡泡 -->
+      <div class="icon-badge">
+        <a href="member.html" target="_self" title="我的收藏">
+          <i class="fa-regular fa-heart"></i>
+        </a>
+        <span id="fav-badge-count" style="display: none; font-weight: bold;">0</span>
+      </div>
+
       <div class="icon-badge">
         <a href="cart.html">
-          <i class="fa-solid fa-bag-shopping"></i>
+            <i class="fa-solid fa-bag-shopping"></i> 
         </a>
-        <span id="cart-badge-count" style="display: none; font-weight: bold;">0</span>
+        <span id="cart-badge-count">0</span>
       </div>
-    </div>
   </header>
 
   <!-- ==========================================================================
-     2. PRODUCT DETAIL PAGE CONTAINER (主板塊：側邊欄 + 右側內容區)
+     PRODUCT DETAIL PAGE CONTAINER
      ========================================================================== -->
   <section class="detail-page">
     
-    <!-- 左側：唱片分類導覽列 (徹底拔除超連結跳轉干擾) -->
+    <!-- 左側：唱片分類導覽列 -->
     <aside class="sidebar">
       <h3>唱片分類</h3>
       <ul>
-        <!-- 補上全部音樂選項，並利用 data-genre 區分 -->
         <li class="sidebar-main-item" data-genre="all">全部音樂 ALL</li>
         <li class="sidebar-main-item" data-genre="pop-jp">日語流行 J-POP</li>
         <li class="sidebar-main-item" data-genre="pop-kr">韓語流行 K-POP</li>
@@ -83,30 +85,28 @@
       </ul>
     </aside>
 
-    <!-- 右側主內容區 -->
+    <!-- 右側 : 主內容區 -->
     <div class="main-content-area">
       
-      <!-- 麵包屑導覽列 -->
+      <!-- 導覽列 -->
       <div class="breadcrumb" id="global-breadcrumb">首頁 ＞ 全部商品</div>
 
-      <!-- 【區塊 A】各曲風專輯列表頁 (一進入網頁預設顯示) -->
+      <!-- 各曲風專輯列表頁 -->
       <div id="view-list" class="content-view">
         <div class="product-grid" id="category-products-grid">
-          <!-- 商品小卡由 JS 自動依日期排序生成 -->
         </div>
       </div>
 
-      <!-- 【區塊 B】商品詳細頁 (預設隱藏，點擊小卡後浮現) -->
+      <!-- 商品詳細頁 -->
       <div id="view-detail" class="content-view" style="display: none;">
         <div class="product-detail-grid" style="display: grid; grid-template-columns: 500px 1fr; gap: 50px; align-items: start;">
           
-          <!-- 詳細頁左側：大圖與四張小圖 -->
+          <!-- 大圖與四張小圖 -->
           <div class="detail-media-box">
             <div class="main-image" style="width: 100%; height: 500px; overflow: hidden; border-radius: 6px;">
               <img id="detail-main-img" src="" alt="Main Album Cover" style="width:100%; height:100%; object-fit:cover;">
             </div>
             <div class="thumbnail-row" style="display: flex; gap: 14px; margin-top: 20px;">
-              <!-- 縮圖由 JS 動態生成 -->
             </div>
           </div>
 
@@ -123,7 +123,7 @@
               <button class="spec-tab-btn" onclick="switchSpecTab('reviews')" style="background: transparent; border: none; color: rgba(255,255,255,0.5); font-size: 15px; cursor: pointer; padding: 10px;">顧客評論</button>
             </div>
 
-            <!-- 關鍵容器：資料/曲目/評論 共用格子，點擊時原處直接跳轉更換內容 -->
+            <!-- 關鍵容器：資料/曲目/評論 -->
             <div id="specs-dynamic-view" style="margin-top: 20px; min-height: 180px; font-size: 14px; line-height: 1.8; color: rgba(255,255,255,0.7);">
               <!-- 內容由 JS 動態灌入 -->
             </div>
@@ -150,7 +150,9 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ==========================================================================
+     每頁固定 : FOOTER
+     ========================================================================== -->
   <footer class="main-footer">
 
     <div class="footer-service-bar">
@@ -171,7 +173,7 @@
       <div class="service-card">
         <i class="fa-solid fa-rotate-left"></i>
         <div>
-          <h4>14 天鑑賞期</h4>
+          <h4>7 天鑑賞期</h4>
           <p>非拆膜不拆封可退換</p>
         </div>
       </div>
@@ -212,10 +214,10 @@
       <div class="footer-column links-column">
         <h3>客戶服務</h3>
         <ul>
-          <li><a href="#" target="_self">購物與付款須知</a></li>
-          <li><a href="#" target="_self">退換貨政策條款</a></li>
-          <li><a href="#" target="_self">隱私權保護政策</a></li>
-          <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+          <li><a href="shopping-info.html" target="_self">購物與付款須知</a></li>
+          <li><a href="return-policy.html" target="_self">退換貨政策條款</a></li>
+          <li><a href="privacy-policy.html" target="_self">隱私權保護政策</a></li>
+          <li><a href="contact.html" target="_self">聯絡我們 Contact</a></li>
         </ul>
       </div>
 
@@ -228,6 +230,11 @@
   </footer>
 
   <script>
+
+  // =========================================================================
+  // 唱片資料
+  // =========================================================================
+
   const initialDatabaseFallback = { 
 
     /*-- JP --*/
@@ -570,25 +577,24 @@
 
     // 4. ─── 核心分流判定：改用唯讀初始庫 fallback 進行最高安全層級驗證 ───
     if (urlProdId && initialDatabaseFallback[urlProdId]) { 
-      // 🔥 100% 絕對放行：直接繞過 localStorage 的讀寫延遲，一開網頁強行鎖死在詳細頁，絕不回彈！
       if (typeof window.goToProductDetail === 'function') {
         window.goToProductDetail(urlProdId); 
       }
     } 
     else if (urlSearch) { 
-      // 情況 B：搜尋過濾模式
+      // 搜尋過濾模式
       if (typeof window.executeSearchFilter === 'function') {
         window.executeSearchFilter(urlSearch); 
       }
     } 
     else if (urlGenre) { 
-      // 情況 C：一級曲風跨頁跳轉高亮
+      // 一級曲風跨頁跳轉高亮
       if (typeof window.activateSidebarByGenre === 'function') { 
         window.activateSidebarByGenre(urlGenre); 
       } 
     } 
     else { 
-      // 情況 D：訪客預設無參數路由，左側分類不亮，右側直接依日期排序展示全部商品小卡
+      // 訪客預設無參數路由，左側分類不亮，右側直接依日期排序展示全部商品小卡
       if (typeof window.clearAllSidebarHighlights === 'function') { 
         window.clearAllSidebarHighlights(); 
       } 
@@ -609,7 +615,7 @@
   });
 
   // ==========================================================================
-  // 【全部音樂：依據日期最新到最舊排序加載】
+  // 全部音樂：依據日期最新到最舊排序加載
   // ==========================================================================
   window.loadAllProductsSorted = function() { 
     currentGenre = "all"; 
@@ -625,7 +631,7 @@
   };
 
   // ==========================================================================
-  // 【跨頁搜尋功能核心：同時支援「專輯名稱」與「歌手名稱」模糊檢索】
+  // 搜尋功能
   // ==========================================================================
   window.initGlobalSearch = function() {
     const searchInput = document.getElementById('global-search-input');
@@ -795,13 +801,13 @@
           gridContainer.innerHTML = htmlContent || `<p style="color:rgba(255,255,255,0.4); text-align:center; grid-column:1/-1; padding:40px 0;">該分類目前無現貨商品進口</p>`;
         };
 
-      // ─── 直接找空檔處補貼上這段一級路由定位函數即可 ───
+
       function activateSidebarByGenre(genreCode) {
         clearAllSidebarHighlights();
         const mainItems = document.querySelectorAll('.sidebar-main-item');
         mainItems.forEach(item => {
           if (item.getAttribute('data-genre') === genreCode) {
-            if (genreCode !== "all") item.classList.add('active'); // 全部音樂點擊不常亮
+            if (genreCode !== "all") item.classList.add('active'); 
             loadAlbumList(genreCode, item.innerText);
           }
         });
@@ -822,7 +828,7 @@
         mainItems.forEach(item => {
           item.addEventListener('click', function() {
             clearAllSidebarHighlights();
-            this.classList.add('active'); // 當前點選的曲風變金色
+            this.classList.add('active'); 
 
             const genreCode = this.getAttribute('data-genre');
             currentGenre = genreCode;
@@ -830,11 +836,11 @@
             document.getElementById('global-breadcrumb').innerHTML = `首頁 ＞ ${this.innerText}`;
 
             if (genreCode === "all") {
-              // 點擊「全部音樂」：調用日期排序載入，並立刻拔除常亮 active
+
               loadAllProductsSorted();
               this.classList.remove('active'); 
             } else {
-              // 點擊特定一級分類：執行商品網格過濾篩選
+
               renderProductsGrid(product => product.genre === genreCode);
             }
           });
@@ -972,11 +978,12 @@
     alert(`✨ 已成功加購《${db[id].title}》至您的購物車！`);
   };
 
-      // 1. 還原正確的「加入我的收藏」函式（完美對齊小卡的行內點擊屬性）
+  // 1. 還原正確的「加入我的收藏」函式（完美對齊小卡的行內點擊屬性）
   window.quickAddFav = function(id) {
+    // 1. 權限防禦：驗證訪客登入狀態
     if (localStorage.getItem('isLoggedIn') !== 'true') {
       alert('✕ 權限不足：請先前往會員中心登入帳號，才能啟用收藏功能！'); 
-      window.location.href = 'member.html'; // 原視窗直接跳轉
+      window.location.href = 'member.html'; 
       return;
     }
     
@@ -984,45 +991,94 @@
     if (!db[id]) return;
 
     let favorites = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
+    
+    // 2. 防範重複收藏機制
     if (favorites.includes(id)) { 
-      alert('該經典商品已在您的收藏清單中囉！'); 
+      alert('該經典商品已在您的收藏清單中囉！將為您直接前往我的收藏查看。'); 
+      window.location.href = 'member.html'; // 即使重複，也聽話轉跳過去給客人看
       return; 
     }
     
+    // 3. 安全推入快取資料流並更新計數
     favorites.push(id);
     localStorage.setItem('myFavoriteItems', JSON.stringify(favorites));
     localStorage.setItem('globalFavsCount', favorites.length);
     
-    // 即時連動校正右上角愛心通知泡泡
-    syncNavbarBadges();
-    alert(`❤️ 成功同步收藏！已安全寫入您的帳戶資料中。`);
+    // 4. 即時連動校正全站右上角愛心金色數量泡泡
+    if (typeof syncNavbarBadges === 'function') {
+      syncNavbarBadges();
+    }
+    
+
+    alert(`❤️ 成功同步收藏！已安全寫入您的帳戶。內容將為您跳轉至會員中心查看。`);
+    
+
+    window.location.href = 'member.html';
   };
 
-  // 2. 將被塞錯位置的「送出顧客評論」獨立還原成正確的專屬函式
+  // ==========================================================================
+  // 【顧客評論完全體：強制會員驗證、全站資料庫與會員中心雙向即時大連動】
+  // ==========================================================================
   window.submitReviewAction = function() {
+    // 1. 最高權限攔截防禦：強制檢查客人在會員中心是否有成功登入
     if (localStorage.getItem('isLoggedIn') !== 'true') {
-      alert('✕ 權限不足：請先前往會員中心登入帳號，才能留下您的評價！'); 
-      window.location.href = 'member.html'; 
+      alert('✕ 請先前往會員中心登入帳號，才能留下您的聆聽評價！'); 
+      window.location.href = 'member.html'; // 破空跳轉回會員中心
       return;
     }
 
+    // 2. 擷取並檢查評論輸入框的文字內容
     const input = document.getElementById('new-review-input');
-    if (!input || input.value.trim() === "") return;
+    if (!input || input.value.trim() === "") {
+      alert('✕ 請輸入您的聆聽心得或對此張黑膠的音質評價後再行送出。');
+      return;
+    }
     
+    const commentText = input.value.trim();
+    const currentEmail = localStorage.getItem('currentUserEmail') || 'Premium_Member';
+    const currentTime = new Date().toISOString().split('T')[0]; // 自動生成標準 YYYY-MM-DD 日期格式
+
+    // ─── 【連動 A：寫入黑膠商品資料庫，讓所有人都能看到這筆評論】 ───
     let db = getLatestProductDB();
+    
+    // 安全防呆：如果該首唱片在資料庫裡從來沒有人評論過，初始化一個空陣列
     if (!db[activeProductId].reviews) {
       db[activeProductId].reviews = [];
     }
     
-    db[activeProductId].reviews.push({
-      user: localStorage.getItem('currentUserEmail') || 'Premium_Member',
-      comment: input.value.trim(),
-      date: new Date().toISOString().split('T')[0]
-    });
+    // 包裝標準評論物件
+    const newProductReview = {
+      user: currentEmail,
+      comment: commentText,
+      date: currentTime
+    };
     
-    localStorage.setItem('localProductDB', JSON.stringify(db)); // 寫回本地資料庫
-    alert('✓ 評論發布成功！已安全同步至歷史評價紀錄。');
-    switchSpecTab('reviews'); // 當場原地刷新評論格子
+    // 塞入商品的全球評論池
+    db[activeProductId].reviews.push(newProductReview);
+    localStorage.setItem('localProductDB', JSON.stringify(db));
+
+    // ─── 【連動 B：同步寫入會員中心個人紀錄軌道，讓個人帳戶可以實時追蹤】 ───
+    // 這裡讀取該登入會員的個人發表歷史紀錄陣列
+    let memberReviewKey = 'reviews_' + currentEmail; // 根據 Email 為每位會員建立獨立的個資留言軌道
+    let myPersonalReviews = JSON.parse(localStorage.getItem(memberReviewKey)) || [];
+    
+    // 包裝成適合會員中心列印的「個人足跡物件」
+    const newMemberLog = {
+      logId: "REV-" + Date.now(),
+      albumTitle: db[activeProductId].title,      // 記錄是針對哪張專輯
+      albumArtist: db[activeProductId].artist,    // 記錄歌手
+      myComment: commentText,                     // 記錄講了什麼
+      timestamp: currentTime                      // 記錄日期
+    };
+    
+    myPersonalReviews.push(newMemberLog);
+    localStorage.setItem(memberReviewKey, JSON.stringify(myPersonalReviews));
+
+    // 3. 彈出高質感的商務同步成功回饋，並原地即時刷新內容格子視圖
+    alert(`✓ 評價發布成功！\n已將您的心得寫入《${db[activeProductId].title}》全球評論池，並同步寫入您的個人會員歷史紀錄中！`);
+    
+    // 強制原處格子重新渲染，100% 讓客人當場看見自己剛剛發布的留言內容！
+    switchSpecTab('reviews'); 
   };
 
   // 3. 【拼字修正】修復原本被切斷的 window.backToList 拼字錯誤，確保按鈕正常可用
@@ -1052,7 +1108,7 @@
     thumbRow.innerHTML = thumbHtml;
   };
 
-  // 8. 頂部導覽列雙通知泡泡即時校正 (無商品時自動隱藏)
+  // 頂部導覽列雙通知泡泡即時校正
   window.syncNavbarBadges = function() {
     const savedCartCount = localStorage.getItem('globalCartCount') || '0';
     const cartBadge = document.getElementById('cart-badge-count');

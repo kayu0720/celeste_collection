@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Celeste Collection</title>
+  <title>購物車 | Celeste COLLECTION</title>
 
   <link rel="stylesheet" href="css/cart.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -38,12 +38,23 @@
     </nav>
 
     <div class="nav-icons">
-      <a href="https://你的購物車網址.com" class="icon-badge">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      </a>
+      <div class="search-wrapper">
+        <input type="text" id="global-search-input" placeholder="搜尋專輯、歌手...">
+        <button id="global-search-btn" title="開始搜尋">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+
       <a href="member.html" class="icon-badge">
       <i class="fa-regular fa-user"></i>
       </a>
+
+      <div class="icon-badge">
+        <a href="member.html" target="_self" title="我的收藏">
+          <i class="fa-regular fa-heart"></i>
+        </a>
+        <span id="fav-badge-count" style="display: none; font-weight: bold;">0</span>
+      </div>
 
       <div class="icon-badge">
         <a href="cart.html">
@@ -51,8 +62,6 @@
         </a>
         <span id="cart-badge-count">0</span>
       </div>
-
-    </div>
   </header>
 
   <section class="cart-section">
@@ -151,6 +160,83 @@
   </div>
 </section>
 
+
+<!-- FOOTER -->
+<footer class="main-footer">
+
+  <div class="footer-service-bar">
+    <div class="service-card">
+      <i class="fa-solid fa-truck"></i>
+      <div>
+        <h4>全館滿 NT$1,500 免運</h4>
+        <p>台灣本島限定</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-shield"></i>
+      <div>
+        <h4>安心包裝出貨</h4>
+        <p>專業黑膠包裝</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-rotate-left"></i>
+      <div>
+        <h4>7 天鑑賞期</h4>
+        <p>非拆膜不拆封可退換</p>
+      </div>
+    </div>
+    <div class="service-card">
+      <i class="fa-solid fa-headset"></i>
+      <div>
+        <h4>客服支援</h4>
+        <p>週一至週五 10:00 - 18:00</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-links-container">
+
+    <div class="footer-column brand-column">
+        <div class="logo">
+          <h1>CELESTE</h1>
+          <span>COLLECTION</span>
+        </div>
+        <p class="footer-brand-desc">讓經典黑膠與溫潤音質，優雅點綴您的深夜與晨曦。</p>
+        <div class="footer-socials">
+          <a href="#" target="_self"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" target="_self"><i class="fa-brands fa-threads"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-column links-column">
+        <h3>探索站點</h3>
+        <ul>
+          <li><a href="index.html" target="_self">官方首頁 Home</a></li>
+          <li><a href="category.html" target="_self">探索唱片 Explore</a></li>
+          <li><a href="cart.html" target="_self">我的購物車 Cart</a></li>
+          <li><a href="member.html" target="_self">會員專區 Profile</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column links-column">
+        <h3>客戶服務</h3>
+        <ul>
+          <li><a href="shopping-info.html" target="_self">購物與付款須知</a></li>
+          <li><a href="return-policy.html" target="_self">退換貨政策條款</a></li>
+          <li><a href="privacy-policy.html" target="_self">隱私權保護政策</a></li>
+          <li><a href="contact.html" target="_self">聯絡我們 Contact</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-copyright">
+      <p>&copy; 2026 CELESTE COLLECTION. All Rights Reserved. Designed by MK.</p>
+    </div>
+
+  </footer>
 
 <script>
 

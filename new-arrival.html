@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>新品上架</title>
+  <title>新品上架 | Celeste COLLECTION</title>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -41,12 +41,23 @@
     </nav>
 
     <div class="nav-icons">
-      <a href="https://你的購物車網址.com" class="icon-badge">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      </a>
+      <div class="search-wrapper">
+        <input type="text" id="global-search-input" placeholder="搜尋專輯、歌手...">
+        <button id="global-search-btn" title="開始搜尋">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+
       <a href="member.html" class="icon-badge">
       <i class="fa-regular fa-user"></i>
       </a>
+
+      <div class="icon-badge">
+        <a href="member.html" target="_self" title="我的收藏">
+          <i class="fa-regular fa-heart"></i>
+        </a>
+        <span id="fav-badge-count" style="display: none; font-weight: bold;">0</span>
+      </div>
 
       <div class="icon-badge">
         <a href="cart.html">
@@ -54,8 +65,6 @@
         </a>
         <span id="cart-badge-count">0</span>
       </div>
-
-    </div>
   </header>
 
   <!-- NEW ARRIVAL -->
@@ -63,25 +72,24 @@
 
     <div class="carousel-page-wrapper" style="width: 100%; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; overflow: hidden; position: relative;">
   
-      <!-- 頂部麵包屑 -->
+      <!-- 頂部 -->
       <div class="breadcrumb" style="position: absolute; top: 40px; left: 60px; color: rgba(255,255,255,0.4); font-size: 14px; letter-spacing: 1px;">
-        首頁 ＞ NEW ARRIVAL 新品引進
+        首頁 ＞ NEW ARRIVAL 新品引進 (最新十張唱片)
       </div>
 
-      <!-- 核心 3D 輪播大容器 -->
+      <!-- 輪播容器 -->
       <div class="warrior-carousel-container">
         
-        <!-- 【修正：左側經典箭頭】 -->
+        <!-- 左側箭頭 -->
         <button class="classic-carousel-arrow arrow-left" onclick="moveCarousel(-1)">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
 
-        <!-- 中間唱片滾動滑軌舞台 -->
+        <!-- 中間唱片滾動 -->
         <div class="carousel-stage" id="new-arrival-carousel-stage">
-          <!-- 10張黑膠小卡將由 JS 自動依日期排序並以 3D 階梯形式動態灌入 -->
         </div>
 
-        <!-- 【修正：右側經典箭頭】 -->
+        <!-- 右側箭頭 -->
         <button class="classic-carousel-arrow arrow-right" onclick="moveCarousel(1)">
           <i class="fa-solid fa-chevron-right"></i>
         </button>
@@ -112,7 +120,7 @@
       <div class="service-card">
         <i class="fa-solid fa-rotate-left"></i>
         <div>
-          <h4>14 天鑑賞期</h4>
+          <h4>7 天鑑賞期</h4>
           <p>非拆膜不拆封可退換</p>
         </div>
       </div>
@@ -153,10 +161,10 @@
       <div class="footer-column links-column">
         <h3>客戶服務</h3>
         <ul>
-          <li><a href="#" target="_self">購物與付款須知</a></li>
-          <li><a href="#" target="_self">退換貨政策條款</a></li>
-          <li><a href="#" target="_self">隱私權保護政策</a></li>
-          <li><a href="#" target="_self">聯絡我們 Contact</a></li>
+          <li><a href="shopping-info.html" target="_self">購物與付款須知</a></li>
+          <li><a href="return-policy.html" target="_self">退換貨政策條款</a></li>
+          <li><a href="privacy-policy.html" target="_self">隱私權保護政策</a></li>
+          <li><a href="contact.html" target="_self">聯絡我們 Contact</a></li>
         </ul>
       </div>
 
@@ -169,115 +177,174 @@
   </footer>
 
   <script>
-    // ─── 核心修正 1：完全拿掉原本多宣告的 initialDatabaseFallback 商品資料，徹底拔除衝突源頭 ───
-    let currentIndex = 0; 
-    let carouselArray = [];
 
-    // 核心修正 2：強迫瀏覽器「被動讀取」與 category.html 完全共享的 localProductDB 快取大庫
-    function getLatestProductDB() {
-      // 防呆降級機制：萬一瀏覽器快取完全被手動清空時，預設塞一筆資料避免程式崩潰
-      const baseFallback = {
-        "vinyl-001": { genre: "pop-jp", title: "The Book For (Overwatch Edition)", artist: "YOASOBI", price: 1680, img: "img/japanese/yoasobi/the_book_for1.jpg", releaseDate: "2026-06-26", stock: 3 }
-      };
-      return JSON.parse(localStorage.getItem('localProductDB')) || baseFallback;
-    }
+    // =========================================================================
+    // 商品輪播
+    // =========================================================================
+      let currentIndex = 0; 
+      let carouselArray = [];
 
-    // ─── 網頁一載入：初始化 ───
-    document.addEventListener('DOMContentLoaded', function() { 
-      // 同步右上角粗體金色數量泡泡
-      syncNavbarBadges();
-      
-      // 啟動資料庫撈取與 5 欄立體卡片生成
-      build3DWarriorCarousel();
-    });
+      // 瀏覽器讀取與 category.html 完全共享的 localProductDB 快取大庫
+      function getLatestProductDB() {
+        // 防呆降級機制
+        const baseFallback = {
+          "vinyl-001": { genre: "pop-jp", title: "The Book For (Overwatch Edition)", artist: "YOASOBI", price: 1680, img: "img/japanese/yoasobi/the_book_for1.jpg", releaseDate: "2026-06-26", stock: 3 }
+        };
+        return JSON.parse(localStorage.getItem('localProductDB')) || baseFallback;
+      }
 
-    function build3DWarriorCarousel() {
-      const stage = document.getElementById('new-arrival-carousel-stage');
-      if (!stage) return;
-
-      const db = getLatestProductDB();
-      
-      // 將分類頁傳過來的資料庫物件轉為陣列形式，以便依據加入日期進行降序排序
-      let sortedItems = Object.keys(db).map(key => ({ id: key, ...db[key] }));
-      
-      // 核心：依據 releaseDate (YYYY-MM-DD) 從最新到最舊進行降序排序
-      sortedItems.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
-
-      // 核心切片：精準、唯獨切出最新加入的前 5 首唱片
-      carouselArray = sortedItems.slice(0, 5);
-
-      let htmlContent = "";
-      carouselArray.forEach((item, index) => {
-        htmlContent += `
-          <div class="carousel-item-3d" id="item-3d-${index}" onclick="handleCardClick(${index}, '${item.id}')">
-            <div class="album-cover-box">
-              <img src="${item.img}" alt="Cover">
-            </div>
-            <h3>${item.title}</h3>
-            <p>${item.artist}</p>
-          </div>
-        `;
+      // ─── 初始化 ───
+      document.addEventListener('DOMContentLoaded', function() { 
+        // 同步右上角粗體金色數量泡泡
+        syncNavbarBadges();
+        
+        // 啟動資料庫撈取與 5 欄立體卡片生成
+        build3DWarriorCarousel();
       });
 
-      stage.innerHTML = htmlContent;
-      
-      // 執行第一次 3D 階梯滑軌排列
-      update3DPositions();
-    }
+      function build3DWarriorCarousel() {
+        const stage = document.getElementById('new-arrival-carousel-stage');
+        if (!stage) return;
 
-    function update3DPositions() {
-      const total = carouselArray.length;
-      if (total === 0) return;
+        const db = getLatestProductDB();
+        
+        // 將分類頁傳過來的資料庫物件轉為陣列形式，以便依據加入日期進行降序排序
+        let sortedItems = Object.keys(db).map(key => ({ id: key, ...db[key] }));
+        
+        // 核心：依據 releaseDate (YYYY-MM-DD) 從最新到最舊進行降序排序
+        sortedItems.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
 
-      for (let i = 0; i < total; i++) {
-        const el = document.getElementById(`item-3d-${i}`);
-        if (!el) continue;
+        // 核心切片：精準、唯獨切出最新加入的前 5 首唱片
+        carouselArray = sortedItems.slice(0, 5);
 
-        el.className = "carousel-item-3d";
+        let htmlContent = "";
+        carouselArray.forEach((item, index) => {
+          htmlContent += `
+            <div class="carousel-item-3d" id="item-3d-${index}" onclick="handleCardClick(${index}, '${item.id}')">
+              <div class="album-cover-box">
+                <img src="${item.img}" alt="Cover">
+              </div>
+              <h3>${item.title}</h3>
+              <p>${item.artist}</p>
+            </div>
+          `;
+        });
 
-        let positionClassIndex = (i - currentIndex) % total;
-        if (positionClassIndex < 0) {
-          positionClassIndex += total;
-        }
-        el.classList.add(`pos-${positionClassIndex}`);
-      }
-    }
-
-    function moveCarousel(direction) {
-      const total = carouselArray.length;
-      if (total === 0) return;
-
-      currentIndex += direction;
-
-      if (currentIndex < 0) currentIndex = total - 1;
-      if (currentIndex >= total) currentIndex = 0;
-
-      update3DPositions();
-    }
-
-    function handleCardClick(clickedIndex, prodId) {
-      const el = document.getElementById(`item-3d-${clickedIndex}`);
-      if (!el) return;
-
-      if (el.classList.contains('pos-0')) {
-        // 100% 破空直達：如果在正中央被點擊，直接原視窗跳轉 category.html 詳細頁！
-        window.location.href = `category.html?id=${prodId}`;
-      } else {
-        // 如果點擊的是兩邊縮小的卡片，則自動把它扭轉拉到正中間聚焦
-        currentIndex = clickedIndex;
+        stage.innerHTML = htmlContent;
+        
+        // 執行第一次 3D 階梯滑軌排列
         update3DPositions();
       }
-    }
+
+      function update3DPositions() {
+        const total = carouselArray.length;
+        if (total === 0) return;
+
+        for (let i = 0; i < total; i++) {
+          const el = document.getElementById(`item-3d-${i}`);
+          if (!el) continue;
+
+          el.className = "carousel-item-3d";
+
+          let positionClassIndex = (i - currentIndex) % total;
+          if (positionClassIndex < 0) {
+            positionClassIndex += total;
+          }
+          el.classList.add(`pos-${positionClassIndex}`);
+        }
+      }
+
+      function moveCarousel(direction) {
+        const total = carouselArray.length;
+        if (total === 0) return;
+
+        currentIndex += direction;
+
+        if (currentIndex < 0) currentIndex = total - 1;
+        if (currentIndex >= total) currentIndex = 0;
+
+        update3DPositions();
+      }
+
+      function handleCardClick(clickedIndex, prodId) {
+        const el = document.getElementById(`item-3d-${clickedIndex}`);
+        if (!el) return;
+
+        if (el.classList.contains('pos-0')) {
+          // 100% 破空直達：如果在正中央被點擊，直接原視窗跳轉 category.html 詳細頁！
+          window.location.href = `category.html?id=${prodId}`;
+        } else {
+          // 如果點擊的是兩邊縮小的卡片，則自動把它扭轉拉到正中間聚焦
+          currentIndex = clickedIndex;
+          update3DPositions();
+        }
+      }
+
+      function syncNavbarBadges() {
+        const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+        const cartBadge = document.getElementById('cart-badge-count');
+        if (cartBadge) { cartBadge.textContent = savedCartCount; cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex'; }
+        const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+        const favBadge = document.getElementById('fav-badge-count');
+        if (favBadge) { favBadge.textContent = savedFavCount; favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex'; }
+      }
+
+    // =========================================================================
+    // 搜尋功能
+    // =========================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. 同步全站導覽列愛心與購物車金色通知泡泡
+      if (typeof syncNavbarBadges === 'function') {
+        syncNavbarBadges();
+      }
+
+      // 2. 串通首頁放大鏡搜尋核心
+      const searchInput = document.getElementById('global-search-input');
+      const searchBtn = document.getElementById('global-search-btn');
+
+      if (searchInput && searchBtn) {
+        // 執行跨頁參數發送跳轉
+        function handleHomeSearchAction() {
+          const keyword = searchInput.value.trim();
+          if (keyword !== "") {
+            window.location.href = `category.html?search=${encodeURIComponent(keyword)}`;
+          }
+        }
+
+        // 監聽點擊放大鏡圖示
+        searchBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (searchInput.value.trim() === "") {
+            searchInput.focus(); 
+          } else {
+            handleHomeSearchAction();
+          }
+        });
+
+        searchInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleHomeSearchAction();
+          }
+        });
+      }
+    });
 
     function syncNavbarBadges() {
       const savedCartCount = localStorage.getItem('globalCartCount') || '0';
       const cartBadge = document.getElementById('cart-badge-count');
-      if (cartBadge) { cartBadge.textContent = savedCartCount; cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex'; }
+      if (cartBadge) { 
+        cartBadge.textContent = savedCartCount; 
+        cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex'; 
+      }
       const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
       const favBadge = document.getElementById('fav-badge-count');
-      if (favBadge) { favBadge.textContent = savedFavCount; favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex'; }
+      if (favBadge) { 
+        favBadge.textContent = savedFavCount; 
+        favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex'; 
+      }
     }
-    </script>
+  </script>
 
 </body>
 </html>

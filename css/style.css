@@ -47,7 +47,9 @@ body::-webkit-scrollbar-thumb {
   color: white;
 }
 
-/* NAVBAR */
+/* ==========================================================================
+   導覽列
+   ========================================================================== */
 .navbar {
   width: 100%;
   height: 90px;
@@ -139,6 +141,27 @@ nav a:hover {
   font-weight: bold; 
 }
 
+#fav-badge-count,
+#cart-badge-count {
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  background: #d7b17d;
+  color: black;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(215, 177, 125, 0.4);
+}
+
+/* ==========================================================================
+   搜尋放大鏡)
+   ========================================================================== */
+
 .search-wrapper {
   display: flex;
   align-items: center;
@@ -148,13 +171,12 @@ nav a:hover {
   padding: 0;
 }
 
-/* 搜尋輸入框的基礎預設狀態：完全透明、無框、無背景、寬度為 0 */
 #global-search-input {
   width: 0;
   height: 32px;
   background: transparent;
   border: none;
-  /* 只在展開時顯示品牌金色的極細下底線 */
+
   border-bottom: 1px solid transparent; 
   outline: none;
   color: white;
@@ -164,13 +186,57 @@ nav a:hover {
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* 放大鏡按鈕：移除所有預設按鈕外觀，變成純圖示 */
+/* 所有圖示容器水平垂直置中對齊 */
+.nav-icons {
+  display: flex !important;
+  align-items: center !important; 
+  gap: 20px;                      
+}
+
+/* 微調搜尋組件的外框 */
+.search-wrapper {
+  display: inline-flex !important;
+  align-items: center !important;  
+  position: relative;
+  height: 40px;                  
+}
+
+/* 文字與整體對齊 */
+.search-wrapper input {
+  height: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* 按鈕垂直置中 */
+#global-search-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* 對齊 */
+.nav-icons .icon-badge,
+.nav-icons .member-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 40px;                  
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* 放大鏡變成純圖示 */
 #global-search-btn {
   background: transparent;
   border: none;
   padding: 0;
   color: white;
-  font-size: 20px; /* 尺寸大小與您原本 .nav-icons 的 20px 完美對齊 */
+  font-size: 20px;
   cursor: pointer;
   width: auto;
   height: auto;
@@ -182,42 +248,42 @@ nav a:hover {
 }
 
 #global-search-btn:hover {
-  color: #d7b17d; /* 滑鼠懸停轉為品牌奶茶金 */
+  color: #d7b17d;
 }
 
-/* ─── 核心互動：當滑鼠移入或點擊聚焦時，只優雅滑出線條與文字 ─── */
+/* 滑鼠移入只滑出線條與文字 ─── */
 .search-wrapper:hover #global-search-input,
 .search-wrapper:focus-within #global-search-input {
-  width: 140px; /* 向左滑出 140px 寬度 */
+  width: 140px;
   opacity: 1;
-  padding: 0 8px 4px 0; /* 留下一點舒服的間距與高度調校 */
-  border-bottom-color: rgba(215, 177, 125, 0.6); /* 展開時顯現淡淡的金色下底線 */
+  padding: 0 8px 4px 0;
+  border-bottom-color: rgba(215, 177, 125, 0.6);
 }
-/* 固定每個都有-到這裡 */
+
 
 /* HERO */
 .hero-section {
   width: 100%;
-  max-width: 1300px; /* 限制最大總寬度，讓大螢幕看不會散開 */
-  margin: 0 auto;    /* 讓整個並排區塊在網頁正中央 */
+  max-width: 1300px;
+  margin: 0 auto;
   padding: 80px 60px;
   
-  /* ─── 核心：使用 Grid 強制橫向並排 ─── */
+  /* 橫向並排 */
   display: grid;
-  grid-template-columns: 1.1fr 1fr; /* 左側文字佔 1.1 比例，右側圖佔 1 比例 */
-  gap: 60px;                         /* 文字與黑膠圖之間的橫向間距 */
-  align-items: center;               /* 確保文字和圓形黑膠能垂直對齊中線 */
+  grid-template-columns: 1.1fr 1fr; 
+  gap: 60px;                   
+  align-items: center;           
 }
 
 .hero-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  text-align: left; /* 保持高質感的靠左對齊 */
+  text-align: left;
 }
 
 .hero-text h2 {
-  font-size: 64px; /* 稍微微調字級，確保並排時文字不會把圖片擠下去 */
+  font-size: 64px;
   line-height: 1.2;
   margin: 20px 0;
   font-weight: 300;
@@ -278,80 +344,76 @@ nav a:hover {
 }
 
 /* ==========================================================================
-   DYNAMIC VINYL ANIMATION (首頁動態黑膠唱片效果)
+   首頁動態黑膠唱片
    ========================================================================== */
 
-/* 1. 創立一個相對定位的播放器容器 */
+/* 播放器容器 */
+
 .vinyl-player-container {
   position: relative;
-  width: 100%;
-  max-width: 440px; /* 限制黑膠並排時的最大尺寸，維持黃金比例 */
+  width: 100% !important;        
+  max-width: 420px !important;
+  aspect-ratio: 1 / 1 !important;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
+  perspective: 1000px;
 }
 
 .vinyl-click-link {
-  width: 100%;
-  cursor: pointer; /* 滑鼠移過去變成精緻的小手指 */
   display: block;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
 }
 
-/* 2. 前方的專輯封面紙套樣式 */
+/* 2. 紙質外封套 */
 .vinyl-cover {
-  position: relative;
-  width: 80%; /* 封面佔大比例 */
-  z-index: 2; /* 確保封面疊在唱片正前方 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 5; 
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .vinyl-cover img {
-  width: 100%;
-  height: auto;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
   display: block;
 }
 
-/* 3. 後方的黑膠唱片本體樣式 */
+/* 黑膠唱片本體 */
 .vinyl-disc {
   position: absolute;
-  width: 75%; /* 唱片稍微比封面小一點 */
-  right: -5%; /* 預設讓唱片從右邊露出三分之一 */
-  z-index: 1; /* 藏在封面後面 */
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  top: 2.5%; 
+  left: 2.5%; 
+  width: 95% !important;
+  height: 95% !important;
+  z-index: 2;
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* 讓唱片圖片強制變成正圓形，並加上黑膠特有的立體線條光澤 */
 .vinyl-disc img {
-  width: 100%;
-  height: auto;
-  border-radius: 50%; /* 強制將圖片裁切為完美的正圓形唱片 */
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
   display: block;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-  
-  /* ─── 核心：啟動 360 度無窮循環旋轉動畫 ─── */
-  animation: spinVinyl 15s linear infinite; 
 }
 
-/* 4. 關鍵字定義：360 度無限旋轉動畫 */
-@keyframes spinVinyl {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* ─── HOVER 移入時的聯動抽出與加速動畫 ─── */
-.vinyl-click-link:hover .vinyl-cover {
-  transform: translateX(-10%) rotate(-2deg); /* 封面往左微偏，像抽出唱片 */
-}
 
 .vinyl-click-link:hover .vinyl-disc {
-  right: -25%; /* 唱片從後方大幅度滑出 */
+  transform: translateX(55%) rotate(360deg);
+  filter: drop-shadow(-10px 10px 20px rgba(0, 0, 0, 0.7));
 }
 
-.vinyl-click-link:hover .vinyl-disc img {
-  animation-duration: 6s; /* 旋轉一圈從 15 秒加速到 6 秒，視覺效果滿分 */
+.vinyl-click-link:hover .vinyl-cover {
+  transform: scale(1.02);
+  border-color: rgba(215, 177, 125, 0.3);
+  box-shadow: 0 20px 45px rgba(215, 177, 125, 0.15);
+  transition: all 0.4s ease;
 }
 
 
@@ -1303,3 +1365,41 @@ nav a:hover {
     padding: 20px;
   }
 }
+
+/* ==========================================================================
+   Contact 線上表單
+   ========================================================================== */
+
+/* 當輸入框被點擊(focus) 或者 裡面有打字(not empty) 時，執行精緻的標籤上飄縮小動畫 */
+  .form-group-row input:focus ~ label,
+  .form-group-row input:not(:placeholder-shown) ~ label,
+  .form-group-row textarea:focus ~ label,
+  .form-group-row textarea:not(:placeholder-shown) ~ label {
+    top: -12px !important;
+    color: #d7b17d !important;
+    font-size: 12px !important;
+    letter-spacing: 2px !important;
+  }
+
+  /* 當點擊時，底部的金色下底線從中央向兩邊擴張開來 */
+  .form-group-row input:focus ~ .line-bar,
+  .form-group-row textarea:focus ~ .line-bar {
+    width: 100% !important;
+  }
+
+  /* 下拉選單 Focus 微光暈外框 */
+  #contact-category:focus {
+    border-color: #d7b17d !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    box-shadow: 0 0 12px rgba(215, 177, 125, 0.15) !important;
+  }
+
+  /* 按鈕滑鼠滑入時的奢華金屬發光縮放特效 */
+  .submit-contact-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(215, 177, 125, 0.3) !important;
+    letter-spacing: 4px !important; /* 文字間距優雅震盪拉開 */
+  }
+  .submit-contact-btn:active {
+    transform: translateY(-1px);
+  }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>首頁 | Celeste COLLECTION</title>
+  <title>購物與付款須知 | Celeste COLLECTION</title>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
@@ -50,13 +50,6 @@
       </a>
 
       <div class="icon-badge">
-        <a href="member.html" target="_self" title="我的收藏">
-          <i class="fa-regular fa-heart"></i>
-        </a>
-        <span id="fav-badge-count" style="display: none; font-weight: bold;">0</span>
-      </div>
-
-      <div class="icon-badge">
         <a href="cart.html">
             <i class="fa-solid fa-bag-shopping"></i> 
         </a>
@@ -67,50 +60,71 @@
   </header>
 
 
-  <!-- HERO -->
-  <section class="hero-section">
-
-    <div class="hero-text">
-      <p class="sub-title">聽見・收藏・感動</p>
-
-      <h2>
-        讓黑膠，<br />
-        成為你的日常。
-      </h2>
-
-      <p class="hero-desc">
-        每一張唱片，都是時光的記錄<br />
-        挑選喜歡的聲音，收藏你的人生配樂。
-      </p>
-
-      <button>
-        <a href="category.html">探索所有唱片
-        <i class="fa-solid fa-arrow-right"></i>
-        </a>
-      </button>
+  <main class="policy-page-container" style="width: 100%; max-width: 900px; margin: 0 auto; padding: 80px 40px; color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.8; text-align: left;">
+    
+    <!-- 頁面大標題 -->
+    <div class="policy-header" style="text-align: center; margin-bottom: 60px;">
+      <span style="color: #d7b17d; font-size: 12px; letter-spacing: 4px; display: block; margin-bottom: 12px;">SHOPPING & PAYMENT POLICY</span>
+      <h2 style="font-size: 36px; font-weight: 300; color: white; letter-spacing: 1px; margin: 0;">購物與付款須知</h2>
+      <div style="width: 40px; height: 1px; background: #d7b17d; margin: 25px auto 0 auto;"></div>
     </div>
 
-    <!-- 封面黑膠 -->
-    <div class="hero-image">
+    <!-- 前言導言 -->
+    <p style="margin-bottom: 40px; color: rgba(255,255,255,0.5); text-align: center;">
+      感謝您造訪 <strong>Celeste COLLECTION</strong>。  為維護您的消費權益，下單前請詳閱以下說明：
+    </p>
 
-      <a href="category.html" target="_self" class="vinyl-click-link" style="text-decoration: none; display: block;">
-        
-        <div class="vinyl-player-container">
-          <!-- 後方的黑膠唱片本體動態旋轉 -->
-          <div class="vinyl-disc">
-            <img src="img/vinyl.png" alt="Vinyl Disc">
-          </div>
-          <!-- 黑膠封套 -->
-          <div class="vinyl-cover">
-            <img src="img/vinylcover.png" alt="Album Cover">
-          </div>
-        </div>
-        
-      </a>
+    <!-- 網購流程說明 -->
+    <section class="policy-section" style="margin-bottom: 50px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); padding: 30px; border-radius: 6px;">
+      <h3 style="color: #d7b17d; font-size: 18px; font-weight: 400; margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-cart-shopping"></i> 網購流程說明
+      </h3>
+      <ul style="list-style: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+        <li><strong style="color: white; margin-right: 8px;">1. 會員登入：</strong>建議先註冊 / 登入會員以追蹤訂單最新進度。</li>
+        <li><strong style="color: white; margin-right: 8px;">2. 選購結帳：</strong>商品加入購物車後，請再次確認選購之數量與黑膠規格。</li>
+        <li><strong style="color: white; margin-right: 8px;">3. 填寫資料：</strong>請務必填寫真實正確的收件人完整姓名、聯絡電話與寄送地址。</li>
+        <li><strong style="color: white; margin-right: 8px;">4. 完成訂單：</strong>付款成功後，系統將自動發送確認信件至您的電子信箱。</li>
+      </ul>
+    </section>
 
-    </div>
+    <!-- 付款方式 -->
+    <section class="policy-section" style="margin-bottom: 50px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); padding: 30px; border-radius: 6px;">
+      <h3 style="color: #d7b17d; font-size: 18px; font-weight: 400; margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-credit-card"></i> 支援付款方式
+      </h3>
+      <ul style="list-style: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+        <li><strong style="color: white; margin-right: 8px;">• 線上刷卡：</strong>支援各家銀行 VISA / MasterCard / JCB 信用卡安全加密刷卡。</li>
+        <li><strong style="color: white; margin-right: 8px;">• 行動支付：</strong>支援 LINE Pay / Apple Pay / Google Pay 等快捷行動支付。</li>
+        <li><strong style="color: white; margin-right: 8px;">• 虛擬帳號：</strong>提供轉帳專用獨立帳號，需於下單後 <span style="color: #d7b17d; font-weight: bold;">3</span> 天內完成匯款。</li>
+        <li><strong style="color: white; margin-right: 8px;">• 超商取貨付款：</strong>商品到達指定超商門市後，再行繳費並取貨。</li>
+      </ul>
+    </section>
 
-  </section>
+    <!-- 配送進度與運費 -->
+    <section class="policy-section" style="margin-bottom: 50px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); padding: 30px; border-radius: 6px;">
+      <h3 style="color: #d7b17d; font-size: 18px; font-weight: 400; margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-truck-fast"></i> 配送進度與運費
+      </h3>
+      <ul style="list-style: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+        <li><strong style="color: white; margin-right: 8px;">• 出貨時間：</strong>珍稀現貨商品於訂單成立後 <span style="color: white;">1-3 個工作天</span> 內安排加固包裝出貨。</li>
+        <li><strong style="color: white; margin-right: 8px;">• 配送時效：</strong>黑膠專用宅配約 1-2 天送達；超商門市取貨約 2-4 天送達。</li>
+        <li><strong style="color: white; margin-right: 8px;">• 國內運費：</strong>精密防護宅配運費 NT$ 100 元；超商門市取貨運費 NT$ 60 元。</li>
+        <li><strong style="color: white; margin-right: 8px;">• 免運條件：</strong>全站消費單筆滿 <span style="color: #d7b17d; font-weight: bold;">NT$ 1,500</span> 元，即享有黑膠免運費優惠。</li>
+      </ul>
+    </section>
+
+    <!-- 電子發票開立 -->
+    <section class="policy-section" style="margin-bottom: 50px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); padding: 30px; border-radius: 6px;">
+      <h3 style="color: #d7b17d; font-size: 18px; font-weight: 400; margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-receipt"></i> 電子發票開立
+      </h3>
+      <ul style="list-style: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+        <li><strong style="color: white; margin-right: 8px;">• 開立方式：</strong>本網站全面採用電子發票系統，開立後自動寄送開立通知至您的電子信箱。</li>
+        <li><strong style="color: white; margin-right: 8px;">• 載具載入：</strong>結帳時可選擇共通性載具（如手機條碼、自然人憑證）或填寫公司統一編號。</li>
+      </ul>
+    </section>
+
+  </main>
 
   <!-- FOOTER -->
 <footer class="main-footer">
@@ -133,7 +147,7 @@
     <div class="service-card">
       <i class="fa-solid fa-rotate-left"></i>
       <div>
-        <h4>7 天鑑賞期</h4>
+        <h4>14 天鑑賞期</h4>
         <p>非拆膜不拆封可退換</p>
       </div>
     </div>

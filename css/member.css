@@ -47,7 +47,9 @@ body::-webkit-scrollbar-thumb {
   color: white;
 }
 
-/* NAVBAR */
+/* ==========================================================================
+   導覽列
+   ========================================================================== */
 .navbar {
   width: 100%;
   height: 90px;
@@ -138,7 +140,24 @@ nav a:hover {
   justify-content: center;
   font-weight: bold; 
 }
-/* 固定每個都有-到這裡 */
+
+#fav-badge-count,
+#cart-badge-count {
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  background: #d7b17d;
+  color: black;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(215, 177, 125, 0.4);
+}
+
 
 
 .member-section {
@@ -381,6 +400,108 @@ nav a:hover {
 }
 
 /* ==========================================================================
+   搜尋放大鏡)
+   ========================================================================== */
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* 搜尋輸入框的基礎預設狀態：完全透明、無框、無背景、寬度為 0 */
+#global-search-input {
+  width: 0;
+  height: 32px;
+  background: transparent;
+  border: none;
+  /* 只在展開時顯示品牌金色的極細下底線 */
+  border-bottom: 1px solid transparent; 
+  outline: none;
+  color: white;
+  font-size: 14px;
+  padding: 0;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+   /* 1. 強制讓導覽列右側的所有圖示容器水平垂直置中對齊 */
+.nav-icons {
+  display: flex !important;
+  align-items: center !important;  /* 關鍵：確保所有元件的中心點在同一條水平線上 */
+  gap: 20px;                      /* 調整搜尋框與各 Icon 之間的間距 */
+}
+
+/* 2. 微調搜尋組件的外框，確保它不擠壓、不影響其他圖示 */
+.search-wrapper {
+  display: inline-flex !important;
+  align-items: center !important;  /* 確保放大鏡與輸入框文字完美置中 */
+  position: relative;
+  height: 40px;                   /* 固定高度，防範撐開導覽列 */
+}
+
+/* 3. 確保輸入框本身的文字與整體對齊 */
+.search-wrapper input {
+  height: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* 4. 確保放大鏡按鈕本身垂直置中 */
+#global-search-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* 5. 強制修正會員、愛心、購物車的 icon-badge 外框與搜尋框對齊 */
+.nav-icons .icon-badge,
+.nav-icons .member-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 40px;                   /* 與搜尋外框高度完全一模一樣 */
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* 放大鏡按鈕：移除所有預設按鈕外觀，變成純圖示 */
+#global-search-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: white;
+  font-size: 20px; /* 尺寸大小與您原本 .nav-icons 的 20px 完美對齊 */
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  margin-left: 0;
+}
+
+#global-search-btn:hover {
+  color: #d7b17d; /* 滑鼠懸停轉為品牌奶茶金 */
+}
+
+/* ─── 核心互動：當滑鼠移入或點擊聚焦時，只優雅滑出線條與文字 ─── */
+.search-wrapper:hover #global-search-input,
+.search-wrapper:focus-within #global-search-input {
+  width: 140px; /* 向左滑出 140px 寬度 */
+  opacity: 1;
+  padding: 0 8px 4px 0; /* 留下一點舒服的間距與高度調校 */
+  border-bottom-color: rgba(215, 177, 125, 0.6); /* 展開時顯現淡淡的金色下底線 */
+}
+
+/* ==========================================================================
    ANIMATION & RESPONSIVE (動畫與手機板調整)
    ========================================================================== */
 
@@ -393,4 +514,168 @@ nav a:hover {
   .member-section { padding: 40px 20px; }
   .member-content-wrapper { padding: 24px; }
   .tab-btn { font-size: 13px; height: 50px; }
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.main-footer {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 80px; 
+}
+
+.footer-service-bar {
+  width: 100%;
+  padding: 40px 80px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.footer-service-bar .service-card {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.footer-service-bar .service-card i {
+  color: #d7b17d;
+  font-size: 28px;
+}
+
+.footer-service-bar .service-card h4 {
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.footer-service-bar .service-card p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+}
+
+/* 2. 下半段連結區 */
+.footer-links-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 60px 80px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 60px;
+}
+
+.footer-column h3 {
+  color: #d7b17d;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+
+/* 品牌側欄微調 */
+.brand-column .logo h1 {
+  letter-spacing: 6px;
+  font-size: 28px;
+  color: #d7b17d;
+  font-weight: 300;
+}
+
+.brand-column .logo span {
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.footer-brand-desc {
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* 社群小圖示 */
+.footer-socials {
+  margin-top: 24px;
+  display: flex;
+  gap: 18px;
+}
+
+.footer-socials a {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.footer-socials a:hover {
+  color: #d7b17d;
+  transform: translateY(-3px);
+}
+
+/* 站點連結清單列表 */
+.links-column ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.links-column ul a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  transition: 0.3s;
+  display: inline-block;
+}
+
+/* 原頁面連結移入效果 */
+.links-column ul a:hover {
+  color: #d7b17d;
+  transform: translateX(4px); /* 滑鼠移過去字體往右微滑，非常有動態回饋感 */
+}
+
+/* 3. 最底部超細純文字版權宣告 */
+.footer-copyright {
+  width: 100%;
+  padding: 24px 80px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.footer-copyright p {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   FOOTER RESPONSIVE (完美相容您原本的手機版斷點)
+   ========================================================================== */
+
+@media(max-width:990px) {
+  .footer-service-bar {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 40px;
+  }
+  .footer-links-container {
+    grid-template-columns: 1fr; /* 平板以下轉為直向單欄瀑布流 */
+    gap: 40px;
+    padding: 40px;
+  }
+}
+
+@media(max-width:600px) {
+  .footer-service-bar {
+    grid-template-columns: 1fr;
+    padding: 30px 20px;
+  }
+  .footer-links-container {
+    padding: 40px 20px;
+  }
+  .footer-copyright {
+    padding: 20px;
+  }
 }
