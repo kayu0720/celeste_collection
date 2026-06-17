@@ -77,10 +77,11 @@
       <h3>唱片分類</h3>
       <ul>
         <li class="sidebar-main-item" data-genre="all">全部音樂 ALL</li>
+        <li class="sidebar-main-item" data-genre="pop">流行音樂 POP</li>
         <li class="sidebar-main-item" data-genre="pop-jp">日語流行 J-POP</li>
         <li class="sidebar-main-item" data-genre="pop-kr">韓語流行 K-POP</li>
         <li class="sidebar-main-item" data-genre="classical">古典音樂 CLASSICAL</li>
-        <li class="sidebar-main-item" data-genre="rnb">R&B / 靈魂樂 SOUL</li>
+        <li class="sidebar-main-item" data-genre="rnb">R&B </li>
         <li class="sidebar-main-item" data-genre="ost">原聲帶 OST</li>
       </ul>
     </aside>
@@ -236,6 +237,24 @@
   // =========================================================================
 
   const initialDatabaseFallback = { 
+
+    /*-- POP --*/
+    "vinyl-0014": { 
+      genre: "pop", 
+      title: "The Book For (Overwatch Edition)", 
+      artist: "Ariana Grande", 
+      price: 1480, 
+      img: "img/pop/ariana_grande/petal.jpg", 
+      thumbnails: [ 
+        "img/pop/ariana_grande/petal.jpg"
+       ], 
+      tag: "全部音樂 ＞ 流行音樂", 
+      barcode: "0199957923750", 
+      releaseDate: "2026-07-31", 
+      stock: 3, 
+      tracks: [], 
+      reviews: [] 
+    }, 
 
     /*-- JP --*/
 
@@ -454,6 +473,25 @@
       reviews: [] 
     },
 
+    "vinyl-013": { 
+      genre: "pop-kr", 
+      title: "LEMONADE", 
+      artist: "aespa", 
+      price: 1250, 
+      img: "img/kr/aespa/lemonade.jpg", 
+      thumbnails: [ 
+        "img/kr/aespa/lemonade.jpg",
+      ], 
+      tag: "全部音樂 ＞ 韓語流行", 
+      barcode: "8804775478017", 
+      releaseDate: "2026/6/30", 
+      stock: 7, 
+      tracks: [
+        "LEMONADE"
+      ], 
+      reviews: [] 
+    },
+
     /*-- CLASSICAL --*/
 
     "vinyl-003": { 
@@ -544,6 +582,26 @@
         "Suzume",
         "Tamaki",
         "Tears of Suzume",
+      ], 
+      reviews: [] 
+    },
+
+    "vinyl-015": { 
+      genre: "ost", 
+      title: "劇場版『鏈鋸人 蕾潔篇』電影原聲帶", 
+      artist: "牛尾憲輔Kensuke Ushio", 
+      price: 1380, 
+      img: "img/ost/reze.jpg", 
+      thumbnails: [
+        "img/ost/reze.jpg",
+        "img/ost/radwimps/suzume1.jpg" 
+      ], 
+      tag: "全部音樂 ＞ 原聲帶 OST", 
+      barcode: "0199584402918", 
+      releaseDate: "2026-08-28", 
+      stock: 5, 
+      tracks: [
+        "From Below With Love",
       ], 
       reviews: [] 
     } 
@@ -963,166 +1021,345 @@
         }
       };
 
-  window.quickAddCart = function(id) {
-    let db = getLatestProductDB();
-    if (!db[id]) return;
-    let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
-    const existing = cart.find(item => item.id === id);
-    if (existing) { existing.qty += 1; } else {
-      cart.push({ id: id, title: db[id].title, artist: db[id].artist, price: db[id].price, img: db[id].img, qty: 1 });
-    }
-    localStorage.setItem('realCartItems', JSON.stringify(cart));
-    let count = cart.reduce((sum, item) => sum + item.qty, 0);
-    localStorage.setItem('globalCartCount', count);
-    syncNavbarBadges();
-    alert(`✨ 已成功加購《${db[id].title}》至您的購物車！`);
-  };
 
-  // 1. 還原正確的「加入我的收藏」函式（完美對齊小卡的行內點擊屬性）
-  window.quickAddFav = function(id) {
-    // 1. 權限防禦：驗證訪客登入狀態
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
-      alert('✕ 權限不足：請先前往會員中心登入帳號，才能啟用收藏功能！'); 
-      window.location.href = 'member.html'; 
-      return;
-    }
-    
-    let db = getLatestProductDB();
-    if (!db[id]) return;
+      // ==========================================================================
+      // 加入購物車
+      // ==========================================================================
+      window.quickAddCart = function(id) {
+        let db = getLatestProductDB();
+        if (!db[id]) return;
+        let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
+        const existing = cart.find(item => item.id === id);
+        if (existing) { existing.qty += 1; } else {
+          cart.push({ id: id, title: db[id].title, artist: db[id].artist, price: db[id].price, img: db[id].img, qty: 1 });
+        }
+        localStorage.setItem('realCartItems', JSON.stringify(cart));
+        let count = cart.reduce((sum, item) => sum + item.qty, 0);
+        localStorage.setItem('globalCartCount', count);
+        syncNavbarBadges();
+        alert(`✨ 已成功加購《${db[id].title}》至您的購物車！`);
+      };
 
-    let favorites = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
-    
-    // 2. 防範重複收藏機制
-    if (favorites.includes(id)) { 
-      alert('該經典商品已在您的收藏清單中囉！將為您直接前往我的收藏查看。'); 
-      window.location.href = 'member.html'; // 即使重複，也聽話轉跳過去給客人看
-      return; 
-    }
-    
-    // 3. 安全推入快取資料流並更新計數
-    favorites.push(id);
-    localStorage.setItem('myFavoriteItems', JSON.stringify(favorites));
-    localStorage.setItem('globalFavsCount', favorites.length);
-    
-    // 4. 即時連動校正全站右上角愛心金色數量泡泡
-    if (typeof syncNavbarBadges === 'function') {
-      syncNavbarBadges();
-    }
-    
+      window.quickAddFav = function(id) {
+        // 1. 權限防禦：驗證訪客登入狀態
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+          alert('✕ 權限不足：請先前往會員中心登入帳號，才能啟用收藏功能！'); 
+          window.location.href = 'member.html'; 
+          return;
+        }
+        
+        let db = getLatestProductDB();
+        if (!db[id]) return;
 
-    alert(`❤️ 成功同步收藏！已安全寫入您的帳戶。內容將為您跳轉至會員中心查看。`);
-    
+        let favorites = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
+        
+        // 2. 防範重複收藏機制
+        if (favorites.includes(id)) { 
+          alert('該經典商品已在您的收藏清單中囉！將為您直接前往我的收藏查看。'); 
+          window.location.href = 'member.html'; 
+          return; 
+        }
+        
+        // 3. 安全推入快取資料流並更新計數
+        favorites.push(id);
+        localStorage.setItem('myFavoriteItems', JSON.stringify(favorites));
+        localStorage.setItem('globalFavsCount', favorites.length);
+        
+        // 4. 即時連動校正全站右上角愛心金色數量泡泡
+        if (typeof syncNavbarBadges === 'function') {
+          syncNavbarBadges();
+        }
+        
 
-    window.location.href = 'member.html';
-  };
+        alert(`❤️ 成功同步收藏！已安全寫入您的帳戶。內容將為您跳轉至會員中心查看。`);
+        
+
+        window.location.href = 'member.html';
+      };
 
   // ==========================================================================
-  // 【顧客評論完全體：強制會員驗證、全站資料庫與會員中心雙向即時大連動】
+  // 顧客評論完全體
   // ==========================================================================
-  window.submitReviewAction = function() {
-    // 1. 最高權限攔截防禦：強制檢查客人在會員中心是否有成功登入
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
-      alert('✕ 請先前往會員中心登入帳號，才能留下您的聆聽評價！'); 
-      window.location.href = 'member.html'; // 破空跳轉回會員中心
-      return;
-    }
+    window.submitReviewAction = function() {
+      // 1. 強制檢查客人在會員中心是否有成功登入
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        alert('✕ 請先前往會員中心登入帳號，才能留下您的聆聽評價！');
+        window.location.href = 'member.html'; // 破空跳轉回會員中心
+        return;
+      }
 
-    // 2. 擷取並檢查評論輸入框的文字內容
-    const input = document.getElementById('new-review-input');
-    if (!input || input.value.trim() === "") {
-      alert('✕ 請輸入您的聆聽心得或對此張黑膠的音質評價後再行送出。');
-      return;
-    }
-    
-    const commentText = input.value.trim();
-    const currentEmail = localStorage.getItem('currentUserEmail') || 'Premium_Member';
-    const currentTime = new Date().toISOString().split('T')[0]; // 自動生成標準 YYYY-MM-DD 日期格式
+      // 2. 擷取並檢查評論輸入框的文字內容
+      const input = document.getElementById('new-review-input');
+      if (!input || input.value.trim() === "") {
+        alert('✕ 請輸入您的聆聽心得或對此張黑膠的音質評價後再行送出。');
+        return;
+      }
 
-    // ─── 【連動 A：寫入黑膠商品資料庫，讓所有人都能看到這筆評論】 ───
-    let db = getLatestProductDB();
-    
-    // 安全防呆：如果該首唱片在資料庫裡從來沒有人評論過，初始化一個空陣列
-    if (!db[activeProductId].reviews) {
-      db[activeProductId].reviews = [];
-    }
-    
-    // 包裝標準評論物件
-    const newProductReview = {
-      user: currentEmail,
-      comment: commentText,
-      date: currentTime
+      // 安全防呆：檢查當前商品 ID 是否存在
+      if (typeof activeProductId === 'undefined' || !activeProductId) {
+        alert('✕ 找不到當前商品編號，請重新整理頁面。');
+        return;
+      }
+
+      const commentText = input.value.trim();
+      const currentEmail = localStorage.getItem('currentUserEmail') || 'Premium_Member';
+  
+      const currentTime = new Date().toISOString().split('T')[0]; 
+
+      // ─── 【連動 A：寫入黑膠商品資料庫，100% 確保顧客評論和換頁都能看到】 ───
+      let db = {};
+      if (typeof getLatestProductDB === 'function') {
+        db = getLatestProductDB();
+      } else {
+        db = JSON.parse(localStorage.getItem('localProductDB')) || {};
+      }
+      
+      if (!db[activeProductId]) {
+        db[activeProductId] = {};
+      }
+
+      // 安全防呆：如果該唱片在資料庫裡沒有評論過，初始化一個空陣列
+      if (!db[activeProductId].reviews) {
+        db[activeProductId].reviews = [];
+      }
+
+      // 包裝標準評論物件
+      const newProductReview = {
+        user: currentEmail,
+        comment: commentText,
+        date: currentTime
+      };
+
+      // 塞入商品的全球評論池並強制覆寫寫入本地儲存空間
+      db[activeProductId].reviews.push(newProductReview);
+      localStorage.setItem('localProductDB', JSON.stringify(db));
+
+      // ─── 【連動 B：同步寫入會員中心個人紀錄軌道】 ───
+      let memberReviewKey = 'reviews_' + currentEmail; 
+      let myPersonalReviews = JSON.parse(localStorage.getItem(memberReviewKey)) || [];
+
+      const newMemberLog = {
+        logId: "REV-" + Date.now(),
+        albumTitle: db[activeProductId].title || "精選黑膠唱片",     
+        albumArtist: db[activeProductId].artist || "Vinyl Artist",   
+        myComment: commentText,                                  
+        timestamp: currentTime                                   
+      };
+
+      myPersonalReviews.push(newMemberLog);
+      localStorage.setItem(memberReviewKey, JSON.stringify(myPersonalReviews));
+
+      // 3. 彈出成功回饋
+      alert(`✓ 評價發布成功！\n已將您的心得寫入《${db[activeProductId].title || '此唱片'}》全球評論池中！`);
+
+      // 清空輸入框
+      input.value = ""; 
+  
+      if (typeof loadProductDetail === 'function') {
+        // 原地重新讀取最新商品評價數據大庫
+        loadProductDetail(activeProductId); 
+
+        if (typeof switchSpecTab === 'function') {
+          switchSpecTab('reviews');
+        }
+      } else if (typeof switchSpecTab === 'function') {
+        switchSpecTab('reviews'); 
+      } else {
+        window.location.reload(); 
+      }
     };
-    
-    // 塞入商品的全球評論池
-    db[activeProductId].reviews.push(newProductReview);
-    localStorage.setItem('localProductDB', JSON.stringify(db));
 
-    // ─── 【連動 B：同步寫入會員中心個人紀錄軌道，讓個人帳戶可以實時追蹤】 ───
-    // 這裡讀取該登入會員的個人發表歷史紀錄陣列
-    let memberReviewKey = 'reviews_' + currentEmail; // 根據 Email 為每位會員建立獨立的個資留言軌道
-    let myPersonalReviews = JSON.parse(localStorage.getItem(memberReviewKey)) || [];
-    
-    // 包裝成適合會員中心列印的「個人足跡物件」
-    const newMemberLog = {
-      logId: "REV-" + Date.now(),
-      albumTitle: db[activeProductId].title,      // 記錄是針對哪張專輯
-      albumArtist: db[activeProductId].artist,    // 記錄歌手
-      myComment: commentText,                     // 記錄講了什麼
-      timestamp: currentTime                      // 記錄日期
+    // 3. 【拼字修正】修復原本被切斷的 window.backToList 拼字錯誤，確保按鈕正常可用
+    window.backToList = function() {
+      if (currentGenre === "all") {
+        loadAllProductsSorted();
+      } else {
+        const activeMain = document.querySelector('.sidebar-main-item.active');
+        if (activeMain) loadAlbumList(currentGenre, activeMain.innerText);
+      }
+      document.getElementById('btn-back-list').style.display = 'none';
     };
-    
-    myPersonalReviews.push(newMemberLog);
-    localStorage.setItem(memberReviewKey, JSON.stringify(myPersonalReviews));
 
-    // 3. 彈出高質感的商務同步成功回饋，並原地即時刷新內容格子視圖
-    alert(`✓ 評價發布成功！\n已將您的心得寫入《${db[activeProductId].title}》全球評論池，並同步寫入您的個人會員歷史紀錄中！`);
-    
-    // 強制原處格子重新渲染，100% 讓客人當場看見自己剛剛發布的留言內容！
-    switchSpecTab('reviews'); 
-  };
+    window.clearAllSidebarHighlights = function() {
+      document.querySelectorAll('.sidebar ul li').forEach(i => i.classList.remove('active'));
+    };
 
-  // 3. 【拼字修正】修復原本被切斷的 window.backToList 拼字錯誤，確保按鈕正常可用
-  window.backToList = function() {
-    if (currentGenre === "all") { 
-      loadAllProductsSorted(); 
-    } else {
-      const activeMain = document.querySelector('.sidebar-main-item.active');
-      if (activeMain) loadAlbumList(currentGenre, activeMain.innerText);
-    }
-    document.getElementById('btn-back-list').style.display = 'none';
-  };
+    // 7. 詳細頁下方四張縮圖點擊更換大圖
+    window.refreshThumbnails = function(id) {
+      if (typeof getLatestProductDB !== 'function') return;
+      const product = getLatestProductDB()[id];
+      const thumbRow = document.querySelector('.thumbnail-row');
+      if (!thumbRow || !product || !product.thumbnails) return;
+      
+      let thumbHtml = "";
+      product.thumbnails.forEach(src => {
+        thumbHtml += `<img src="${src}" alt="thumb" style="width:90px; height:90px; object-fit:cover; cursor:pointer; opacity:0.7; transition:0.3s;" onclick="document.getElementById('detail-main-img').src='${src}'" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">`;
+      });
+      thumbRow.innerHTML = thumbHtml;
+    };
 
-  window.clearAllSidebarHighlights = function() {
-    document.querySelectorAll('.sidebar ul li').forEach(i => i.classList.remove('active'));
-  };
+    // 頂部導覽列雙通知泡泡即時校正
+    window.syncNavbarBadges = function() {
+      const savedCartCount = localStorage.getItem('globalCartCount') || '0';
+      const cartBadge = document.getElementById('cart-badge-count');
+      if (cartBadge) {
+        cartBadge.textContent = savedCartCount;
+        cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex';
+      }
+      const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
+      const favBadge = document.getElementById('fav-badge-count');
+      if (favBadge) {
+        favBadge.textContent = savedFavCount;
+        favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex';
+      }
+};
 
-  // 7. 詳細頁下方四張縮圖點擊更換大圖
-  window.refreshThumbnails = function(id) {
-    const product = getLatestProductDB()[id];
-    const thumbRow = document.querySelector('.thumbnail-row');
-    if (!thumbRow || !product.thumbnails) return;
-    let thumbHtml = "";
-    product.thumbnails.forEach(src => {
-      thumbHtml += `<img src="${src}" alt="thumb" style="width:90px; height:90px; object-fit:cover; cursor:pointer; opacity:0.7; transition:0.3s;" onclick="document.getElementById('detail-main-img').src='${src}'" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">`;
-    });
-    thumbRow.innerHTML = thumbHtml;
-  };
+      // ==========================================================================
+      // 商品詳細頁 - 加入購物車, 收藏
+      // ==========================================================================
 
-  // 頂部導覽列雙通知泡泡即時校正
-  window.syncNavbarBadges = function() {
-    const savedCartCount = localStorage.getItem('globalCartCount') || '0';
-    const cartBadge = document.getElementById('cart-badge-count');
-    if (cartBadge) { 
-      cartBadge.textContent = savedCartCount; 
-      cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex'; 
-    }
-    const savedFavCount = localStorage.getItem('globalFavsCount') || '0';
-    const favBadge = document.getElementById('fav-badge-count');
-    if (favBadge) { 
-      favBadge.textContent = savedFavCount; 
-      favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex'; 
-    }
-  };
+      window.actionBuyCurrent = function(event) {
+      // 1. 最高權限攔截：萬一這個按鈕不幸被包在 HTML 的 <form> 裡面，立刻斬斷它的整頁刷新行為！
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+
+      // 2. 實時反向追蹤：不要去抓不穩定的變數，直接去剝離此時大彈窗畫面上印出來的真實專輯名稱！
+      const modalTitleEl = document.getElementById('modal-title');
+      if (!modalTitleEl || modalTitleEl.textContent.trim() === "" || modalTitleEl.textContent.trim() === "-") {
+        alert("✕ 系統提示：未能成功識別當前大彈窗聚焦的黑膠唱片，請關閉彈窗重新點開！");
+        return;
+      }
+
+      const currentDisplayTitle = modalTitleEl.textContent.trim(); // 拿到當前彈窗的歌名
+
+      // 3. 提取全站標準對齊的 localProductDB 大商品庫
+      let db = JSON.parse(localStorage.getItem('localProductDB')) || {};
+      let targetId = null;
+
+      // 執行硬核資管反向遍歷比對：在資料庫大庫裡尋找哪一首黑膠的品名與畫面上完全一模一樣
+      for (let key in db) {
+        if (db[key].title === currentDisplayTitle) {
+          targetId = key; // 成功反向鎖定實體商品 ID！
+          break;
+        }
+      }
+
+      // 萬一反向查驗也找不到，進行萬能保底分流（使用當前的 activeProductId）
+      if (!targetId && typeof activeProductId !== 'undefined' && activeProductId) {
+        targetId = activeProductId;
+      }
+
+      if (!targetId || !db[targetId]) {
+        alert("✕ 系統提示：Celeste 數據庫內無吻合此品名的商品物件，請重新整理網頁！");
+        return;
+      }
+
+      // 4. 數據庫金鑰大連動：推入與全站、購物車頁一字不漏對齊的 realCartItems 提袋
+      let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
+      const existing = cart.find(item => item.id === targetId);
+      
+      if (existing) {
+        existing.qty += 1; // 買過則累積件數
+      } else {
+        cart.push({ 
+          id: targetId, 
+          title: db[targetId].title, 
+          artist: db[targetId].artist, 
+          price: db[targetId].price, 
+          img: db[targetId].img, 
+          qty: 1 
+        });
+      }
+
+      // 5. 硬碟唯獨回寫儲存
+      localStorage.setItem('realCartItems', JSON.stringify(cart));
+
+      // 6. 總數量計算與刷亮通知金色泡泡
+      let totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+      localStorage.setItem('globalCartCount', totalCount);
+
+      if (typeof syncNavbarBadges === 'function') {
+        syncNavbarBadges();
+      }
+
+      // 7. 高奢商務回饋
+      alert(`✨ 成功加購！\n您已成功將《${db[targetId].title}》添加至您的購物袋中。\n您可以隨時前往購物車頁面進行精緻金流結帳。`);
+    };
+
+      // 2. 大彈窗「加入收藏」大按鈕實時連動 (與會員中心 100% 雙向大同步)
+      window.actionFavCurrent = function() {
+        // 權限防禦：沒登入會員的人一律禁止啟用收藏，強行跳轉登入
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+          alert('✕ 權限不足：請先前往會員中心登入帳號，才能啟用黑膠收藏功能！');
+          window.location.href = 'member.html';
+          return;
+        }
+
+        if (typeof activeProductId !== 'undefined' && activeProductId) {
+          let db = JSON.parse(localStorage.getItem('localProductDB')) || (typeof globalDB !== 'undefined' ? globalDB : {});
+          let favorites = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
+          
+          // 排重機制：防止客人在彈窗內重複點擊加入愛心
+          if (favorites.includes(activeProductId)) {
+            alert(`您早已收藏過這張經典黑膠唱片囉！\n將為您直接跳轉至會員中心進行查閱。`);
+            window.location.href = 'member.html';
+            return;
+          }
+
+          // 通過查驗，寫入收藏大夾，並即時亮起導覽列愛心數量泡泡
+          favorites.push(activeProductId);
+          localStorage.setItem('myFavoriteItems', JSON.stringify(favorites));
+          localStorage.setItem('globalFavsCount', favorites.length);
+          
+          // 即時亮燈刷新通知
+          if (typeof syncNavbarBadges === 'function') {
+            syncNavbarBadges();
+          }
+
+          alert(`❤️ 成功同步收藏！\n已安全將《${db[activeProductId]?.title || '此商品'}》寫入您的專屬帳戶中。\n即將為您跳轉至會員中心查閱！`);
+          window.location.href = 'member.html';
+        } else {
+          alert("✕ 系統提示：未能成功識別當前黑膠唱片，請關閉彈窗重試！");
+        }
+      };
+
+
+      // =========================================================================
+      function openProductModal(id) {
+        activeProductId = id;
+        const modal = document.getElementById('product-detail-modal');
+        if (!modal) return;
+
+        const item = globalDB[id];
+        document.getElementById('modal-title').textContent = item.title;
+        document.getElementById('modal-artist').textContent = item.artist;
+        document.getElementById('modal-price').textContent = "NT$ " + item.price.toLocaleString();
+        document.getElementById('modal-img').src = item.img;
+        document.getElementById('modal-stock').textContent = item.stock;
+
+        // 🚀【萬能盲抓防護網】：直接去尋找彈窗內 class 叫作 .cart-btn 的大按鈕
+        let modalCartBtn = modal.querySelector('.cart-btn');
+        
+        // 💡 備用防線：如果還是抓不到 .cart-btn，直接去撈按鈕群組 .button-group 裡面的第一個 button 元素！
+        if (!modalCartBtn) {
+          modalCartBtn = modal.querySelector('.button-group button');
+        }
+
+        // 100% 強行綁定實體傳送門：強制將該商品的純文字實體 ID 直接寫上按鈕！
+        if (modalCartBtn) {
+          modalCartBtn.setAttribute('onclick', `masterCartBridge('${id}')`);
+          modalCartBtn.removeAttribute('disabled'); // 預防被鎖死
+        }
+
+        // ─── 順便連動原有的 actionBuyCurrent 備用分流 ───
+        window.actionBuyCurrent = function() {
+          masterCartBridge(id);
+        };
+
+        switchSpecTab('info');
+        modal.style.display = 'flex';
+      }
 
   </script>
 
