@@ -819,11 +819,10 @@
           });
         };
 
-        window.renderProductsGrid = function(filterCondition) {
-          const db = getLatestProductDB();
-          let items = Object.keys(db).map(key => ({ id: key, ...db[key] })).filter(filterCondition);
-          renderCustomCards(items);
-        };
+
+
+        /*Product 小卡*/
+
 
         window.renderCustomCards = function(itemsArray) {
           const gridContainer = document.getElementById('category-products-grid');
@@ -833,29 +832,40 @@
           document.getElementById('view-detail').style.display = 'none';
           
           let htmlContent = "";
+          
           itemsArray.forEach(item => {
+            // 💡 100% 終極結構修正：整合成一條龍 Flex 佈局，強迫整張小卡高度鎖死，按鈕在最下方
             htmlContent += `
-              <div class="product-card" style="position:relative; border: 1px solid rgba(255,255,255,0.05); padding:15px; background:rgba(255,255,255,0.01); border-radius:6px; transition: 0.3s;">
-                <div onclick="goToProductDetail('${item.id}')" style="cursor:pointer;">
-                  <div class="product-image" style="height:240px; overflow:hidden; border-radius:4px;">
-                    <img src="${item.img}" style="width:100%; height:100%; object-fit:cover;">
-                  </div>
-                  <div class="product-info" style="margin-top:15px; text-align: left;">
-                    <h3 style="font-size:17px; font-weight:400; color:white; margin:0;">${item.title}</h3>
-                    <p style="color:rgba(255,255,255,0.5); font-size:13px; margin: 5px 0 0 0;">${item.artist}</p>
-                    <div style="margin-top:10px; color:#d7b17d; font-size:16px;">NT$ ${item.price.toLocaleString()}</div>
+              <div class="product-card" style="position:relative; display: flex !important; flex-direction: column !important; min-height: 460px !important; height: 100% !important; border: 1px solid rgba(255,255,255,0.05); padding: 15px; background: rgba(255,255,255,0.01); border-radius: 6px; transition: 0.3s; box-sizing: border-box !important;">
+                
+                <!-- 💡 核心修正 1：拔除原本包在外面的多餘 div，直接把 onclick 銲接在圖片外殼，鎖死寬高為 100% x 220px 絕對正方形 -->
+                <div class="product-image" onclick="goToProductDetail('${item.id}')" style="width: 100% !important; height: 220px !important; max-height: 220px !important; min-height: 220px !important; overflow: hidden !important; border-radius: 4px; background: #111 !important; cursor: pointer !important;">
+                  <img src="${item.img}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; display: block !important;" onerror="this.src='https://unsplash.com'">
+                </div>
+                
+                <!-- 💡 核心修正 2：文字點擊區塊獨立，加強單行截斷防線，字太長自動變三個點 ... 絕不撐開高度 -->
+                <div class="product-info" onclick="goToProductDetail('${item.id}')" style="margin-top: 15px; text-align: left; cursor: pointer !important;">
+                  <h3 style="font-size: 16px; font-weight: 400; color: white; margin: 0; width: 100% !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important;">${item.title}</h3>
+                  <p style="color: rgba(255,255,255,0.4); font-size: 13px; margin: 5px 0 0 0; width: 100% !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important;">${item.artist}</p>
+                </div>
+
+                <!-- 💡 核心修正 3：智慧彈簧區塊，將價格與快速選購按鈕列死死壓在整張小卡的最底部 -->
+                <div style="margin-top: auto !important; padding-top: 15px;">
+                  <div style="color: #d7b17d; font-size: 16px; font-weight: bold; text-align: left; margin-bottom: 12px;">NT$ ${item.price.toLocaleString()}</div>
+                  
+                  <div class="quick-actions" style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+                    <button onclick="quickAddCart('${item.id}'); event.stopPropagation();" style="flex: 1; height: 35px; background: #d7b17d; color: black; border: none; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer;">
+                      <i class="fa-solid fa-basket-shopping"></i> 快速選購
+                    </button>
+                    <button onclick="quickAddFav('${item.id}'); event.stopPropagation();" style="width: 40px; height: 35px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
                   </div>
                 </div>
-                <div class="quick-actions" style="display:flex; gap:10px; margin-top:15px; border-top:1px solid rgba(255,255,255,0.05); padding-top:12px;">
-                  <button onclick="quickAddCart('${item.id}'); event.stopPropagation();" style="flex:1; height:35px; background:#d7b17d; color:black; border:none; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;">
-                    <i class="fa-solid fa-basket-shopping"></i> 快速選購
-                  </button>
-                  <button onclick="quickAddFav('${item.id}'); event.stopPropagation();" style="width:40px; height:35px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; border-radius:4px; cursor:pointer;">
-                    <i class="fa-regular fa-heart"></i>
-                  </button>
-                </div>
+
               </div>`;
           });
+          
           gridContainer.innerHTML = htmlContent || `<p style="color:rgba(255,255,255,0.4); text-align:center; grid-column:1/-1; padding:40px 0;">該分類目前無現貨商品進口</p>`;
         };
 
@@ -1219,73 +1229,74 @@
       // ==========================================================================
 
       window.actionBuyCurrent = function(event) {
-      // 1. 最高權限攔截：萬一這個按鈕不幸被包在 HTML 的 <form> 裡面，立刻斬斷它的整頁刷新行為！
-      if (event && typeof event.preventDefault === 'function') {
-        event.preventDefault();
-      }
-
-      // 2. 實時反向追蹤：不要去抓不穩定的變數，直接去剝離此時大彈窗畫面上印出來的真實專輯名稱！
-      const modalTitleEl = document.getElementById('modal-title');
-      if (!modalTitleEl || modalTitleEl.textContent.trim() === "" || modalTitleEl.textContent.trim() === "-") {
-        alert("✕ 系統提示：未能成功識別當前大彈窗聚焦的黑膠唱片，請關閉彈窗重新點開！");
-        return;
-      }
-
-      const currentDisplayTitle = modalTitleEl.textContent.trim(); // 拿到當前彈窗的歌名
-
-      // 3. 提取全站標準對齊的 localProductDB 大商品庫
-      let db = JSON.parse(localStorage.getItem('localProductDB')) || {};
-      let targetId = null;
-
-      // 執行硬核資管反向遍歷比對：在資料庫大庫裡尋找哪一首黑膠的品名與畫面上完全一模一樣
-      for (let key in db) {
-        if (db[key].title === currentDisplayTitle) {
-          targetId = key; // 成功反向鎖定實體商品 ID！
-          break;
+        if (event && typeof event.preventDefault === 'function') {
+          event.preventDefault(); // 攔截傳統 HTML 的整頁刷新行為
         }
-      }
 
-      // 萬一反向查驗也找不到，進行萬能保底分流（使用當前的 activeProductId）
-      if (!targetId && typeof activeProductId !== 'undefined' && activeProductId) {
-        targetId = activeProductId;
-      }
+        // 1. 安全提取全站商品資料庫
+        let db = JSON.parse(localStorage.getItem('localProductDB')) || {};
+        let targetId = null;
 
-      if (!targetId || !db[targetId]) {
-        alert("✕ 系統提示：Celeste 數據庫內無吻合此品名的商品物件，請重新整理網頁！");
-        return;
-      }
+        // 2. 智慧尋找大外殼：先抓出您的大彈窗主容器
+        const modalWrapper = document.getElementById('product-detail-modal');
+        
+        if (modalWrapper) {
+          // 💡【核心大絕招】：直接抓取整個彈窗「所有的純文字內容」
+          const allModalText = modalWrapper.textContent || modalWrapper.innerText;
+          
+          // 遍歷資料庫大庫，直接核對哪一張唱片的「專輯名稱」有出現在這串文字裡！
+          for (let key in db) {
+            if (db[key].title && allModalText.includes(db[key].title)) {
+              targetId = key; // 100% 精準捕捉實體 ID！
+              break;
+            }
+          }
+        }
 
-      // 4. 數據庫金鑰大連動：推入與全站、購物車頁一字不漏對齊的 realCartItems 提袋
-      let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
-      const existing = cart.find(item => item.id === targetId);
-      
-      if (existing) {
-        existing.qty += 1; // 買過則累積件數
-      } else {
-        cart.push({ 
-          id: targetId, 
-          title: db[targetId].title, 
-          artist: db[targetId].artist, 
-          price: db[targetId].price, 
-          img: db[targetId].img, 
-          qty: 1 
-        });
-      }
+        // 萬能保底分流：萬一全文字比對失效，強制調用當前的 activeProductId 金鑰
+        if (!targetId && typeof activeProductId !== 'undefined' && activeProductId) {
+          targetId = activeProductId;
+        }
 
-      // 5. 硬碟唯獨回寫儲存
-      localStorage.setItem('realCartItems', JSON.stringify(cart));
+        // 3. 防空防爆攔截
+        if (!targetId || !db[targetId]) {
+          alert("✕ 系統提示：未能成功辨識大彈窗內的黑膠品名，請關閉彈窗重新點選！");
+          return;
+        }
 
-      // 6. 總數量計算與刷亮通知金色泡泡
-      let totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-      localStorage.setItem('globalCartCount', totalCount);
+        // 4. 金鑰大對齊：推入與 cart.html 100% 對齊的 realCartItems 提袋
+        let cart = JSON.parse(localStorage.getItem('realCartItems')) || [];
+        const existing = cart.find(item => item.id === targetId);
+        
+        if (existing) {
+          existing.qty += 1; // 買過則件數累加
+        } else {
+          cart.push({ 
+            id: targetId, 
+            title: db[targetId].title, 
+            artist: db[targetId].artist, 
+            price: db[targetId].price, 
+            img: db[targetId].img, 
+            qty: 1 
+          });
+        }
 
-      if (typeof syncNavbarBadges === 'function') {
-        syncNavbarBadges();
-      }
+        // 5. 唯獨回寫儲存至快取
+        localStorage.setItem('realCartItems', JSON.stringify(cart));
 
-      // 7. 高奢商務回饋
-      alert(`✨ 成功加購！\n您已成功將《${db[targetId].title}》添加至您的購物袋中。\n您可以隨時前往購物車頁面進行精緻金流結帳。`);
-    };
+        // 6. 總數量計算與刷亮通知金色數量泡泡
+        let totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+        localStorage.setItem('globalCartCount', totalCount);
+
+        if (typeof syncNavbarBadges === 'function') {
+          syncNavbarBadges();
+        }
+
+        // 7. 回饋
+        alert(`✨ 成功加購！\n您已成功將《${db[targetId].title}》添加至您的購物袋中。\n您可以隨時前往購物車頁面進行精緻金流結帳。`);
+      };
+
+
 
       // 2. 大彈窗「加入收藏」大按鈕實時連動 (與會員中心 100% 雙向大同步)
       window.actionFavCurrent = function() {
@@ -1360,6 +1371,74 @@
         switchSpecTab('info');
         modal.style.display = 'flex';
       }
+
+      document.addEventListener('click', function(event) {
+      // 💡 1. 智慧識別：檢查客人在全網頁上點擊的是不是「送出評論 / 發布心得」的那個按鈕
+      // 只要按鈕的文字包含 "送出"、"發布"、"評論"、"心得"，或者 class/id 吻合，通通強行攔截放行！
+      const btn = event.target;
+      const btnText = btn.textContent || btn.value || "";
+      
+      if (
+        btn.matches('.review-submit-btn, #submit-review-btn, .submit-comment') || 
+        (btn.tagName === 'BUTTON' && (btnText.includes('送出') || btnText.includes('發布') || btnText.includes('評論')))
+      ) {
+        // 優先查驗：沒登入的人一律禁止啟用樂評
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+          return; // 讓原本的未登入攔截提示正常執行
+        }
+
+        // 💡 2. 智慧反查大彈窗：剥離此時大彈窗畫面上印出來的真實專輯名稱、藝人與輸入框
+        const modalWrapper = document.getElementById('product-detail-modal');
+        if (!modalWrapper) return;
+
+        // 盲抓此時彈窗上的歌名與歌手
+        let titleEl = modalWrapper.querySelector('h3') || modalWrapper.querySelector('h2') || document.getElementById('modal-title');
+        let artistEl = modalWrapper.querySelector('p') || document.getElementById('modal-artist');
+        let commentInput = modalWrapper.querySelector('textarea') || modalWrapper.querySelector('input[type="text"]');
+        
+        if (!titleEl || !commentInput || commentInput.value.trim() === "") return;
+
+        const secureAlbumTitle = titleEl.textContent.trim();
+        const secureAlbumArtist = artistEl ? artistEl.textContent.trim() : "Celeste COLLECTION";
+        const commentText = commentInput.value.trim();
+        const loggedEmail = localStorage.getItem('currentUserEmail');
+        const currentTime = new Date().toLocaleDateString();
+
+        // 💡 3. 星等智慧盲抓：去挖大彈窗內部，目前正處於 active / 亮起狀態的金色星星總數量
+        let selectedScore = 5; // 預設滿分 5 星保底
+        const activeStars = modalWrapper.querySelectorAll('.fa-star.active, .rating-star.active, .star.active, [style*="color: rgb(215, 177, 125)"]');
+        
+        if (activeStars && activeStars.length > 0) {
+          selectedScore = activeStars.length;
+        } else {
+          // 備用反查：看看有沒有隱藏的 select 或是 input 存著星星分數
+          let scoreInput = modalWrapper.querySelector('#review-rating') || modalWrapper.querySelector('.rating-value');
+          if (scoreInput && scoreInput.value) selectedScore = parseInt(scoreInput.value);
+        }
+
+        // 💡 4. 資料流高精度寫入：拋送至該會員的專屬個人歷史紀錄夾 reviews_Email 中
+        const memberReviewKey = 'reviews_' + loggedEmail;
+        let myPersonalReviews = JSON.parse(localStorage.getItem(memberReviewKey)) || [];
+
+        // 排重防禦：防止點擊過快導致重複拋送
+        const isDuplicate = myPersonalReviews.some(log => log.myComment === commentText && log.albumTitle === secureAlbumTitle);
+        if (isDuplicate) return;
+
+        const newMemberLog = {
+          logId: "REV-" + Date.now(),
+          albumId: (typeof activeProductId !== 'undefined' && activeProductId) ? activeProductId : "unknown",
+          albumTitle: secureAlbumTitle,
+          albumArtist: secureAlbumArtist,
+          myComment: commentText,
+          myScore: selectedScore, // 🚀【核心對齊】：將實體星星分數安全塞進封包中！
+          timestamp: currentTime
+        };
+
+        myPersonalReviews.push(newMemberLog);
+        localStorage.setItem(memberReviewKey, JSON.stringify(myPersonalReviews));
+        console.log("🔊 萬能攔截器已成功為會員同步星等分數：", selectedScore);
+      }
+    }, true);
 
   </script>
 

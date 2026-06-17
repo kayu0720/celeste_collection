@@ -1403,3 +1403,73 @@ nav a:hover {
   .submit-contact-btn:active {
     transform: translateY(-1px);
   }
+
+  /* ==========================================================================
+   Category 小卡
+   ========================================================================== */
+
+   
+  /* 🚀 1. 寬度防護大中控：強迫商品大網格的每一個槽位「必須絕對等寬」、不允許某個特別寬 */
+  #category-products-grid {
+    display: grid !important;
+    /* 💡 核心修正 1：利用 repeat 與 minmax 強制讓所有卡片平分空間，寬度 100% 一模一樣 */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+    gap: 25px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 🚀 2. 小卡外殼等高防線 */
+  .product-card {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 440px !important;  
+    width: 100% !important;        /* 💡 核心修正 2：寬度死死跟隨 Grid 槽位，不允許向外撐寬 */
+    box-sizing: border-box !important;
+  }
+
+  /* 🚀 3. 圖片外殼防線：寬高鎖死在 200px 絕對正方形保護殼 */
+  .product-card > div:first-child > div:first-child, 
+  .product-card [class*="img"], 
+  .product-card [class*="image"], 
+  .product-card .product-image { 
+    width: 100% !important; 
+    height: 200px !important; 
+    max-height: 200px !important; 
+    min-height: 200px !important; 
+    overflow: hidden !important; 
+    border-radius: 6px !important; 
+    background: #000000 !important;   /* 底色全黑 */
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important; 
+    box-sizing: border-box !important; 
+  }
+
+  /* 🚀 4. 實體裁切防線：強迫保護殼裡面的 <img> 標籤「寬度最大值為100%」、不允許強行橫向撐大小卡 */
+  .product-card > div:first-child > div:first-child img,
+  .product-card .product-image img,
+  .product-card img {
+    width: 100% !important;
+    max-width: 100% !important;       /* 💡 核心修正 3：防止寬幅圖片把卡片擠寬 */
+    height: 100% !important;
+    max-height: 200px !important;
+    object-fit: cover !important;     /* 100% 智慧正方形等大裁切，徹底消滅白邊與拉伸 */
+    display: block !important;
+    border-radius: 4px !important;
+  }
+
+  /* 🚀 5. 文字溢出保護：如果專輯名稱或歌手名字太長，自動鎖死在單行，超出部分化為優雅的三個點 ... */
+  .product-card h3 {
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  .product-card p {
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }

@@ -149,7 +149,7 @@
     </div>
 
     <!-- 前往結帳大按鈕 -->
-    <button class="checkout-btn">
+    <button class="checkout-btn" onclick="executeCheckoutAndSaveOrder(event)">
         <span>前往結帳</span>
         <i class="fa-solid fa-arrow-right"></i>
     </button>
@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // 4. 右側金額連動計算與 Navbar 同步
-  function updateCartTotals() {
+    function updateCartTotals() {
     let cartItems = JSON.parse(localStorage.getItem('realCartItems')) || [];
     
     // 計算 Navbar 總商品數
@@ -403,11 +403,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 計算商品原價總計
     let itemsTotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
+    // 💡【免運費即時防線】：判定商品總價是否達到 NT$ 1,500 門檻
+    let currentShippingFee = (typeof SHIPPING_FEE !== 'undefined') ? SHIPPING_FEE : 80;
+    let isFreeShipping = itemsTotal >= 1500;
+    
+    if (isFreeShipping) {
+      currentShippingFee = 0; // ➔ 滿 1500 元一微秒內將當前運費強行降維歸零！
+    }
+
     // 處理折價券
     let finalDiscount = 0;
     const discountRow = document.getElementById('summary-discount-row');
     const tagNameSpan = document.getElementById('discount-tag-name');
-
+    
     if (isPromoChecked && discountAmount > 0) {
       finalDiscount = itemsTotal >= discountAmount ? discountAmount : itemsTotal;
       if (tagNameSpan) tagNameSpan.textContent = activePromoName;
@@ -419,17 +427,31 @@ document.addEventListener('DOMContentLoaded', function() {
       if (discountRow) discountRow.style.display = 'none';
     }
 
-    const finalTotal = itemsTotal + SHIPPING_FEE - finalDiscount;
+    // 💡 核心修正：將原本死板的 SHIPPING_FEE，改為會自動動態歸零的 currentShippingFee
+    const finalTotal = itemsTotal + currentShippingFee - finalDiscount;
+
+    // 渲染右側金額卡片資訊
     const summaryCard = document.querySelector('.cart-summary-card');
-    
     if (summaryCard) {
       const rows = summaryCard.querySelectorAll('.summary-row');
       if (rows.length >= 2) {
+        // 第一列：更新商品原價總計
         rows[0].querySelector('span:last-child').textContent = `NT$ ${itemsTotal.toLocaleString()}`;
-        rows[1].querySelector('span:last-child').textContent = `NT$ ${SHIPPING_FEE.toLocaleString()}`;
+        
+        // 第二列：💡 智慧運費亮燈！滿 1500 時，畫面上即時亮起奢華的金色「免運費」字樣
+        const shippingValueSpan = rows[1].querySelector('span:last-child');
+        if (shippingValueSpan) {
+          shippingValueSpan.textContent = isFreeShipping ? "免運費 (VIP 特權)" : `NT$ ${currentShippingFee.toLocaleString()}`;
+          shippingValueSpan.style.color = isFreeShipping ? "#d7b17d" : "white";
+          shippingValueSpan.style.fontWeight = isFreeShipping ? "bold" : "normal";
+        }
       }
+
+      // 更新最終實付總金額
       const finalPriceSpan = summaryCard.querySelector('.final-price');
-      if (finalPriceSpan) finalPriceSpan.textContent = `NT$ ${finalTotal.toLocaleString()}`;
+      if (finalPriceSpan) {
+        finalPriceSpan.textContent = `NT$ ${finalTotal.toLocaleString()}`;
+      }
     }
   }
 
@@ -438,16 +460,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (badgeCount) {
       badgeCount.textContent = count;
       badgeCount.style.display = (count === 0) ? 'none' : 'flex';
-    }
-  }
-
-  // 偵測新會員狀態
-  function checkMemberStatus() {
-    const newMemberZone = document.getElementById('new-member-coupon-zone');
-    if (purchaseCount === 0) {
-      if (newMemberZone) newMemberZone.style.display = 'block';
-    } else {
-      if (newMemberZone) newMemberZone.style.display = 'none';
     }
   }
 
@@ -569,6 +581,90 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     }
+
+
+
+    // =========================================================================
+    // 🚀【CART.HTML 終極商務結帳核心】：100% 綁定實名帳戶、自動封包拋送會員紀錄
+    // =========================================================================
+    window.executeCheckoutAndSaveOrder = function(event) {
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault(); // 攔截傳統 HTML 表單刷新行為
+      }
+
+      // 1. 權限查驗防線：沒登入會員的人一律禁止結帳
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        alert('✕ 結帳失敗：由於涉及尊榮會員權益，請先前往會員中心登入帳號，才能完成購物車結帳！');
+        window.location.href = 'member.html';
+        return;
+      }
+
+      // 2. 提袋空值防線：檢查購物車內到底有沒有商品
+      let cartItems = JSON.parse(localStorage.getItem('realCartItems')) || [];
+      if (cartItems.length === 0) {
+        alert('✕ 結帳失敗：您當前的購物袋中空空如也，無法進行金流扣款！');
+        return;
+      }
+
+      const currentUserEmail = localStorage.getItem('currentUserEmail');
+
+      // 3. 智慧明細封包：將購物車內的所有黑膠唱片與件數（例如《Abbey Road》 x 1）自動串接
+      let itemsSummaryArray = cartItems.map(item => `《${item.title}》 x ${item.qty}`);
+      let finalItemsSummaryText = itemsSummaryArray.join(', ');
+
+      // 4. 計算小計金額（商品本身的總價）
+      let subtotalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      // 5. 💡【免運費核心邏輯防線】：判定是否滿 NT$ 1,500
+      let shippingFee = 80; // 預設基礎基本運費為 NT$ 80
+      let shippingNote = "（內含運費 NT$ 80）";
+      
+      if (subtotalPrice >= 1500) {
+        shippingFee = 0;    // 滿 1500 元 ➔ 運費一微秒內直接強行歸零！
+        shippingNote = "（已達 NT$ 1,500 門檻，尊享免運費特權！）";
+      }
+
+      // 計算最終「實付金額」 = 商品總價 + 運費
+      let finalTotalPrice = subtotalPrice + shippingFee;
+
+      // 6. 實時生成官方唯一隨機商務訂單編號與精準時間戳
+      const randomOrderNum = Math.floor(1000 + Math.random() * 9000);
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const date = String(now.getDate()).padStart(2, '0');
+      const formattedDateString = `${year}/${month}/${date}`;
+      const formattedTimeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      // 組裝高奢電子收據物件（附帶運費狀態明細）
+      const newOrderLog = {
+        orderId: "ORD-" + year + month + date + "-" + randomOrderNum, 
+        itemsSummary: finalItemsSummaryText + (shippingFee === 0 ? " [免運]" : " [含運]"), 
+        totalPrice: finalTotalPrice,         
+        date: formattedDateString + " " + formattedTimeString 
+      };
+
+      // 7. 高精度實名制資料大合流：精準回寫、堆疊至 historyOrders_該帳號 的金鑰名下
+      const userOrderKey = 'historyOrders_' + currentUserEmail;
+      let userOrderHistory = JSON.parse(localStorage.getItem(userOrderKey)) || [];
+      
+      userOrderHistory.unshift(newOrderLog); // 最新買的訂單置頂顯示
+      localStorage.setItem(userOrderKey, JSON.stringify(userOrderHistory));
+
+      // 8. 累加消費次數累計
+      let pastPurchaseCount = parseInt(localStorage.getItem('purchaseCount') || "0");
+      localStorage.setItem('purchaseCount', pastPurchaseCount + 1);
+
+      // 9. 提袋神聖洗清：扣款成功，購物車與右上角通知金色泡泡徹底淨空歸零！
+      localStorage.setItem('realCartItems', JSON.stringify([]));
+      localStorage.setItem('globalCartCount', '0');
+
+      // 10. 彈出結合免運費機制的商務旗艦收據回饋
+      alert(`🎉 恭喜付款成功！\n已為尊榮帳戶 ${currentUserEmail} 生成正式商業電子收據。\n\n流水號：${newOrderLog.orderId}\n商品小計：NT$ ${subtotalPrice.toLocaleString()}\n實付總額：NT$ ${finalTotalPrice.toLocaleString()}\n運費計算：${shippingNote}\n\n系統將自動帶您前往會員中心查閱最新消費足跡！`);
+
+      // 11. 滑順跳轉回會員中心
+      window.location.href = 'member.html';
+    };
 
 </script>
 

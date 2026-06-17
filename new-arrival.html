@@ -238,37 +238,11 @@
         barcode: "0198704872808", 
         releaseDate: "2026-03-20", 
           audioSrcs: [
-            "music/kr/bts/body_to_body.mp3",
-            "music/kr/bts/hooligan.mp3",
-            "music/kr/bts/aliens.mp3",
-            "music/kr/bts/fya.mp3",
             "music/kr/bts/2.0.mp3",
-            "music/kr/bts/no29.mp3",
-            "music/kr/bts/swim.mp3",
-            "music/kr/bts/merry_go_round.mp3",
-            "music/kr/bts/normal.mp3",
-            "music/kr/bts/like_animals.mp3",
-            "music/kr/bts/they_dont_know_bout_us.mp3",
-            "music/kr/bts/one_more_night.mp3",
-            "music/kr/bts/please.mp3",
-            "music/kr/bts/into_the_sun.mp3"
           ],
           stock: 7, 
           tracks: [
-            "Body to Body",
-            "Hooligan",
-            "Aliens",
-            "FYA",
             "2.0",
-            "No.29",
-            "SWIM",
-            "Merry Go Round",
-            "NORMAL",
-            "Like Animals",
-            "They Don't Know 'bout Us",
-            "One More Night",
-            "Please",
-            "Into the Sun",
           ], 
           reviews: []
         },  
@@ -595,6 +569,139 @@
         const favBadge = document.getElementById('fav-badge-count');
         if (favBadge) { favBadge.textContent = savedFavCount; favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex'; }
       }
+
+      window.handleCardClick = function(idx, prodId) {
+      // 1. 安全防禦：如果傳進來的商品 ID 不存在，主動幫他校正提取
+      if (!prodId) {
+        if (typeof carouselArray !== 'undefined' && carouselArray[idx]) {
+          prodId = carouselArray[idx].id;
+        }
+      }
+
+      if (!prodId) return;
+
+      // 2. 智慧路徑定位：獲取當前點選的卡片實體
+      const el = document.getElementById(`item-3d-${idx}`);
+      
+      // 💡 核心大商務邏輯：
+      // A 流程：如果這張卡片已經被轉到最前面（中央核心位置 pos-0），點擊它 100% 聽話、破空跳轉直達分類詳細頁並打開彈窗！
+      if (!el || el.classList.contains('pos-0')) {
+        window.location.href = `category.html?id="all"`;
+      } 
+      // B 流程：如果卡片在左邊或右邊（pos-1~4），點擊它則自動把轉盤旋轉，將該張黑膠唱片帶到正中央聚焦
+      else {
+        if (typeof currentIndex !== 'undefined') {
+          currentIndex = idx;
+          if (typeof update3DPositions === 'function') {
+            update3DPositions();
+          }
+        }
+      }
+    };
+
+    (function() {
+      function enforceProfileAndOrdersRecovery() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const currentUserEmail = localStorage.getItem('currentUserEmail');
+        const loginTab = document.getElementById('tab-login');
+
+        // 安全防禦：如果沒登入，或是管理員，不觸發此註冊會員專用防線
+        if (!isLoggedIn || !currentUserEmail || currentUserEmail === 'admin@gmail.com') return;
+        if (!loginTab) return;
+
+        // 💡【核心攔截死律】：如果發現畫面不幸被舊代碼刷洗蓋掉、或是沒出現資料卡，全面強制原地覆寫大開通！
+        if (!loginTab.querySelector('.profile-section-card') || loginTab.textContent.includes('Welcome Back, Premium Member')) {
+          
+          // 1. 實時反查註冊大名冊，抓出此帳號的啟用日期
+          let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+          let userProfile = users.find(u => u.email === currentUserEmail) || {};
+          let joinDateStr = userProfile.joinDate || "2026/06/18";
+
+          // 2. 實時反查由 cart.html 結帳拋送過來的實體訂單大庫 (支援原版與各式保底命名)
+          const primaryUserOrderKey = 'historyOrders_' + currentUserEmail;
+          const fallbackUserOrderKey = 'orderHistory_' + currentUserEmail;
+          let purchaseHistory = JSON.parse(localStorage.getItem(primaryUserOrderKey)) || 
+                                JSON.parse(localStorage.getItem(fallbackUserOrderKey)) || [];
+
+          // 計算消費件數
+          let totalSpentCount = purchaseHistory.length.toString();
+          if (totalSpentCount === "0") {
+            totalSpentCount = localStorage.getItem('purchaseCount') || "0";
+          }
+
+          // 3. 重新組裝 100% 純扁平、不滑動、直接融入大背景的黑金完全體面板結構
+          let profileHtml = `
+            <h3 style="font-size:28px !important; font-weight:300 !important; color:white !important; letter-spacing:2px !important; text-align:center !important; margin-bottom:12px !important;">Premium Member Profile</h3>
+            <p class="form-desc" style="color:rgba(255,255,255,0.4) !important; font-size:14px !important; text-align:center !important; margin-bottom:45px !important;">✨ 您的正式黑膠認證中控台與足跡大庫</p>
+            
+            <!-- 版塊一：個人基本資料卡 -->
+            <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px; box-sizing: border-box;">
+              <h4 style="color:#d7b17d; margin:0 0 12px 0; font-weight:400; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;"><i class="fa-regular fa-address-card" style="margin-right:6px;"></i> 個人基本資料</h4>
+              <div style="font-size:14px; color:rgba(255,255,255,0.7); line-height:2;">
+                <p style="margin:0;"><strong>尊榮帳號 (Email)：</strong> <span style="color:white; font-weight:bold;">${currentUserEmail}</span></p>
+                <p style="margin:0;"><strong>會員級別：</strong> Gold Vinyl VIP (黃金唱片尊榮會員)</p>
+                <p style="margin:0;"><strong>帳戶啟用日期：</strong> ${joinDateStr}</p>
+              </div>
+            </div>
+
+            <!-- 版塊二：歷史消費紀錄明細 (100% 聽話解碼印出 cart.html 拋來的實體數據) -->
+            <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px; box-sizing: border-box;">
+              <h4 style="color:#d7b17d; margin:0 0 12px 0; font-weight:400; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px;"></i> 歷史消費紀錄 (${totalSpentCount})</h4>
+              <div style="max-height:240px; overflow-y:auto; padding-right:5px; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;">
+          `;
+
+          if (purchaseHistory.length > 0) {
+            purchaseHistory.forEach((order, idx) => {
+              let idBox = order.orderId || order.id || `ORD-${idx+1}`;
+              let summaryBox = order.itemsSummary || order.summary || order.title || "經典珍稀黑膠唱片";
+              let priceBox = order.totalPrice || order.price || 0;
+              let dateBox = order.date || order.timestamp || "今日";
+
+              profileHtml += `
+                <div class="purchase-history-row" style="background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.03); padding:15px; border-radius:6px; font-size:13px; text-align: left; box-sizing: border-box;">
+                  <p style="margin:0 0 6px 0; color:white; font-size:14px;"><strong>訂單編號：</strong><span style="color:#d7b17d; font-family:monospace; font-weight:bold;">${idBox}</span></p>
+                  <p style="margin:0 0 6px 0; color:rgba(255,255,255,0.6); line-height: 1.4;"><strong>結帳品項：</strong> ${summaryBox}</p>
+                  <p style="margin:0; color:rgba(255,255,255,0.4); border-top:1px solid rgba(255,255,255,0.02); padding-top:6px; margin-top:4px; box-sizing: border-box;">
+                    <strong>實付金額：</strong> <span style="color:#d7b17d; font-weight:bold; font-size:14px;">NT$ ${priceBox.toLocaleString()}</span> 
+                    <span style="float:right; font-size:12px; color:rgba(255,255,255,0.3);"><i class="fa-regular fa-calendar-days" style="margin-right:4px;"></i>${dateBox}</span>
+                  </p>
+                </div>`;
+            });
+          } else {
+            profileHtml += `
+              <div style="text-align:center; padding:30px 0; color:rgba(255,255,255,0.25);">
+                <i class="fa-solid fa-receipt" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i>
+                <p style="margin:0; font-size:13px;">目前帳戶內尚無任何歷史消費結帳封包。</p>
+              </div>`;
+          }
+
+          profileHtml += `
+              </div>
+            </div>
+            <button id="logout-btn" class="submit-btn" style="width:100%; height:52px; background:linear-gradient(90deg, #d7b17d 0%, #b8925e 100%) !important; color:black !important; border:none !important; border-radius:4px !important; font-size:15px !important; font-weight:bold !important; letter-spacing:2px !important; cursor:pointer !important; margin-top:15px !important; display:flex; align-items:center; justify-content:center;">安全登出帳號</button>
+          `;
+          
+          // 破空鎖定！強行覆寫塞入面板，徹底沒收舊流程洗白畫面的權限！
+          loginTab.innerHTML = profileHtml;
+          
+          // 銲接登出事件
+          const lBtn = loginTab.querySelector('#logout-btn');
+          if (lBtn) {
+            lBtn.onclick = function() {
+              localStorage.setItem('isLoggedIn', 'false');
+              localStorage.removeItem('currentUserEmail');
+              alert('您已成功安全登出 Celeste 黑膠中控系統。');
+              window.location.reload();
+            };
+          }
+        }
+      }
+
+      // 部署全自動極速輪詢線：每 100 毫秒高頻率在背景巡邏，一旦發現被蓋掉一微秒內瞬間強制拉回重繪！
+      document.addEventListener('DOMContentLoaded', enforceProfileAndOrdersRecovery);
+      window.addEventListener('load', enforceProfileAndOrdersRecovery);
+      setInterval(enforceProfileAndOrdersRecovery, 100);
+    })();
   </script>
 
 </body>

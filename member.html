@@ -292,7 +292,6 @@
   // 會員註冊
   // =========================================================================
 
-      // 'login' 代表登入中，'register' 代表註冊中 (全局中控狀態指標)
       let currentFormMode = 'login'; 
 
       // =========================================================================
@@ -373,20 +372,9 @@
           const styleTag = document.createElement('style');
           styleTag.id = 'luxury-auth-injected-css';
           styleTag.innerHTML = `
-            #tab-login {
-              background: transparent !important; /* ❌ 徹底洗掉多餘的內層白框或浮動框 */
-              border: none !important;            /* ❌ 徹底洗掉多餘的線條 */
-              box-shadow: none !important;        /* ❌ 徹底洗掉多餘的陰影，直接融入灰色大外框 */
-              backdrop-filter: none !important;
-              -webkit-backdrop-filter: none !important;
-              max-width: 100% !important;
-              width: 100% !important;
-              padding: 10px 40px !important;
-              margin: 0 auto;
-              box-sizing: border-box;
-            }
+            #tab-login { background: transparent !important; border: none !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; max-width: 100% !important; width: 100% !important; padding: 10px 40px !important; margin: 0 auto; box-sizing: border-box; }
             #tab-login h3 { font-size: 28px !important; font-weight: 300 !important; color: white !important; letter-spacing: 2px !important; margin-top: 0 !important; margin-bottom: 12px !important; text-align: center !important; }
-            #tab-login .form-desc { color: rgba(255, 255, 255, 0.4) !important; font-size: 14px !important; margin-bottom: 45px !important; text-align: center !important; letter-spacing: 0.5px; }
+            #tab-login .form-desc { color: rgba(255, 255, 255, 0.4) !important; font-size: 14px !important; margin-bottom: 45px !important; text-align: center !important; }
             .member-form { max-width: 420px; margin: 0 auto; }
             .member-form .form-group { position: relative !important; margin-bottom: 35px !important; text-align: left !important; }
             .member-form .form-group input { width: 100% !important; height: 50px !important; background: transparent !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important; border-radius: 0 !important; padding: 15px 0 5px 0 !important; color: white !important; font-size: 15px !important; box-sizing: border-box !important; outline: none !important; transition: all 0.3s ease !important; }
@@ -437,104 +425,226 @@
                     <button class="admin-stock-btn btn-down" style="width:30px; height:30px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; cursor:pointer; font-weight:bold; border-radius:4px;">-</button>
                     <span id="stock-display-${id}" class="admin-stock-display" style="font-size:16px; font-weight:bold; color:#d7b17d; min-width:30px; text-align:center;">${currentDB[id].stock}</span>
                     <button class="admin-stock-btn btn-up" style="width:30px; height:30px; background:#d7b17d; border:none; color:black; cursor:pointer; font-weight:bold; border-radius:4px;">+</button>
-                    </div>
+                  </div>
                 </div> `;
             }
             adminHtml += `
               </div>
-              <button id="logout-btn" class="submit-btn" style="width:100%; height:45px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 25px; cursor:pointer; font-weight:bold;">安全登出管理員</button>
-            `;
-            if (loginTab) loginTab.innerHTML = adminHtml;
-            bindAdminStockControls(); 
-          } else {
-            renderRegularMemberPanel(currentUserEmail, loginTab);
-          }
 
-          // 登出按鈕事件通用監聽綁定
-          const logoutBtn = document.getElementById('logout-btn');
-          if (logoutBtn) {
-            logoutBtn.addEventListener('click', function() {
-              localStorage.setItem('isLoggedIn', 'false');
-              localStorage.removeItem('currentUserEmail');
-              alert('您已成功安全登出 Celeste 黑膠中控系統。');
-              window.location.reload();
-            });
-          }
+              <button id="logout-btn" class="submit-btn" style="width:100%; height:45px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 25px; cursor:pointer;">安全登出管理員</button>
+        `;
+        
+        if (loginTab) loginTab.innerHTML = adminHtml;
+        bindAdminStockControls(); 
+      } else {
+        // 情況 A-2：普通尊榮會員登入 ➔ 實時渲染個人資料卡與歷史消費明細
+        renderRegularMemberPanel(currentUserEmail, loginTab);
+      }
 
-          // 動態撈取、印出該帳戶在全站的收藏小卡清單與歷史評論足跡
-          renderMemberReviewsHistory();
-          if (favContent) {
-            let myFavIds = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
-            if (myFavIds.length > 0) {
-              let currentDB = JSON.parse(localStorage.getItem('localProductDB')) || {};
-              let favHtml = `<h3>我的收藏夾 (${myFavIds.length})</h3><div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-top:20px;">`;
-              myFavIds.forEach(id => {
-                if (currentDB[id]) {
-                  favHtml += `
-                    <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); text-align:center;">
-                      <img src="${currentDB[id].img}" style="width:100%; height:140px; object-fit:cover; border-radius:4px;">
-                      <p style="color:white; margin:8px 0 2px 0; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${currentDB[id].title}</p>
-                      <a href="category.html?id=${id}" style="color:#d7b17d; font-size:12px; text-decoration:none;">查看商品頁 ➔</a>
-                    </div>`;
-                }
-              });
-              favContent.innerHTML = favHtml + `</div>`;
+      // 登出按鈕通用監聽事件綁定
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('currentUserEmail');
+          alert('您已成功安全登出 Celeste 黑膠中控系統。');
+          window.location.reload();
+        });
+      }
+
+      // 實時大同步：動態撈取個人收藏清單與歷史評論足跡
+      renderMemberReviewsHistory();
+      if (favContent) {
+        let myFavIds = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
+        if (myFavIds.length > 0) {
+          let currentDB = JSON.parse(localStorage.getItem('localProductDB')) || {};
+          let favHtml = `<h3>我的收藏夾 (${myFavIds.length})</h3><div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top:20px;">`;
+          myFavIds.forEach(id => {
+            if (currentDB[id]) {
+              favHtml += `
+                <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); text-align:center;">
+                  <img src="${currentDB[id].img}" style="width:100%; height:120px; object-fit:cover; border-radius:4px;">
+                  <p style="color:white; margin:8px 0 2px 0; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${currentDB[id].title}</p>
+                  <a href="category.html?id=${id}" style="color:#d7b17d; font-size:12px; text-decoration:none;">查看商品頁 ➔</a>
+                </div>`;
             }
-          }
-
+          });
+          favContent.innerHTML = favHtml + `</div>`;
         } else {
-          // --------------------------------------------------------------------------
-          // 【狀態 B：尚未登入 / 訪客狀態】 -> 上鎖面板，並無條件強制召喚表單在右側生成
-          // --------------------------------------------------------------------------
-          if (favTabBtn) favTabBtn.innerHTML = `<i class="fa-solid fa-lock" style="font-size:12px; margin-right:5px; opacity:0.5;"></i> 收藏夾已鎖定`;
-          if (revTabBtn) revTabBtn.innerHTML = `<i class="fa-solid fa-lock" style="font-size:12px; margin-right:5px; opacity:0.5;"></i> 評價夾已鎖定`;
-
-          if (favContent) favContent.innerHTML = `<div style="text-align:center; padding:50px 0; color:rgba(255,255,255,0.3);"><i class="fa-solid fa-lock" style="font-size:32px; margin-bottom:12px; display:block; opacity:0.2;"></i><p>請先完成登入，即可解鎖查閱您的專屬黑膠收藏夾。</p></div>`;
-          if (revContent) revContent.innerHTML = `<div style="text-align:center; padding:50px 0; color:rgba(255,255,255,0.3);"><i class="fa-solid fa-lock" style="font-size:32px; margin-bottom:12px; display:block; opacity:0.2;"></i><p>請先完成登入，即可同步追蹤您在全站留下的聆聽心得。</p></div>`;
-
-          if (loginTab) {
-            renderGuestAuthForms(loginTab);
-          }
+          favContent.innerHTML = `<h3>我的收藏</h3><div class="empty-state" style="padding:40px 0; text-align:center;"><p style="color:rgba(255,255,255,0.4); margin:0;">您目前尚未添加任何收藏黑膠</p></div>`;
         }
       }
 
+      } else {
+        // --------------------------------------------------------------------------
+        // 【狀態 B：尚未登入 / 訪客狀態】 -> 上鎖面板，並無條件強制召喚表單在右側生成
+        // --------------------------------------------------------------------------
+        if (favTabBtn) favTabBtn.innerHTML = `<i class="fa-solid fa-lock" style="font-size:12px; margin-right:5px; opacity:0.5;"></i> 收藏夾已鎖定`;
+        if (revTabBtn) revTabBtn.innerHTML = `<i class="fa-solid fa-lock" style="font-size:12px; margin-right:5px; opacity:0.5;"></i> 評價夾已鎖定`;
+
+        if (favContent) favContent.innerHTML = `<div style="text-align:center; padding:50px 0; color:rgba(255,255,255,0.3);"><i class="fa-solid fa-lock" style="font-size:32px; margin-bottom:12px; display:block; opacity:0.2;"></i><p>請先完成登入，即可解鎖查閱您的專屬黑膠收藏夾。</p></div>`;
+        if (revContent) revContent.innerHTML = `<div style="text-align:center; padding:50px 0; color:rgba(255,255,255,0.3);"><i class="fa-solid fa-lock" style="font-size:32px; margin-bottom:12px; display:block; opacity:0.2;"></i><p>請先完成登入，即可同步追蹤您在全站留下的聆聽心得。</p></div>`;
+
+        if (loginTab) {
+          renderGuestAuthForms(loginTab);
+        }
+      }
+      } 
+
       // =========================================================================
-      // 4. 普通註冊尊榮會員：資訊面板渲染器
+      // 4. 普通註冊尊榮會員：資訊面板渲染器 (內建顯示個人基本資料、歷史消費紀錄)
       // =========================================================================
       function renderRegularMemberPanel(currentUserEmail, loginTab) {
         if (!loginTab) return;
-        loginTab.innerHTML = `
-          <h3>Welcome Back, Premium Member</h3>
-          <p class="form-desc" style="color: #d7b17d; margin-bottom: 20px;">✨ 您已成功連接您的黑膠音樂帳戶</p>
-          <div class="member-profile-info" style="margin: 20px 0; color: rgba(255,255,255,0.7); line-height: 2; text-align: left; background: rgba(255,255,255,0.01); padding: 20px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.03);">
-            <p style="margin:0;"><strong>會員帳號：</strong> ${currentUserEmail}</p>
-            <p style="margin:0;"><strong>會員級別：</strong> Gold Vinyl VIP</p>
-            <p style="margin:0;"><strong>累積消費次數：</strong> ${localStorage.getItem('purchaseCount') || '0'} 次</p>
+
+        // A. 反查註冊會員名冊大庫，提取當前登入用戶的帳戶啟用日期
+        let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+        let userProfile = users.find(u => u.email === currentUserEmail) || {};
+        let joinDateStr = userProfile.joinDate || "2026/06/18";
+
+        // B. 結帳成功時生成的專屬訂單紀錄陣列
+        const userOrderKey = 'historyOrders_' + currentUserEmail;
+        let purchaseHistory = JSON.parse(localStorage.getItem(userOrderKey)) || [];
+
+        // 數量中控台計數調校：優先以該帳號底下的實體訂單長度為基準
+        let totalSpentCount = purchaseHistory.length.toString();
+
+        // C. 渲染極奢黑金個人資料與實時消費明細面板
+        let profileHtml = `
+          <h3>Premium Member Profile</h3>
+          <p class="form-desc" style="color: #d7b17d; margin-bottom: 25px;">✨ 您的正式黑膠認證中控台與足跡大庫</p>
+          
+          <!-- 子版塊一：個人基本資料卡 -->
+          <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px;">
+            <h4 style="color:#d7b17d; margin:0 0 12px 0; font-weight:400; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;"><i class="fa-regular fa-address-card" style="margin-right:6px;"></i> 個人基本資料</h4>
+            <div style="font-size:14px; color:rgba(255,255,255,0.7); line-height:2;">
+              <p style="margin:0;"><strong>尊榮帳號 (Email)：</strong> <span style="color:white; font-weight:bold;">${currentUserEmail}</span></p>
+              <p style="margin:0;"><strong>會員級別：</strong> Gold Vinyl VIP (黃金唱片尊榮會員)</p>
+              <p style="margin:0;"><strong>帳戶啟用日期：</strong> ${joinDateStr}</p>
+            </div>
           </div>
-          <button id="logout-btn" class="submit-btn" style="width:100%; height:45px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-top: 20px; cursor:pointer; font-weight:bold;">安全登出帳號</button>
+
+          <!-- 子版塊二：歷史消費紀錄明細 (100% 承接 cart.html 拋送過來的實體封包) -->
+          <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px;">
+            <h4 style="color:#d7b17d; margin:0 0 12px 0; font-weight:400; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px;"></i> 歷史消費紀錄 (${totalSpentCount})</h4>
+            <div style="max-height:240px; overflow-y:auto; padding-right:5px; display: flex; flex-direction: column; gap: 10px;">
         `;
+
+        // 巡檢該帳號名下的歷史紀錄大庫，將剛剛結帳買下的黑膠清單一微秒內動態生成奢華卡片
+        if (purchaseHistory.length > 0) {
+          purchaseHistory.forEach((order) => {
+            profileHtml += `
+              <div class="purchase-history-row" style="background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.03); padding:15px; border-radius:6px; font-size:13px; text-align: left;">
+                <p style="margin:0 0 6px 0; color:white; font-size:14px;"><strong>訂單編號：</strong><span style="color:#d7b17d; font-family:monospace; font-weight:bold;">${order.orderId}</span></p>
+                <p style="margin:0 0 6px 0; color:rgba(255,255,255,0.6); line-height: 1.4;"><strong>結帳品項：</strong> ${order.itemsSummary}</p>
+                <p style="margin:0; color:rgba(255,255,255,0.4); border-top:1px solid rgba(255,255,255,0.02); padding-top:6px; margin-top:4px;">
+                  <strong>實付金額：</strong> <span style="color:#d7b17d; font-weight:bold; font-size:14px;">NT$ ${order.totalPrice.toLocaleString()}</span> 
+                  <span style="float:right; font-size:12px; color:rgba(255,255,255,0.3);"><i class="fa-regular fa-calendar-days" style="margin-right:4px;"></i>${order.date}</span>
+                </p>
+              </div>`;
+          });
+        } else {
+          // 💡 保底提示：如果這個全新的 Email 帳號還沒有在全站結帳過，顯示精緻引導語
+          profileHtml += `
+            <div style="text-align:center; padding:30px 0; color:rgba(255,255,255,0.25);">
+              <i class="fa-solid fa-receipt" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i>
+              <p style="margin:0; font-size:13px;">目前帳戶內尚無任何歷史消費結帳封包。</p>
+            </div>`;
+        }
+
+        profileHtml += `
+            </div>
+          </div>
+          <button id="logout-btn" class="submit-btn" style="width:100%; height:45px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; cursor:pointer; font-weight:bold;">安全登出帳號</button>
+        `;
+        
+        loginTab.innerHTML = profileHtml;
       }
 
       // =========================================================================
-      // 5. 訪客狀態：登入 / 註冊表單
+      // 5. 訪客狀態：登入 / 註冊表單切換與 HTML 拼接
       // =========================================================================
       function renderGuestAuthForms(loginTab) {
-        if (!loginTab) return;
-        if (currentFormMode === 'login') {
-          loginTab.innerHTML = `
+      if (!loginTab) return;
+      if (currentFormMode === 'login') {
+        loginTab.innerHTML = `
+          <h3>Welcome Back</h3>
+          <p class="form-desc">請輸入您的電子郵件與密碼登入會員</p>
+          <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold; text-align:left;">✕ 帳號或密碼錯誤，請重新檢查！</div>
+          <form class="member-form" id="auth-submit-form" onsubmit="window.handleAuthSubmit(event)">
+            <div class="form-group">
+              <input type="email" id="auth-email" placeholder=" " required>
+              <label for="auth-email">電子郵件 *</label>
+            </div>
+            <div class="form-group">
+              <input type="password" id="auth-password" placeholder=" " required>
+              <label for="auth-password">密碼 *</label>
+            </div>
+            <button type="submit" class="submit-btn">立即登入中控室</button>
+          </form>
+          <div class="form-footer">
+            <span>還沒有帳號嗎？</span> <a href="#" id="link-to-register">註冊新帳號</a>
+          </div> `;
+      } else {
+        loginTab.innerHTML = `
+          <h3>Create Account</h3>
+          <p class="form-desc">歡迎加入 Celeste COLLECTION，請填寫下方資料完成註冊</p>
+          <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold; text-align:left;"></div>
+          <form class="member-form" id="auth-submit-form" onsubmit="window.handleAuthSubmit(event)">
+            <div class="form-group">
+              <input type="email" id="auth-email" placeholder=" " required>
+              <label for="auth-email">設定電子郵件 *</label>
+            </div>
+            <div class="form-group">
+              <input type="password" id="auth-password" placeholder=" " required>
+              <label for="auth-password">設定密碼 *</label>
+            </div>
+            <button type="submit" class="submit-btn" style="background: transparent; border: 1px solid #d7b17d; color: #d7b17d; border-radius:4px; font-weight:bold; cursor:pointer;">確認建立全新帳號</button>
+          </form>
+          <div class="form-footer">
+            <span>已經有帳號了？</span> <a href="#" id="link-to-login">返回登入畫面</a>
+          </div> `;
+      }
+
+      const toRegisterLink = document.getElementById('link-to-register');
+      const toLoginLink = document.getElementById('link-to-login');
+      if (toRegisterLink) {
+        toRegisterLink.addEventListener('click', function(e) { e.preventDefault(); currentFormMode = 'register'; renderMemberPage(); });
+      }
+      if (toLoginLink) {
+        toLoginLink.addEventListener('click', function(e) { e.preventDefault(); currentFormMode = 'login'; renderMemberPage(); });
+      }
+      }
+
+      // =========================================================================
+      // 6. 核心驗證查驗與註冊寫入
+      // =========================================================================
+      window.handleAuthSubmit = function(event) {
+      event.preventDefault(); 
+      const emailInput = document.getElementById('auth-email').value.trim();
+      const passwordInput = document.getElementById('auth-password').value.trim();
+      const errorEl = document.getElementById('auth-error-msg');
+
+      if (errorEl) errorEl.style.display = 'none';
+
+      let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+      const isAdminValid = (emailInput === 'admin@gmail.com' && passwordInput === 'admin123');
+
+      if (currentFormMode === 'login') {
+        loginTab.innerHTML = `
             <h3>Welcome Back</h3>
             <p class="form-desc">請輸入您的電子郵件與密碼登入會員</p>
             <div id="auth-error-msg" style="color: #ea580c; font-size: 14px; margin-bottom: 15px; display: none; font-weight: bold; text-align:left;">✕ 帳號或密碼錯誤，請重新檢查！</div>
             <form class="member-form" id="auth-submit-form" onsubmit="window.handleAuthSubmit(event)">
               <div class="form-group">
                 <input type="email" id="auth-email" placeholder=" " required>
-                <label for="auth-email">電子郵件 <span>*</span></label>
+                <label for="auth-email">電子郵件 *</label>
               </div>
               <div class="form-group">
                 <input type="password" id="auth-password" placeholder=" " required>
-                <label for="auth-password">密碼 <span>*</span></label>
+                <label for="auth-password">密碼 *</label>
               </div>
-              <button type="submit" class="submit-btn">立即登入</button>
+              <button type="submit" class="submit-btn">立即登入中控室</button>
             </form>
             <div class="form-footer">
               <span>還沒有帳號嗎？</span> <a href="#" id="link-to-register">註冊新帳號</a>
@@ -547,20 +657,20 @@
             <form class="member-form" id="auth-submit-form" onsubmit="window.handleAuthSubmit(event)">
               <div class="form-group">
                 <input type="email" id="auth-email" placeholder=" " required>
-                <label for="auth-email">設定電子郵件 <span>*</span></label>
+                <label for="auth-email">設定電子郵件 *</label>
               </div>
               <div class="form-group">
                 <input type="password" id="auth-password" placeholder=" " required>
-                <label for="auth-password">設定密碼 <span>*</span></label>
+                <label for="auth-password">設定密碼 *</label>
               </div>
-              <button type="submit" class="submit-btn submit-btn-reg" style="background: transparent; border: 1px solid #d7b17d; color: #d7b17d;">確認建立全新帳號</button>
+              <button type="submit" class="submit-btn" style="background: transparent; border: 1px solid #d7b17d; color: #d7b17d; border-radius:4px; font-weight:bold; cursor:pointer;">確認建立全新帳號</button>
             </form>
             <div class="form-footer">
               <span>已經有帳號了？</span> <a href="#" id="link-to-login">返回登入畫面</a>
             </div> `;
         }
 
-        // 核心中控：重新滑順連結表單切換點擊事件
+        // 核心中控：滑順綁定內置點擊切換事件
         const toRegisterLink = document.getElementById('link-to-register');
         const toLoginLink = document.getElementById('link-to-login');
         if (toRegisterLink) {
@@ -572,10 +682,10 @@
       }
 
       // =========================================================================
-      // 6. 核心驗證查驗與註冊寫入（100% 限制每個郵件只限註冊一次，禁止重複）
+      // 6. 核心驗證查驗與註冊寫入（100% 限制每個郵件只限註冊一次，防範重複）
       // =========================================================================
       window.handleAuthSubmit = function(event) {
-        event.preventDefault(); // 攔截 HTML 傳統整頁刷新，保障快取數據完整性
+        event.preventDefault(); // 攔截傳統 HTML 表單刷新行為
         
         const emailInput = document.getElementById('auth-email').value.trim();
         const passwordInput = document.getElementById('auth-password').value.trim();
@@ -583,12 +693,11 @@
         
         if (errorEl) errorEl.style.display = 'none';
 
-        // 讀取本地快取實名會員大庫
+        // 提取實名制會員名冊大庫
         let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
         const isAdminValid = (emailInput === 'admin@gmail.com' && passwordInput === 'admin123');
 
         if (currentFormMode === 'login') {
-          // 執行登入判定
           const matchedUser = users.find(u => u.email === emailInput && u.password === passwordInput);
           if (isAdminValid || matchedUser) {
             localStorage.setItem('isLoggedIn', 'true');
@@ -603,7 +712,7 @@
           }
         } 
         else if (currentFormMode === 'register') {
-          // 每個電子郵件只限註冊一次！
+          // 🚀【資管核心排重防線】：查驗是否有相同 Email 註冊過，每個電子郵件只限註冊一次
           const isExist = users.some(u => u.email === emailInput);
           const isReservedAdmin = (emailInput === 'admin@gmail.com');
 
@@ -612,10 +721,10 @@
               errorEl.textContent = "✕ 註冊失敗：此電子郵件在 Celeste 數據庫中已被使用過，請更換其他信箱！";
               errorEl.style.display = 'block';
             }
-            return; // 當場中斷
+            return; // 凌空截斷，中斷寫入行為
           }
 
-          // 查驗通過，全新推入資料庫
+          // 查驗放行，包裝新註冊實名用戶並推入大庫，並精準綁定 joinDate 欄位
           users.push({ email: emailInput, password: passwordInput, joinDate: new Date().toLocaleDateString() });
           localStorage.setItem('registeredUsers', JSON.stringify(users));
           alert('🎉 帳號註冊成功！資料已安全同步，正在為您切換回登入畫面...');
@@ -626,34 +735,28 @@
       };
 
       // =========================================================================
-      // 7. 管理員後台：動態加減庫存事件執行緒 (連動修改全站商品庫 localProductDB)
+      // 7. 管理員後台：動態加減庫存事件執行緒 (即時修改並推回全站商品大庫)
       // =========================================================================
       function bindAdminStockControls() {
         let currentDB = JSON.parse(localStorage.getItem('localProductDB'));
         if (!currentDB) return;
-        
+
         const rows = document.querySelectorAll('.admin-stock-row');
         rows.forEach(row => {
           const id = row.getAttribute('data-id');
           const minusBtn = row.querySelector('.btn-down');
           const plusBtn = row.querySelector('.btn-up');
-          
-          // 💡 修正 1：移除多餘的右括號，回復標準抓取語法
           const displaySpan = document.getElementById(`stock-display-${id}`);
 
-          // 減號按鈕事件綁定
           if (minusBtn && displaySpan) {
             minusBtn.onclick = function() {
               if (currentDB[id] && currentDB[id].stock > 0) {
                 currentDB[id].stock -= 1;
                 displaySpan.textContent = currentDB[id].stock;
-                // 即時同步回全站商品大庫，保障跨頁數據大連動
                 localStorage.setItem('localProductDB', JSON.stringify(currentDB));
               }
             };
           }
-
-          // 💡 修正 2：移除重複黏貼的錯位大括號，回復乾淨俐落的加號點擊事件
           if (plusBtn && displaySpan) {
             plusBtn.onclick = function() {
               if (currentDB[id]) {
@@ -667,36 +770,61 @@
       }
 
       // =========================================================================
-      // 8. 會員中心：右側評價紀錄大同步渲染器
+      // 8. 會員中心：右側評價紀錄大同步渲染器 (自帶跨頁刪除完全體連動機制)
       // =========================================================================
       function renderMemberReviewsHistory() {
         if (localStorage.getItem('isLoggedIn') !== 'true') return;
         const loggedEmail = localStorage.getItem('currentUserEmail');
         const myHistoryContainer = document.getElementById('member-reviews-history-list');
-        
+
         if (myHistoryContainer) {
           let memberReviewKey = 'reviews_' + loggedEmail;
           let myReviews = JSON.parse(localStorage.getItem(memberReviewKey)) || [];
           let html = "";
           
-          myReviews.forEach(log => {
+          myReviews.forEach((log, index) => {
             html += `
-              <div class="member-history-item" style="background:rgba(255,255,255,0.02); padding:15px; border-radius:6px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.05); text-align:left;">
-                <p style="margin:0 0 5px 0; color:#d7b17d; font-size:14px;"><strong>評鑑專輯：</strong>《${log.albumTitle}》</p>
+              <div class="member-history-item" id="member-review-card-${index}" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.04); text-align:left; position:relative;">
+                <button onclick="deleteMyReviewAction(${index})" style="position:absolute; top:20px; right:20px; background:transparent; border:1px solid rgba(234,88,12,0.3); color:#ea580c; padding:5px 12px; font-size:11px; border-radius:4px; cursor:pointer; transition:0.3s;">
+                  <i class="fa-regular fa-trash-can" style="margin-right:4px;"></i> 刪除此評論
+                </button>
+                <p style="margin:0 0 5px 0; color:#d7b17d; font-size:14px; padding-right:100px;"><strong>評鑑專輯：</strong>《${log.albumTitle}》</p>
                 <p style="margin:0 0 5px 0; color:white; font-size:14px;"><strong>我的心得：</strong>${log.myComment}</p>
-                <small style="color:rgba(255,255,255,0.3); font-size:11px; display:block;">發布日期：${log.timestamp || log.date || '今日'}</small>
+                <small style="color:rgba(255,255,255,0.25); font-size:12px; display:block; border-top:1px solid rgba(255,255,255,0.02); padding-top:6px; margin-top:4px;">發布日期：${log.timestamp || '今日'}</small>
               </div>`;
           });
           myHistoryContainer.innerHTML = html || `<p style="color:rgba(255,255,255,0.3); text-align:center; padding:20px 0;">目前帳戶內尚無發表過任何黑膠聆聽心得。</p>`;
         }
       }
 
-      // 輔助導航標籤面板切換
+      window.deleteMyReviewAction = function(index) {
+        const loggedEmail = localStorage.getItem('currentUserEmail');
+        let memberReviewKey = 'reviews_' + loggedEmail;
+        let myReviews = JSON.parse(localStorage.getItem(memberReviewKey)) || [];
+        const targetReview = myReviews[index];
+        if (!targetReview) return;
+
+        if (!confirm(`確定要永久刪除您對《${targetReview.albumTitle}》發表的黑膠評論嗎？`)) return;
+
+        let currentDB = JSON.parse(localStorage.getItem('localProductDB')) || {};
+        let targetAlbumId = targetReview.albumId;
+        if (!targetAlbumId || targetAlbumId === "unknown") {
+          for (let id in currentDB) { if (currentDB[id].title === targetReview.albumTitle) { targetAlbumId = id; break; } }
+        }
+        if (targetAlbumId && currentDB[targetAlbumId] && currentDB[targetAlbumId].reviews) {
+          const myNickName = loggedEmail.split('@') + "_VIP";
+          currentDB[targetAlbumId].reviews = currentDB[targetAlbumId].reviews.filter(r => !(r.user === myNickName && r.comment === targetReview.myComment));
+          localStorage.setItem('localProductDB', JSON.stringify(currentDB));
+        }
+        myReviews.splice(index, 1);
+        localStorage.setItem(memberReviewKey, JSON.stringify(myReviews));
+        alert(`✓ 永久撤銷成功！`);
+        renderMemberReviewsHistory();
+      };
+
       function switchTab(evt, tabId) {
-        const contents = document.querySelectorAll('.tab-content');
-        contents.forEach(content => content.classList.remove('active'));
-        const buttons = document.querySelectorAll('.tab-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         evt.currentTarget.classList.add('active');
       }
@@ -707,6 +835,220 @@
         const loginSection = document.getElementById('tab-login');
         if (loginSection) loginSection.scrollIntoView({ behavior: 'smooth' });
       };
+
+      // =========================================================================
+      // 會員中心
+      // =========================================================================
+      document.addEventListener('DOMContentLoaded', function() {
+      setInterval(function() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const currentUserEmail = localStorage.getItem('currentUserEmail');
+        const loginTab = document.getElementById('tab-login');
+
+        const revContentBox = document.getElementById('reviews-secure-content') || document.querySelector('.tab-content:last-child');
+        let myHistoryContainer = document.getElementById('member-reviews-history-list');
+
+        if (!isLoggedIn || !currentUserEmail || currentUserEmail === 'admin@gmail.com') return;
+        
+        // ─── 個人資料與歷史訂單 ───
+        if (loginTab && !loginTab.querySelector('.profile-section-card')) {
+          let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+          let userProfile = users.find(u => u.email === currentUserEmail) || {};
+          let joinDateStr = userProfile.joinDate || "2026/06/18";
+
+          let purchaseHistory = JSON.parse(localStorage.getItem('historyOrders_' + currentUserEmail)) || [];
+          let totalSpentCount = localStorage.getItem('purchaseCount') || purchaseHistory.length.toString();
+
+          let profileHtml = `
+            <h3>Premium Member Profile</h3>
+            <p class="form-desc" style="color: #d7b17d; margin-bottom: 25px;">✨ 您的正式黑膠認證中控台與足跡大庫</p>
+            
+            <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px; box-sizing: border-box;">
+              <h4 style="color:#d7b17d; margin:0 0 12px 0; font-weight:400; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;"><i class="fa-regular fa-address-card" style="margin-right:6px;"></i> 個人基本資料</h4>
+              <div style="font-size:14px; color:rgba(255,255,255,0.7); line-height:2;">
+                <p style="margin:0;"><strong>尊榮帳號 (Email)：</strong> <span style="color:white; font-weight:bold;">${currentUserEmail}</span></p>
+                <p style="margin:0;"><strong>會員級別：</strong> Gold Vinyl VIP (黃金唱片尊榮會員)</p>
+                <p style="margin:0;"><strong>帳戶啟用日期：</strong> ${joinDateStr}</p>
+              </div>
+            </div>
+
+            <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px; box-sizing: border-box;">
+              <h4 style="color:#d7b17d; margin:0 0 12px 0; font-weight:400; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px;"></i> 歷史消費紀錄 (${totalSpentCount})</h4>
+              <div style="max-height:240px; overflow-y:auto; padding-right:5px; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;">
+          `;
+
+          if (purchaseHistory.length > 0) {
+            purchaseHistory.forEach((order) => {
+              profileHtml += `
+                <div class="purchase-history-row" style="background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.03); padding:15px; border-radius:6px; font-size:13px; text-align: left; box-sizing: border-box;">
+                  <p style="margin:0 0 6px 0; color:white; font-size:14px;"><strong>訂單編號：</strong><span style="color:#d7b17d; font-family:monospace; font-weight:bold;">${order.orderId}</span></p>
+                  <p style="margin:0 0 6px 0; color:rgba(255,255,255,0.6); line-height: 1.4;"><strong>結帳品項：</strong> ${order.itemsSummary}</p>
+                  <p style="margin:0; color:rgba(255,255,255,0.4); border-top:1px solid rgba(255,255,255,0.02); padding-top:6px; margin-top:4px; box-sizing: border-box;">
+                    <strong>實付金額：</strong> <span style="color:#d7b17d; font-weight:bold; font-size:14px;">NT$ ${order.totalPrice.toLocaleString()}</span> 
+                    <span style="float:right; font-size:12px; color:rgba(255,255,255,0.3);"><i class="fa-regular fa-calendar-days" style="margin-right:4px;"></i>${order.date}</span>
+                  </p>
+                </div>`;
+            });
+          } else {
+            profileHtml += `
+              <div style="text-align:center; padding:30px 0; color:rgba(255,255,255,0.25);">
+                <i class="fa-solid fa-receipt" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i>
+                <p style="margin:0; font-size:13px;">目前帳戶內尚無任何歷史消費結帳封包。</p>
+              </div>`;
+          }
+
+          profileHtml += `
+              </div>
+            </div>
+            <button id="logout-btn" class="submit-btn" style="width:100%; height:45px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; cursor:pointer; font-weight:bold;">安全登出帳號</button>
+          `;
+          loginTab.innerHTML = profileHtml;
+          
+          loginTab.querySelector('#logout-btn').onclick = function() {
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('currentUserEmail');
+            alert('您已成功安全登出 Celeste 黑膠中控系統。');
+            window.location.reload();
+          };
+        }
+
+        // ─── 評論 ───
+        if (revContentBox && !revContentBox.querySelector('.member-review-score-stars')) {
+          let memberReviewKey = 'reviews_' + currentUserEmail;
+          let myReviews = JSON.parse(localStorage.getItem(memberReviewKey)) || [];
+          
+          let html = `<h3 style="font-size: 22px; font-weight: 300; margin-bottom: 20px;">我的評價紀錄 (${myReviews.length})</h3>
+                      <div style="display:flex; flex-direction:column; gap:15px; box-sizing:border-box;">`;
+          
+          myReviews.forEach((log, index) => {
+            let scoreNum = parseInt(log.myScore || log.score || log.rating || 5);
+            let starsHtml = "";
+            for (let s = 1; s <= 5; s++) {
+              if (s <= scoreNum) {
+                starsHtml += `<i class="fa-solid fa-star" style="color: #d7b17d; margin-right: 2px; font-size: 13px;"></i>`;
+              } else {
+                starsHtml += `<i class="fa-regular fa-star" style="color: rgba(255,255,255,0.15); margin-right: 2px; font-size: 13px;"></i>`;
+              }
+            }
+
+            html += `
+              <div class="member-history-item" id="member-review-card-${index}" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); text-align:left; position:relative; box-sizing: border-box;">
+                <button onclick="window.manuallyDeleteReview(${index})" style="position:absolute; top:20px; right:20px; background:transparent; border:1px solid rgba(234,88,12,0.3); color:#ea580c; padding:5px 12px; font-size:11px; border-radius:4px; cursor:pointer; transition:0.3s; font-weight:bold;">
+                  <i class="fa-regular fa-trash-can" style="margin-right:4px;"></i> 刪除紀錄
+                </button>
+                <p style="margin:0 0 6px 0; color:white; font-size:15px; font-weight:bold; padding-right:100px;"><strong>評鑑專輯：</strong>《${log.albumTitle}》</p>
+                <div class="member-review-score-stars" style="margin-bottom: 10px; display: flex; align-items: center; gap: 5px;">
+                  <span style="color: rgba(255,255,255,0.4); font-size: 12px;">給予評分：</span>
+                  <div style="display: inline-block;">${starsHtml}</div>
+                  <span style="color: #d7b17d; font-size: 12px; font-weight: bold; margin-left: 4px;">(${scoreNum}.0 / 5.0)</span>
+                </div>
+                <p style="margin:0 0 10px 0; color: rgba(255,255,255,0.75); font-size:14px; line-height:1.6; letter-spacing:0.5px;"><strong>我的心得：</strong>${log.myComment}</p>
+                <small style="color:rgba(255,255,255,0.25); font-size:12px; display:block; border-top:1px solid rgba(255,255,255,0.02); padding-top:6px; margin-top:4px;"><i class="fa-regular fa-clock" style="margin-right:5px; font-size:11px;"></i>發布日期：${log.timestamp || '今日'}</small>
+              </div>`;
+          });
+
+          html += `</div>`;
+
+          revContentBox.innerHTML = myReviews.length > 0 ? html : `<h3>我的評價紀錄</h3><div style="text-align:center; padding:40px 0; color:rgba(255,255,255,0.25);"><i class="fa-regular fa-comment-dots" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i><p style="margin:0; font-size:13px;">目前帳戶內尚無發表過任何黑膠聆聽心得與評分。</p></div>`;
+        }
+      }, 500);
+    });
+
+    // 全域保底刪除傳送門
+    window.manuallyDeleteReview = function(index) {
+      const loggedEmail = localStorage.getItem('currentUserEmail');
+      let memberReviewKey = 'reviews_' + loggedEmail;
+      let myReviews = JSON.parse(localStorage.getItem(memberReviewKey)) || [];
+      const targetReview = myReviews[index];
+      if (!targetReview) return;
+      if (!confirm(`確定要永久刪除您對《${targetReview.albumTitle}》發表的黑膠評論嗎？`)) return;
+
+      let currentDB = JSON.parse(localStorage.getItem('localProductDB')) || {};
+      let targetAlbumId = targetReview.albumId;
+      for (let id in currentDB) { if (currentDB[id].title === targetReview.albumTitle) { targetAlbumId = id; break; } }
+      if (targetAlbumId && currentDB[targetAlbumId] && currentDB[targetAlbumId].reviews) {
+        const myNickName = loggedEmail.split('@') + "_VIP";
+        currentDB[targetAlbumId].reviews = currentDB[targetAlbumId].reviews.filter(r => !(r.user === myNickName && r.comment === targetReview.myComment));
+        localStorage.setItem('localProductDB', JSON.stringify(currentDB));
+      }
+      myReviews.splice(index, 1);
+      localStorage.setItem(memberReviewKey, JSON.stringify(myReviews));
+      alert(`✓ 永久撤銷成功！`);
+      window.location.reload();
+    };
+
+    // =========================================================================
+    // 收藏夾內置移除按鈕
+    // =========================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // 建立最高優先權定時器，每 500 毫秒自動巡檢並在每張收藏小卡下追加移除連結
+      setInterval(function() {
+        if (localStorage.getItem('isLoggedIn') !== 'true') return;
+
+        // 尋找畫面上「我的收藏夾」面板裡面的所有商品卡片
+        const favPanel = document.getElementById('favorites-secure-content') || document.querySelector('.tab-content:nth-child(2)');
+        if (!favPanel) return;
+
+        // 抓取裡面的所有小連結 A 標籤
+        const detailLinks = favPanel.querySelectorAll('a[href*="category.html"]');
+        
+        detailLinks.forEach(link => {
+          // 防範重複堆疊
+          const cardContainer = link.parentElement;
+          if (cardContainer && !cardContainer.querySelector('.manually-remove-fav-link')) {
+            
+            // 從商品網址中精準剝離出該張黑膠唱片的實體 ID (如 vinyl-001)
+            const urlObj = new URL(link.href, window.location.href);
+            const favId = urlObj.searchParams.get('id');
+            
+            if (favId) {
+              // 建立精緻的高奢紅金「移除收藏」純文字連結
+              const removeBtn = document.createElement('button');
+              removeBtn.className = 'manually-remove-fav-link';
+              removeBtn.innerHTML = `<i class="fa-regular fa-trash-can" style="margin-right:2px;"></i> 移除收藏`;
+              removeBtn.style.cssText = "width:100%; background:transparent; border:none; color:rgba(255,255,255,0.3); font-size:11px; cursor:pointer; padding:4px 0; font-weight:bold; margin-top:5px; transition:0.3s;";
+              
+              // 滑鼠移過去時亮橙紅色
+              removeBtn.onmouseover = function() { this.style.color = '#ea580c'; };
+              removeBtn.onmouseout = function() { this.style.color = 'rgba(255,255,255,0.3)'; };
+              
+              // 點擊移除時的商務大連動
+              removeBtn.onclick = function(e) {
+                e.preventDefault();
+                let favorites = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
+                
+                // 從快取大庫精準剔除此 ID
+                favorites = favorites.filter(id => id !== favId);
+                localStorage.setItem('myFavoriteItems', JSON.stringify(favorites));
+                localStorage.setItem('globalFavsCount', favorites.length);
+                
+                // 實時扣減、刷亮全站右上角的金色愛心泡泡
+                const favBadge = document.getElementById('fav-badge-count');
+                if (favBadge) {
+                  favBadge.textContent = favorites.length;
+                  favBadge.style.display = (favorites.length === 0) ? 'none' : 'flex';
+                }
+                
+                // 💡 原地盲切抹除：一微秒內讓這張卡片在畫面原地滑順消失，免重新整理！
+                cardContainer.style.opacity = '0';
+                cardContainer.style.transform = 'scale(0.8)';
+                setTimeout(() => { 
+                  cardContainer.remove(); 
+                  // 萬一全部刪光了，自動吐出乾淨的空狀態引導語
+                  if (favPanel.querySelectorAll('a[href*="category.html"]').length === 0) {
+                    favPanel.innerHTML = `<h3>我的收藏</h3><div style="text-align:center; padding:40px 0; color:rgba(255,255,255,0.25);"><i class="fa-regular fa-heart" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i><p style="margin:0; font-size:13px;">目前收藏夾內尚無任何珍稀黑膠唱片。</p></div>`;
+                  }
+                }, 300);
+              };
+              
+              // 穩穩嵌入卡片的底部
+              cardContainer.appendChild(removeBtn);
+            }
+          }
+        });
+      }, 500);
+    });
+
 
   </script>
 
