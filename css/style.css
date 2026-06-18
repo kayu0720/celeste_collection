@@ -1174,9 +1174,9 @@ nav a:hover {
 /* HOVER EFFECTS */
 
 .member-card:hover {
-  transform: translateY(-8px); /* 卡片整體向上優雅飄移 8px */
+  transform: translateY(-8px); 
   background: rgba(255, 255, 255, 0.02);
-  border-color: rgba(215, 177, 125, 0.4); /* 邊框自動亮起品牌金色 */
+  border-color: rgba(215, 177, 125, 0.4); 
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
@@ -1190,7 +1190,7 @@ nav a:hover {
    ========================================================================== */
 @media (max-width: 990px) {
   .team-grid {
-    grid-template-columns: 1fr; /* 平板與手機版自動轉為直向單欄瀑布流 */
+    grid-template-columns: 1fr; 
     gap: 25px;
   }
   .about-container {
@@ -1347,7 +1347,7 @@ nav a:hover {
     padding: 40px;
   }
   .footer-links-container {
-    grid-template-columns: 1fr; /* 平板以下轉為直向單欄瀑布流 */
+    grid-template-columns: 1fr; 
     gap: 40px;
     padding: 40px;
   }
@@ -1409,7 +1409,7 @@ nav a:hover {
    ========================================================================== */
 
    
-  /* 🚀 1. 寬度防護大中控：強迫商品大網格的每一個槽位「必須絕對等寬」、不允許某個特別寬 */
+  /* 小卡大小 */
   #category-products-grid {
     display: grid !important;
     /* 💡 核心修正 1：利用 repeat 與 minmax 強制讓所有卡片平分空間，寬度 100% 一模一樣 */
@@ -1419,7 +1419,7 @@ nav a:hover {
     box-sizing: border-box !important;
   }
 
-  /* 🚀 2. 小卡外殼等高防線 */
+  /* 小卡外殼 */
   .product-card {
     display: flex !important;
     flex-direction: column !important;
@@ -1429,7 +1429,7 @@ nav a:hover {
     box-sizing: border-box !important;
   }
 
-  /* 🚀 3. 圖片外殼防線：寬高鎖死在 200px 絕對正方形保護殼 */
+  /* 圖片外殼 */
   .product-card > div:first-child > div:first-child, 
   .product-card [class*="img"], 
   .product-card [class*="image"], 
@@ -1447,15 +1447,15 @@ nav a:hover {
     box-sizing: border-box !important; 
   }
 
-  /* 🚀 4. 實體裁切防線：強迫保護殼裡面的 <img> 標籤「寬度最大值為100%」、不允許強行橫向撐大小卡 */
+  /* 強制保護殼 */
   .product-card > div:first-child > div:first-child img,
   .product-card .product-image img,
   .product-card img {
     width: 100% !important;
-    max-width: 100% !important;       /* 💡 核心修正 3：防止寬幅圖片把卡片擠寬 */
+    max-width: 100% !important; 
     height: 100% !important;
     max-height: 200px !important;
-    object-fit: cover !important;     /* 100% 智慧正方形等大裁切，徹底消滅白邊與拉伸 */
+    object-fit: cover !important;  
     display: block !important;
     border-radius: 4px !important;
   }

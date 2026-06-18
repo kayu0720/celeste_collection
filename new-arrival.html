@@ -99,7 +99,7 @@
     </div>
 
     <!-- ==========================================================================
-     【全新新增】：滿版高奢黑金黑膠試聽機 (Audio Player Stage)
+     高奢!!!!!!黑金黑膠試聽機
      ========================================================================== -->
     <div class="vinyl-player-stage" style="width: 100%; max-width: 950px; margin: 60px auto 0 auto; background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: grid; grid-template-columns: 320px 1fr; gap: 40px; align-items: center; box-sizing: border-box;">
     
@@ -112,7 +112,7 @@
             </div>
           </div>
           
-          <!-- 💡 核心修正：拋棄任何會因載入卡住的外部 icon 字體，改用最安全的網頁原生純文字符號 ▶ 與 ❚❚ -->
+
           <div style="display: flex; justify-content: center; gap: 20px; margin-top: 25px;">
             <button id="btn-player-play" onclick="window.toggleVinylPlay(true)" style="width: 50px; height: 50px; border-radius: 50%; background: #d7b17d; color: black; border: none; font-size: 20px; font-weight:bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 4px 10px rgba(215,177,125,0.2);">▶</button>
             <button id="btn-player-pause" onclick="window.toggleVinylPlay(false)" style="width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; display: none;">❚❚</button>
@@ -298,7 +298,7 @@
 
         "vinyl-004": { 
           genre: "pop", 
-          title: "The Book For (Overwatch Edition)", 
+          title: "Petal", 
           artist: "Ariana Grande", 
           price: 1480, 
           img: "img/pop/ariana_grande/petal.jpg", 
@@ -443,7 +443,7 @@
       // 如果找不到資料或畫面元素，直接結束
       if (!currentItem || !view) return;
 
-      // 直接渲染曲目列表，不再判斷 currentReviewTabMode
+      // 直接渲染曲目列表
       let html = `<div style="display:flex; flex-direction:column; gap:6px;">`;
       
       currentItem.tracks.forEach((t, i) => {
@@ -571,7 +571,7 @@
       }
 
       window.handleCardClick = function(idx, prodId) {
-      // 1. 安全防禦：如果傳進來的商品 ID 不存在，主動幫他校正提取
+      // 1. 如果傳進來的商品 ID 不存在，主動幫他校正提取
       if (!prodId) {
         if (typeof carouselArray !== 'undefined' && carouselArray[idx]) {
           prodId = carouselArray[idx].id;
@@ -580,15 +580,14 @@
 
       if (!prodId) return;
 
-      // 2. 智慧路徑定位：獲取當前點選的卡片實體
+      //獲取當前點選的卡片實體
       const el = document.getElementById(`item-3d-${idx}`);
-      
-      // 💡 核心大商務邏輯：
-      // A 流程：如果這張卡片已經被轉到最前面（中央核心位置 pos-0），點擊它 100% 聽話、破空跳轉直達分類詳細頁並打開彈窗！
+
+      // A 打開彈窗！
       if (!el || el.classList.contains('pos-0')) {
         window.location.href = `category.html?id="all"`;
       } 
-      // B 流程：如果卡片在左邊或右邊（pos-1~4），點擊它則自動把轉盤旋轉，將該張黑膠唱片帶到正中央聚焦
+      // B 黑膠唱片帶到正中央聚焦
       else {
         if (typeof currentIndex !== 'undefined') {
           currentIndex = idx;
@@ -605,11 +604,10 @@
         const currentUserEmail = localStorage.getItem('currentUserEmail');
         const loginTab = document.getElementById('tab-login');
 
-        // 安全防禦：如果沒登入，或是管理員，不觸發此註冊會員專用防線
+        // 如果沒登入，或是管理員，不觸發此註冊會員專用防線
         if (!isLoggedIn || !currentUserEmail || currentUserEmail === 'admin@gmail.com') return;
         if (!loginTab) return;
-
-        // 💡【核心攔截死律】：如果發現畫面不幸被舊代碼刷洗蓋掉、或是沒出現資料卡，全面強制原地覆寫大開通！
+  
         if (!loginTab.querySelector('.profile-section-card') || loginTab.textContent.includes('Welcome Back, Premium Member')) {
           
           // 1. 實時反查註冊大名冊，抓出此帳號的啟用日期
@@ -617,7 +615,7 @@
           let userProfile = users.find(u => u.email === currentUserEmail) || {};
           let joinDateStr = userProfile.joinDate || "2026/06/18";
 
-          // 2. 實時反查由 cart.html 結帳拋送過來的實體訂單大庫 (支援原版與各式保底命名)
+          // 2. 結帳拋送過來的實體訂單大庫
           const primaryUserOrderKey = 'historyOrders_' + currentUserEmail;
           const fallbackUserOrderKey = 'orderHistory_' + currentUserEmail;
           let purchaseHistory = JSON.parse(localStorage.getItem(primaryUserOrderKey)) || 
@@ -629,7 +627,7 @@
             totalSpentCount = localStorage.getItem('purchaseCount') || "0";
           }
 
-          // 3. 重新組裝 100% 純扁平、不滑動、直接融入大背景的黑金完全體面板結構
+          // 3. 面板結構
           let profileHtml = `
             <h3 style="font-size:28px !important; font-weight:300 !important; color:white !important; letter-spacing:2px !important; text-align:center !important; margin-bottom:12px !important;">Premium Member Profile</h3>
             <p class="form-desc" style="color:rgba(255,255,255,0.4) !important; font-size:14px !important; text-align:center !important; margin-bottom:45px !important;">✨ 您的正式黑膠認證中控台與足跡大庫</p>
@@ -644,7 +642,7 @@
               </div>
             </div>
 
-            <!-- 版塊二：歷史消費紀錄明細 (100% 聽話解碼印出 cart.html 拋來的實體數據) -->
+            <!-- 版塊二：歷史消費紀錄明細 -->
             <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px; box-sizing: border-box;">
               <h4 style="color:#d7b17d; margin:0 0 12px 0; font-weight:400; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px;"></i> 歷史消費紀錄 (${totalSpentCount})</h4>
               <div style="max-height:240px; overflow-y:auto; padding-right:5px; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;">
@@ -680,11 +678,10 @@
             </div>
             <button id="logout-btn" class="submit-btn" style="width:100%; height:52px; background:linear-gradient(90deg, #d7b17d 0%, #b8925e 100%) !important; color:black !important; border:none !important; border-radius:4px !important; font-size:15px !important; font-weight:bold !important; letter-spacing:2px !important; cursor:pointer !important; margin-top:15px !important; display:flex; align-items:center; justify-content:center;">安全登出帳號</button>
           `;
-          
-          // 破空鎖定！強行覆寫塞入面板，徹底沒收舊流程洗白畫面的權限！
+
           loginTab.innerHTML = profileHtml;
           
-          // 銲接登出事件
+          // 接登出事件
           const lBtn = loginTab.querySelector('#logout-btn');
           if (lBtn) {
             lBtn.onclick = function() {
@@ -697,7 +694,6 @@
         }
       }
 
-      // 部署全自動極速輪詢線：每 100 毫秒高頻率在背景巡邏，一旦發現被蓋掉一微秒內瞬間強制拉回重繪！
       document.addEventListener('DOMContentLoaded', enforceProfileAndOrdersRecovery);
       window.addEventListener('load', enforceProfileAndOrdersRecovery);
       setInterval(enforceProfileAndOrdersRecovery, 100);

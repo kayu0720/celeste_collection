@@ -255,12 +255,11 @@
     }
     
     // 2. 跨頁購物車數量泡泡校正機制：
-    // 依據資管標準，member.html 必須直接被動向全站快取讀取真實數量，絕對不能去算不存在的輸入框！
     const savedCartCount = localStorage.getItem('globalCartCount') || '0';
     const cartBadge = document.getElementById('cart-badge-count');
     if (cartBadge) {
       cartBadge.textContent = savedCartCount;
-      // 如果數量為 0，聽話遵循美學規範自動隱藏泡泡
+      // 如果數量為 0，自動隱藏泡泡
       cartBadge.style.display = (parseInt(savedCartCount) === 0) ? 'none' : 'flex';
     }
 
@@ -272,7 +271,7 @@
       favBadge.style.display = (parseInt(savedFavCount) === 0) ? 'none' : 'flex';
     }
 
-    // 4. 【核心路由自動分流】：網頁一打開，立刻自動判定客人目前是登入還是未登入
+    // 4. 判定客人目前是登入還是未登入
     if (localStorage.getItem('isLoggedIn') === 'true') {
       // 情況 A：如果已經是登入狀態，強制隱藏註冊表單，直接把「會員後台大面板」開給他看
       if (typeof showLoggedInDashboard === 'function') {
@@ -295,7 +294,7 @@
       let currentFormMode = 'login'; 
 
       // =========================================================================
-      // 1. 全網頁載入初始化中控台 (生命週期最高優先權防線)
+      // 全網頁載入初始化中控台
       // =========================================================================
       document.addEventListener('DOMContentLoaded', function() {
         
@@ -340,12 +339,11 @@
           });
         }
 
-        // 🚀 執行最高優先權首次狀態分流渲染，全面解鎖開通大面板
         renderMemberPage();
       });
 
       // =========================================================================
-      // 2. 全站雙通知數量泡泡即時校正
+      // 全站雙通知數量泡泡即時校正
       // =========================================================================
       function syncNavbarBadges() {
         const c = localStorage.getItem('globalCartCount') || '0';
@@ -357,7 +355,7 @@
       }
 
       // =========================================================================
-      // 3. 頁面狀態動態渲染中控台 (自帶內建去外框、純扁平高奢黑金內置 CSS 樣式)
+      // 頁面狀態動態渲染中控台
       // =========================================================================
       function renderMemberPage() {
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -406,7 +404,7 @@
             // 情況 A-1：管理員最高權限帳戶登入 ➔ 渲染庫存管理核心大後台
             let adminHtml = `
               <h3>Admin Control Center</h3>
-              <p class="form-desc" style="color: #d7b17d;">⚙️ 官方最高權限管理員後台 (即時庫存調校系統)</p>
+              <p class="form-desc" style="color: #d7b17d;">⚙️ 官方管理員後台</p>
               <div class="admin-info-box" style="margin-bottom: 20px; font-size:14px; color:rgba(255,255,255,0.6); text-align:left;">
                 <p style="margin:0;"><strong>目前身分：</strong> System Root Admin</p>
               </div>
@@ -447,12 +445,12 @@
         logoutBtn.addEventListener('click', function() {
           localStorage.setItem('isLoggedIn', 'false');
           localStorage.removeItem('currentUserEmail');
-          alert('您已成功安全登出 Celeste 黑膠中控系統。');
+          alert('您已成功安全登出 Celeste 會員系統。');
           window.location.reload();
         });
       }
 
-      // 實時大同步：動態撈取個人收藏清單與歷史評論足跡
+      // 實時同步：動態撈取個人收藏清單與歷史評論足跡
       renderMemberReviewsHistory();
       if (favContent) {
         let myFavIds = JSON.parse(localStorage.getItem('myFavoriteItems')) || [];
@@ -492,7 +490,7 @@
       } 
 
       // =========================================================================
-      // 4. 普通註冊尊榮會員：資訊面板渲染器 (內建顯示個人基本資料、歷史消費紀錄)
+      // 普通註冊尊榮會員：資訊面板渲染器 (內建顯示個人基本資料、歷史消費紀錄那些)
       // =========================================================================
       function renderRegularMemberPanel(currentUserEmail, loginTab) {
         if (!loginTab) return;
@@ -512,7 +510,7 @@
         // C. 渲染極奢黑金個人資料與實時消費明細面板
         let profileHtml = `
           <h3>Premium Member Profile</h3>
-          <p class="form-desc" style="color: #d7b17d; margin-bottom: 25px;">✨ 您的正式黑膠認證中控台與足跡大庫</p>
+          <p class="form-desc" style="color: #d7b17d; margin-bottom: 25px;">✨ 歡迎回來, 您的會員中心 ✨</p>
           
           <!-- 子版塊一：個人基本資料卡 -->
           <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px;">
@@ -548,7 +546,7 @@
           profileHtml += `
             <div style="text-align:center; padding:30px 0; color:rgba(255,255,255,0.25);">
               <i class="fa-solid fa-receipt" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i>
-              <p style="margin:0; font-size:13px;">目前帳戶內尚無任何歷史消費結帳封包。</p>
+              <p style="margin:0; font-size:13px;">目前帳戶內尚無任何歷史消費結帳。</p>
             </div>`;
         }
 
@@ -562,7 +560,7 @@
       }
 
       // =========================================================================
-      // 5. 訪客狀態：登入 / 註冊表單切換與 HTML 拼接
+      // 訪客狀態：登入 / 註冊表單切換與 HTML 拼接
       // =========================================================================
       function renderGuestAuthForms(loginTab) {
       if (!loginTab) return;
@@ -617,7 +615,7 @@
       }
 
       // =========================================================================
-      // 6. 核心驗證查驗與註冊寫入
+      // 核心驗證查驗與註冊寫入
       // =========================================================================
       window.handleAuthSubmit = function(event) {
       event.preventDefault(); 
@@ -644,7 +642,7 @@
                 <input type="password" id="auth-password" placeholder=" " required>
                 <label for="auth-password">密碼 *</label>
               </div>
-              <button type="submit" class="submit-btn">立即登入中控室</button>
+              <button type="submit" class="submit-btn">立即登入會員中心</button>
             </form>
             <div class="form-footer">
               <span>還沒有帳號嗎？</span> <a href="#" id="link-to-register">註冊新帳號</a>
@@ -682,7 +680,7 @@
       }
 
       // =========================================================================
-      // 6. 核心驗證查驗與註冊寫入（100% 限制每個郵件只限註冊一次，防範重複）
+      // 核心驗證查驗與註冊寫入（限制每個郵件只限註冊一次，防範重複）
       // =========================================================================
       window.handleAuthSubmit = function(event) {
         event.preventDefault(); // 攔截傳統 HTML 表單刷新行為
@@ -712,19 +710,19 @@
           }
         } 
         else if (currentFormMode === 'register') {
-          // 🚀【資管核心排重防線】：查驗是否有相同 Email 註冊過，每個電子郵件只限註冊一次
+          // 每個電子郵件只限註冊一次
           const isExist = users.some(u => u.email === emailInput);
           const isReservedAdmin = (emailInput === 'admin@gmail.com');
 
           if (isExist || isReservedAdmin) {
             if (errorEl) {
-              errorEl.textContent = "✕ 註冊失敗：此電子郵件在 Celeste 數據庫中已被使用過，請更換其他信箱！";
+              errorEl.textContent = "✕ 註冊失敗：此電子郵件在 Celeste 中已被使用過，請更換其他信箱！";
               errorEl.style.display = 'block';
             }
-            return; // 凌空截斷，中斷寫入行為
+            return;
           }
 
-          // 查驗放行，包裝新註冊實名用戶並推入大庫，並精準綁定 joinDate 欄位
+          // 查驗放行，包裝新註冊實名用戶並推入大庫，綁定 joinDate 欄位
           users.push({ email: emailInput, password: passwordInput, joinDate: new Date().toLocaleDateString() });
           localStorage.setItem('registeredUsers', JSON.stringify(users));
           alert('🎉 帳號註冊成功！資料已安全同步，正在為您切換回登入畫面...');
@@ -735,7 +733,7 @@
       };
 
       // =========================================================================
-      // 7. 管理員後台：動態加減庫存事件執行緒 (即時修改並推回全站商品大庫)
+      // 管理員後台：動態加減庫存事件執行緒 (即時修改並推回全站商品大庫)
       // =========================================================================
       function bindAdminStockControls() {
         let currentDB = JSON.parse(localStorage.getItem('localProductDB'));
@@ -770,7 +768,7 @@
       }
 
       // =========================================================================
-      // 8. 會員中心：右側評價紀錄大同步渲染器 (自帶跨頁刪除完全體連動機制)
+      // 會員中心：右側評價紀錄同步
       // =========================================================================
       function renderMemberReviewsHistory() {
         if (localStorage.getItem('isLoggedIn') !== 'true') return;
@@ -861,7 +859,7 @@
 
           let profileHtml = `
             <h3>Premium Member Profile</h3>
-            <p class="form-desc" style="color: #d7b17d; margin-bottom: 25px;">✨ 您的正式黑膠認證中控台與足跡大庫</p>
+            <p class="form-desc" style="color: #d7b17d; margin-bottom: 25px;"> 歡迎回來, 您的會員中心</p>
             
             <div class="profile-section-card" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:left; margin-bottom:25px; box-sizing: border-box;">
               <h4 style="color:#d7b17d; margin:0 0 12px 0; font-weight:400; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;"><i class="fa-regular fa-address-card" style="margin-right:6px;"></i> 個人基本資料</h4>
@@ -893,7 +891,7 @@
             profileHtml += `
               <div style="text-align:center; padding:30px 0; color:rgba(255,255,255,0.25);">
                 <i class="fa-solid fa-receipt" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i>
-                <p style="margin:0; font-size:13px;">目前帳戶內尚無任何歷史消費結帳封包。</p>
+                <p style="margin:0; font-size:13px;">目前帳戶內尚無任何歷史消費結帳。</p>
               </div>`;
           }
 
@@ -942,19 +940,21 @@
                   <div style="display: inline-block;">${starsHtml}</div>
                   <span style="color: #d7b17d; font-size: 12px; font-weight: bold; margin-left: 4px;">(${scoreNum}.0 / 5.0)</span>
                 </div>
-                <p style="margin:0 0 10px 0; color: rgba(255,255,255,0.75); font-size:14px; line-height:1.6; letter-spacing:0.5px;"><strong>我的心得：</strong>${log.myComment}</p>
-                <small style="color:rgba(255,255,255,0.25); font-size:12px; display:block; border-top:1px solid rgba(255,255,255,0.02); padding-top:6px; margin-top:4px;"><i class="fa-regular fa-clock" style="margin-right:5px; font-size:11px;"></i>發布日期：${log.timestamp || '今日'}</small>
+                <p style="margin:0 0 10px 0; color: rgba(255,255,255,0.75); font-size:14px; line-height:1.6; letter-spacing:0.5px;">
+                  <strong>我的心得：</strong>${log.myComment}</p>
+                  <small style="color:rgba(255,255,255,0.25); font-size:12px; display:block; border-top:1px solid rgba(255,255,255,0.02); padding-top:6px; margin-top:4px;">
+                  <i class="fa-regular fa-clock" style="margin-right:5px; font-size:11px;"></i>發布日期：${log.timestamp || '今日'}</small>
               </div>`;
           });
 
           html += `</div>`;
 
-          revContentBox.innerHTML = myReviews.length > 0 ? html : `<h3>我的評價紀錄</h3><div style="text-align:center; padding:40px 0; color:rgba(255,255,255,0.25);"><i class="fa-regular fa-comment-dots" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i><p style="margin:0; font-size:13px;">目前帳戶內尚無發表過任何黑膠聆聽心得與評分。</p></div>`;
+          revContentBox.innerHTML = myReviews.length > 0 ? html : `<h3>我的評價紀錄</h3><div style="text-align:center; padding:40px 0; color:rgba(255,255,255,0.25);"><i class="fa-regular fa-comment-dots" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i><p style="margin:0; font-size:13px;">目前帳戶內尚無發表過任何黑膠心得與評分。</p></div>`;
         }
       }, 500);
     });
 
-    // 全域保底刪除傳送門
+    // 刪除傳送門
     window.manuallyDeleteReview = function(index) {
       const loggedEmail = localStorage.getItem('currentUserEmail');
       let memberReviewKey = 'reviews_' + loggedEmail;
@@ -997,12 +997,12 @@
           const cardContainer = link.parentElement;
           if (cardContainer && !cardContainer.querySelector('.manually-remove-fav-link')) {
             
-            // 從商品網址中精準剝離出該張黑膠唱片的實體 ID (如 vinyl-001)
+            // 從商品網址中精準剝離出該張黑膠唱片的實體 ID
             const urlObj = new URL(link.href, window.location.href);
             const favId = urlObj.searchParams.get('id');
             
             if (favId) {
-              // 建立精緻的高奢紅金「移除收藏」純文字連結
+              // 純文字連結
               const removeBtn = document.createElement('button');
               removeBtn.className = 'manually-remove-fav-link';
               removeBtn.innerHTML = `<i class="fa-regular fa-trash-can" style="margin-right:2px;"></i> 移除收藏`;
@@ -1028,15 +1028,19 @@
                   favBadge.textContent = favorites.length;
                   favBadge.style.display = (favorites.length === 0) ? 'none' : 'flex';
                 }
-                
-                // 💡 原地盲切抹除：一微秒內讓這張卡片在畫面原地滑順消失，免重新整理！
+
                 cardContainer.style.opacity = '0';
                 cardContainer.style.transform = 'scale(0.8)';
                 setTimeout(() => { 
                   cardContainer.remove(); 
-                  // 萬一全部刪光了，自動吐出乾淨的空狀態引導語
+
                   if (favPanel.querySelectorAll('a[href*="category.html"]').length === 0) {
-                    favPanel.innerHTML = `<h3>我的收藏</h3><div style="text-align:center; padding:40px 0; color:rgba(255,255,255,0.25);"><i class="fa-regular fa-heart" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i><p style="margin:0; font-size:13px;">目前收藏夾內尚無任何珍稀黑膠唱片。</p></div>`;
+                    favPanel.innerHTML = `
+                    <h3>我的收藏</h3>
+                    <div style="text-align:center; padding:40px 0; color:rgba(255,255,255,0.25);">
+                      <i class="fa-regular fa-heart" style="font-size:32px; margin-bottom:10px; display:block; opacity:0.3;"></i>
+                      <p style="margin:0; font-size:13px;">目前收藏夾內尚無任何珍稀黑膠唱片。</p>
+                    </div>`;
                   }
                 }, 300);
               };
