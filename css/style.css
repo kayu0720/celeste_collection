@@ -1473,3 +1473,76 @@ nav a:hover {
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
   }
+
+/* ==========================================================================
+   動態廣告
+   ========================================================================== */
+    .luxury-dynamic-ticker-wrapper {
+    width: 100% !important;
+    background: #000000 !important;
+    border-bottom: 1px solid rgba(215, 177, 125, 0.15) !important;
+    overflow: hidden !important;
+    padding: 12px 0 !important;
+    position: relative !important;
+    z-index: 9999 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 2.  動態無限滾動實體軌道 */
+  .luxury-dynamic-ticker-wrapper .luxury-ticker-scroll-track {
+    display: flex !important;
+    width: max-content !important;
+    animation: luxuryTickerLinearMove 25s linear infinite !important; /* 25秒平滑無限循環 */
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  /* 當滑鼠移到廣告字體上時，動畫軌道一微秒內自動滑順「暫停」，方便點選超連結 */
+  .luxury-dynamic-ticker-wrapper .luxury-ticker-scroll-track:hover {
+    animation-play-state: paused !important;
+  }
+
+  /* 3. 實體超連結字體樣式微調  */
+  .luxury-dynamic-ticker-wrapper .luxury-ticker-item-link {
+    color: rgba(255, 255, 255, 0.7) !important;
+    text-decoration: none !important;
+    font-size: 13px !important;
+    letter-spacing: 1.5px !important;
+    padding: 0 50px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    white-space: nowrap !important;
+    transition: all 0.3s ease !important;
+    background: transparent !important;
+    border: none !important;
+    height: auto !important;
+  }
+
+  /* 懸停時字體微光 */
+  .luxury-dynamic-ticker-wrapper .luxury-ticker-item-link:hover {
+    color: #d7b17d !important; /* 變尊貴奶茶金 */
+    text-shadow: 0 0 10px rgba(215, 177, 125, 0.5) !important;
+  }
+
+  /* 4. 內置標籤裝飾色調 */
+  .luxury-dynamic-ticker-wrapper .ticker-tag {
+    color: #d7b17d !important;
+    font-weight: bold !important;
+  }
+  .luxury-dynamic-ticker-wrapper .ticker-tag-vip {
+    color: #1DB954 !important;
+    font-weight: bold !important;
+  }
+
+  /* 5. 動畫 */
+  @keyframes luxuryTickerLinearMove {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
